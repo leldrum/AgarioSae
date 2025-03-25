@@ -1,35 +1,38 @@
 package com.example.agarioclientsae;
 
+import javafx.scene.Node;
+
 public class EatPastilleAI implements IStrategyAI{
 
     @Override
     public double[] move(World world, Enemy enemy) {
+        // Initialiser la distance minimale à une valeur élevée
+        double minDistance = Double.MAX_VALUE;
+        Food closestFood = null;
 
-            enemy.setClosestEntityDistance(enemy.distanceTo(world.getPlayers().get(0).getPosition()));
-            enemy.setClosestEntity(world.getPlayers().get(0));
+        // Parcourir tous les nœuds de la scène pour trouver les pastilles de nourriture
+        for (Node node : world.root.getChildren()) {
+            if (node instanceof Food) {
+                Food food = (Food) node;
+                double distance = enemy.distanceTo(food.getPosition());
 
-            world.root.getChildren().forEach(entity ->{
-                switch (entity) {
-                    case MoveableBody each:
-                        if (each.equals(enemy)){
-                            if (enemy.distanceTo(each.getPosition()) < enemy.getClosestEntityDistance()) {
-                                enemy.setClosestEntityDistance(enemy.distanceTo(each.getPosition()));
-                                enemy.setClosestEntity(each);
-
-                            }
-                        }
-
-                    default : break;
+                // Vérifier si cette pastille est plus proche que la précédente
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestFood = food;
                 }
-
-            });
-
-
-
-            return enemy.getClosestEntity().getPosition();
-
-
+            }
         }
+
+        // Si une pastille de nourriture a été trouvée, calculer le vecteur de déplacement vers elle
+        if (closestFood != null) {
+            double[] foodPosition = closestFood.getPosition();
+            return new double[]{foodPosition[0], foodPosition[1]};
+        }
+
+        // Si aucune nourriture n'est trouvée, rester immobile
+        return new double[]{enemy.getPosition()[0], enemy.getPosition()[1]};
+    }
 
     public void move(){
 
