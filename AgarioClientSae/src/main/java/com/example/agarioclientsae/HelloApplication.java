@@ -52,7 +52,6 @@ public class HelloApplication extends Application {
     }
 
     public static void startGame(Stage stage) {
-        scene = new Scene(root, getScreenHeight(), getScreenWidth());
         world = new World(root);
         Player player = new Player(root, 50);
 
@@ -60,9 +59,13 @@ public class HelloApplication extends Application {
 
         GameTimer timer = new GameTimer(world);
         timer.start();
-        
+
+        scene = new Scene(root, ScreenWidth, ScreenHeight, Paint.valueOf("afafaf"));
         scene.setCamera(player.camera);
+
+        stage.setTitle("Agar.io");
         stage.setScene(scene);
+
         stage.show();
     }
 

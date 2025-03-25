@@ -28,6 +28,9 @@ abstract class Entity extends Group{
         size = 10 * Math.sqrt(this.weight);
 
         entity = new Circle(size, Color.rgb(r, g, b, 0.99));
+        setViewOrder(-entity.getRadius());
+        getChildren().add(entity);
+        group.getChildren().add(this);
     }
     public double[] getPosition() {
         //returns current position of the sprite
