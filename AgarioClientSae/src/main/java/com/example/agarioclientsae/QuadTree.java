@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Group;
 
-public class QuadTree {
+/*public class QuadTree {
     private final int MAX_CAPACITY = 10;
     private int level;
     private List<Entity> entities;
@@ -102,4 +102,4 @@ public class QuadTree {
         // Perform DFS traversal to print the structure
         QuadTree.dfs(anySpace);
     }
-}
+}*/

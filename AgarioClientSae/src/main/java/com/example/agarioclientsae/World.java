@@ -15,7 +15,6 @@ public class World {
 
     public static int enemies = 0;
 
-    QuadTree quadTree;
 
     private ArrayList<Player> players = new ArrayList<Player>();
 
@@ -27,7 +26,6 @@ public class World {
     public World(Group root){
         this.root = root;
         Boundary worldBoundary = new Boundary(0, 0, mapLimitWidth, mapLimitHeight);
-        quadTree = new QuadTree(0, worldBoundary);
     }
 
     static public double getMapLimitWidth(){
