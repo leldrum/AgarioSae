@@ -1,5 +1,6 @@
 package com.example.agarioclientsae;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.collections.ObservableMap;
@@ -12,7 +13,6 @@ import javafx.scene.shape.Shape;
 abstract class MoveableBody extends Entity{
 
     public double Speed = 1.5; // self explanatory, the player's speed
-    public double Smoothing = 80; // higher numbers mean more smoothing, but also slower circle
 
     MoveableBody(Group group, double initialSize){
         super(group, initialSize);
@@ -54,11 +54,8 @@ abstract class MoveableBody extends Entity{
 
 
     public void increaseSize(double foodValue){
-        //called whenever the player eats food
-        //once the player gets big enough, we want the camera to start zooming out
         entity.setRadius(entity.getRadius() + foodValue);
         setViewOrder(-entity.getRadius());
-
     }
     
     public void moveToward(double[] velocity) {
@@ -68,7 +65,7 @@ abstract class MoveableBody extends Entity{
 
         //used for the smooth movement depending on how far away the mouse is.
         //further away from the circle, the faster the movement is etc.
-        double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / Smoothing;
+        double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / getWeight();
 
         //limit speed of smoothing
         if (magnitudeSmoothing > 4){
@@ -113,4 +110,26 @@ abstract class MoveableBody extends Entity{
     }
 
 
+    public ArrayList<Entity> divide(){
+        //if the player is big enough, divide the player into two
+        if (entity.getRadius() > 20){
+
+            int r = getR();
+            int g  = getG();
+            int b  = getB();
+
+            //create a new player with half the size of the current player
+            Entity newPlayer = new Player(HelloApplication.root, entity.getRadius() / 2);
+            newPlayer.entity.setCenterX(entity.getCenterX());
+            newPlayer.entity.setCenterY(entity.getCenterY());
+            newPlayer.entity.setFill(Color.rgb(r, g , b, 0.99));
+
+            //set the new player's position to the same as the current player
+            entity.setRadius(entity.getRadius() / 2);
+            return new ArrayList<Entity>(){{
+                add(newPlayer);
+            }};
+        }
+        return new ArrayList<Entity>(){};
+    }
 }

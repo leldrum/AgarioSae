@@ -15,15 +15,18 @@ abstract class Entity extends Group{
     private double weight;
     private double size;
 
+    private int r;
+    private int g;
+    private int b;
+
     public Entity(Group group, double weight) {
         super();
         this.weight = weight;
 
-
         Random rand = new Random();
-        int r = rand.nextInt(255);
-        int g = rand.nextInt(255);
-        int b = rand.nextInt(255);
+        r = rand.nextInt(255);
+        g = rand.nextInt(255);
+        b = rand.nextInt(255);
 
         size = 10 * Math.sqrt(this.weight);
 
@@ -34,6 +37,22 @@ abstract class Entity extends Group{
     public double[] getPosition() {
         //returns current position of the sprite
         return new double[]{entity.getCenterX(), entity.getCenterY()};
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public int getG() {
+        return g;
+    }
+
+    public int getB() {
+        return b;
+    }
+
+    public double getWeight() {
+        return weight;
     }
 
     public void Update(World world){

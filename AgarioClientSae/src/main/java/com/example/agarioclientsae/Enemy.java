@@ -25,8 +25,8 @@ public class Enemy extends MoveableBody{
     public void Update(World world){
         //move player towards the mouse position
         
-        closestEntityDistance = distanceTo(world.getPlayers().get(0).getPosition());
-        closestEntity = world.getPlayers().get(0);
+        closestEntityDistance = distanceTo(world.getPlayer().getPosition());
+        closestEntity = world.getPlayer();
 
         world.root.getChildren().forEach(entity ->{
             switch (entity) {

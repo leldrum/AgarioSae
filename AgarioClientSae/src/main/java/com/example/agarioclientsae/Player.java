@@ -3,16 +3,11 @@ package com.example.agarioclientsae;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.ParallelCamera;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 public class Player extends MoveableBody{
 
-    public ParallelCamera camera = new ParallelCamera(); // creates a camera for the player
+    public CameraPlayer camera = new CameraPlayer(); // creates a camera for the player
 
     public double[] cameraScale = {camera.getScaleX(), camera.getScaleY()};
 

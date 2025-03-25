@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
 
     private static World world;
 
-    public static Group root = new Group();
+    public static Group root;
 
     public static Boolean gameStarted = false;
 
@@ -52,7 +52,8 @@ public class HelloApplication extends Application {
     }
 
     public static void startGame(Stage stage) {
-        world = new World(root);
+        world = World.getInstance();
+        root = world.getRoot();
         Player player = new Player(root, 50);
 
         world.addPlayer(player);

@@ -14,16 +14,16 @@ public class World {
 
     private ArrayList<Entity> entities;
 
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private Player player;
 
     private static ArrayList queuedObjectsForDeletion = new ArrayList<>();
 
     public int maxTimer = 2;
     public int timer = maxTimer;
 
-    public World(Group root){
-        this.root = root;
-    }
+    private static World instance = new World();
+
+    private World(){}
 
     static public double getMapLimitWidth(){
         return mapLimitWidth;
@@ -50,18 +50,29 @@ public class World {
 
     }
 
-    public ArrayList<Player> getPlayers(){
-        return this.players;
+    public static World getInstance(){
+        return instance;
+    }
+
+    public static Group getRoot() {
+        return root;
+    }
+
+    public Player getPlayer(){
+        return this.player;
     }
 
     public void addPlayer(Player p){
-        players.add(p);
+        player = p;
     }
 
     public void createFood(){
         Food food = new Food(root, 10);
     }
 
+    public void reset(){
+        instance = new World();
+    }
     public static void queueFree(Object object){
         //there are errors when deleting objects inbetween of frames, mostly just unsafe in general
         //so when you want to delete an object, reference AgarioApplication and call this function queueFree
