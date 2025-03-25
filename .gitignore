@@ -175,3 +175,4 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/maven,netbeans,git,java,eclipse,windows,macos,linux
+.idea/
