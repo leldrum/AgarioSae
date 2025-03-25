@@ -1,11 +1,18 @@
+
 package com.example.agarioclientsae;
+
+
+import javafx.scene.Group;
+import javafx.scene.shape.Circle;
+
 
 public class Food extends Entity{
 
 
-    public Food(double weight) {
-        super(weight);
-        entity.setCenterX(Math.random() * (AgarioApplication.getMapLimitWidth() * 2) - AgarioApplication.getMapLimitWidth());
-        entity.setCenterY(Math.random() * (AgarioApplication.getMapLimitWidth() * 2) - AgarioApplication.getMapLimitWidth());
+    Food(Group group, double size){
+        super(group, size);
+        entity.setCenterX(Math.random() * (World.getMapLimitWidth() * 2) - World.getMapLimitWidth());
+        entity.setCenterY(Math.random() * (World.getMapLimitHeight() * 2) - World.getMapLimitHeight());
+
     }
 }
