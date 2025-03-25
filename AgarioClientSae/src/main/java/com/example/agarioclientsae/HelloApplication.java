@@ -17,22 +17,20 @@ public class HelloApplication extends Application {
 
     private static Scene scene;
 
-    private World world;
+    private static World world;
 
     public static Group root = new Group();
+
+    public static Boolean gameStarted = false;
+
+
+
     @Override
     public void start(Stage stage) throws IOException {
 
-        world = new World(root);
-        Player player = new Player(root, 50);
+        MenuStart menu = new MenuStart(stage);
+        scene = new Scene(menu, ScreenWidth, ScreenHeight);
 
-        world.addPlayer(player);
-
-        GameTimer timer = new GameTimer(world);
-        timer.start();
-
-        scene = new Scene(root, ScreenWidth, ScreenHeight, Paint.valueOf("afafaf"));
-        scene.setCamera(player.camera);
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);
@@ -51,6 +49,21 @@ public class HelloApplication extends Application {
     }
     static public double getScreenHeight(){
         return scene.getWindow().getHeight();
+    }
+
+    public static void startGame(Stage stage) {
+        scene = new Scene(root, getScreenHeight(), getScreenWidth());
+        world = new World(root);
+        Player player = new Player(root, 50);
+
+        world.addPlayer(player);
+
+        GameTimer timer = new GameTimer(world);
+        timer.start();
+        
+        scene.setCamera(player.camera);
+        stage.setScene(scene);
+        stage.show();
     }
 
 

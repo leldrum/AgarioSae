@@ -44,8 +44,8 @@ public class MenuStart extends VBox {
     private void handleStartButton() {
         // Implement logic for start button click
         System.out.println("Start button clicked");
-        AgarioApplication.gameStarted = true;
-        AgarioApplication.startGame(stage);
+        HelloApplication.gameStarted = true;
+        HelloApplication.startGame(stage);
     }
 
 
