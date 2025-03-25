@@ -33,10 +33,6 @@ public class World {
     }
 
     public void Update(){
-        //does something every frame, put actions in here
-
-
-        //spawn food every 5 frames
         if (timer <= 0){
             if (root.getChildren().size() < 200){
                 createFood();
