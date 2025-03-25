@@ -1,5 +1,6 @@
 package com.example.agarioclientsae;
 
+import java.util.List;
 import java.util.Random;
 
 import javafx.collections.ObservableMap;
@@ -9,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
+import static com.example.agarioclientsae.HelloApplication.world;
+
 abstract class MoveableBody extends Entity{
 
     public double Speed = 1.5; // self explanatory, the player's speed
@@ -17,33 +20,25 @@ abstract class MoveableBody extends Entity{
     MoveableBody(Group group, double initialSize){
         super(group, initialSize);
     }
-    
-    public void checkCollision(){
-        //go through each of the children of the root scene
-        for(Node entity : HelloApplication.root.getChildren()){
+
+    public void checkCollision() {
+        for(Node entity : HelloApplication.root.getChildren()) {
             Entity collider = (Entity) entity;
-            //make sure we dont check if the body is colliding with itself
-            if (entity != this){
-
-                //checks if the body is intersecting with the current child that we're looking at
+            if (entity != this) {
                 Shape intersect = Shape.intersect(this.entity, collider.entity);
-
-                //if the body is colliding with something, increase the bodys size and remove the food from the scene
-                //this value will only be -1 if the player is colliding with nothing
-                if (intersect.getBoundsInLocal().getWidth() != -1){
-
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
                     double foodValue = 0.5;
-
-                    //if the colliders sprite is smaller than this objects sprite, then eat the collider
-                    if (isSmaller(collider.entity, this.entity)){
+                    if (isSmaller(collider.entity, this.entity)) {
                         World.queueFree(collider);
                         foodValue += collider.entity.getRadius() / 20;
                         increaseSize(foodValue);
                     }
                 }
             }
-         }
+        }
     }
+
+
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
         if (circleOne.getRadius() > circleTwo.getRadius() + 2){

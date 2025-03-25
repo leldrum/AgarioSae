@@ -37,6 +37,7 @@ public class Player extends MoveableBody{
             cameraScale[1] += foodValue / 200;
         }
 
+
         cameraZoom.setToX(cameraScale[0]);
         cameraZoom.setToY(cameraScale[1]);
         cameraZoom.play();

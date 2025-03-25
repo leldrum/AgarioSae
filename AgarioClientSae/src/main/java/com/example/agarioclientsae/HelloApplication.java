@@ -17,11 +17,15 @@ public class HelloApplication extends Application {
 
     private static Scene scene;
 
-    private static World world;
+    public static World world;
 
     public static Group root = new Group();
 
     public static Boolean gameStarted = false;
+
+    public static Player player;
+
+
 
 
 
@@ -53,7 +57,10 @@ public class HelloApplication extends Application {
 
     public static void startGame(Stage stage) {
         world = new World(root);
-        Player player = new Player(root, 50);
+        FactoryPlayer factoryPlayer = new FactoryPlayer();
+        player = factoryPlayer.create(root, 50);
+
+
 
         world.addPlayer(player);
 
@@ -62,6 +69,7 @@ public class HelloApplication extends Application {
 
         scene = new Scene(root, ScreenWidth, ScreenHeight, Paint.valueOf("afafaf"));
         scene.setCamera(player.camera);
+
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);
