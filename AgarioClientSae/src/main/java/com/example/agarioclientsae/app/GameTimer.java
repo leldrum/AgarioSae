@@ -1,5 +1,7 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.app;
 
+import com.example.agarioclientsae.worldElements.Entity;
+import com.example.agarioclientsae.worldElements.World;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 

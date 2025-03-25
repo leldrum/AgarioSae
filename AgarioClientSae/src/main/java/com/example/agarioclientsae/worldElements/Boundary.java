@@ -1,4 +1,4 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.worldElements;
 
 public class Boundary {
     int xMin, yMin, xMax, yMax;

@@ -1,6 +1,8 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.AI;
 
-public class EatPlayerAI implements IStrategyAI{
+import com.example.agarioclientsae.worldElements.Enemy;
+
+public class EatPlayerAI implements IStrategyAI {
 
     public double[] move(Enemy enemy){
         /*if(enemy.getClosestEntity() instanceof Food){

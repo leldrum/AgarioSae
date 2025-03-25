@@ -1,8 +1,7 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.worldElements;
 
-import com.example.agarioclientsae.Boundary;
+import com.example.agarioclientsae.worldElements.Entity;
 import javafx.scene.Group;
-import javafx.scene.Node;
 
 import java.util.ArrayList;
 

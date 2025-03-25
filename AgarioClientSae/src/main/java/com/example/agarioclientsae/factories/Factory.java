@@ -1,4 +1,4 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.factories;
 
 import javafx.scene.Group;
 

@@ -1,8 +1,10 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.factories;
 
+import com.example.agarioclientsae.worldElements.Food;
+import com.example.agarioclientsae.worldElements.World;
 import javafx.scene.Group;
 
-public class FactoryFood implements Factory<Food>{
+public class FactoryFood implements Factory<Food> {
 
 
     @Override

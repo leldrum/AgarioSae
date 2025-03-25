@@ -1,8 +1,10 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.factories;
 
+import com.example.agarioclientsae.worldElements.World;
+import com.example.agarioclientsae.player.Player;
 import javafx.scene.Group;
 
-public class FactoryPlayer implements Factory<Player>{
+public class FactoryPlayer implements Factory<Player> {
 
     @Override
     public Player create(Group group, double weight) {

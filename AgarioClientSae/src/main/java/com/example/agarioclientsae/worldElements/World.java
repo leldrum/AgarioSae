@@ -1,15 +1,18 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.worldElements;
 
+import com.example.agarioclientsae.worldElements.Entity;
+import com.example.agarioclientsae.factories.FactoryEnemy;
+import com.example.agarioclientsae.factories.FactoryFood;
+import com.example.agarioclientsae.player.MoveableBody;
+import com.example.agarioclientsae.player.Player;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
 import java.util.ArrayList;
 
-import static com.example.agarioclientsae.HelloApplication.world;
-
 public class World {
-    private static double mapLimitWidth = 5000;
-    private static double mapLimitHeight = 5000;
+    private static double mapLimitWidth = 3000;
+    private static double mapLimitHeight = 3000;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;

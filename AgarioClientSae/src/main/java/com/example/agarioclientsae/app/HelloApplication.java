@@ -1,11 +1,12 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.app;
 
+import com.example.agarioclientsae.worldElements.World;
+import com.example.agarioclientsae.factories.FactoryPlayer;
+import com.example.agarioclientsae.player.Player;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;

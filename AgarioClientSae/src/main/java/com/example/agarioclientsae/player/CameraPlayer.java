@@ -1,4 +1,4 @@
-package com.example.agarioclientsae;
+package com.example.agarioclientsae.player;
 
 import javafx.scene.ParallelCamera;
 
