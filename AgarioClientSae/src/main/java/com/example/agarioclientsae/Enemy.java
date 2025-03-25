@@ -11,6 +11,8 @@ public class Enemy extends MoveableBody{
     private double closestEntityDistance;
     private Entity closestEntity;
 
+    private IStrategyAI strategy = new EatPlayerAI();
+
     Enemy(Group group, double initialSize){
         super(group, initialSize);
         //new Enemy made and added to the group
@@ -24,25 +26,8 @@ public class Enemy extends MoveableBody{
     @Override
     public void Update(World world){
         //move player towards the mouse position
-        
-        closestEntityDistance = distanceTo(world.getPlayer().getPosition());
-        closestEntity = world.getPlayer();
 
-        world.root.getChildren().forEach(entity ->{
-            switch (entity) {
-                case MoveableBody each: 
-                if (each != this){
-                    if (distanceTo(each.getPosition()) < closestEntityDistance) {
-                        closestEntityDistance = distanceTo(each.getPosition());
-                        closestEntity = each;
-                    
-                    }
-                } 
-
-                default : break;
-            }
-           
-        });
+        moveToward(strategy.move(world,this));
 
         
 
@@ -50,6 +35,22 @@ public class Enemy extends MoveableBody{
 
         //check if player is colliding with anything
         checkCollision();
+    }
+
+    public double getClosestEntityDistance() {
+        return closestEntityDistance;
+    }
+
+    public Entity getClosestEntity() {
+        return closestEntity;
+    }
+
+    public void setClosestEntityDistance(double closestEntityDistance) {
+        this.closestEntityDistance = closestEntityDistance;
+    }
+
+    public void setClosestEntity(Entity closestEntity) {
+        this.closestEntity = closestEntity;
     }
 
     @Override

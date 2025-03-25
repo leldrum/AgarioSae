@@ -8,4 +8,5 @@ public class FactoryPlayer implements Factory<Player>{
     public Player create(Group group, double weight) {
         return new Player(group, weight);
     }
+
 }
