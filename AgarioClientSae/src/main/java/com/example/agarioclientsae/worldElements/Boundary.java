@@ -11,6 +11,14 @@ public class Boundary {
         this.yMax = yMax;
     }
 
+    public boolean intersects(Boundary other) {
+        return !(other.xMin >= this.xMax ||
+                other.xMax <= this.xMin ||
+                other.yMin >= this.yMax ||
+                other.yMax <= this.yMin);
+    }
+
+
 
     public boolean inRange(int x, int y) {
         return (x >= xMin && x < xMax) && (y >= yMin && y < yMax);

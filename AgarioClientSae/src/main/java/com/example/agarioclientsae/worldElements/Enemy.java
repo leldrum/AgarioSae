@@ -1,11 +1,13 @@
 package com.example.agarioclientsae.worldElements;
 
+import com.example.agarioclientsae.AI.EatPastilleAI;
 import com.example.agarioclientsae.AI.EatPlayerAI;
 import com.example.agarioclientsae.AI.IStrategyAI;
 import com.example.agarioclientsae.AI.RandomMouvementAI;
 import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.player.MoveableBody;
 import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 
 public class Enemy extends MoveableBody {
 
@@ -13,12 +15,12 @@ public class Enemy extends MoveableBody {
     private double closestEntityDistance;
     private Entity closestEntity;
 
-    private IStrategyAI strategy = new RandomMouvementAI();
+    private IStrategyAI strategy = new EatPastilleAI();
 
     private World world = World.getInstance();
 
-    public Enemy(Group group, double initialSize){
-        super(group, initialSize);
+    public Enemy(Pane gamePane, double initialSize){
+        super(gamePane, initialSize);
         //new Enemy made and added to the group
         entity.setCenterX(Math.random() * (World.getMapLimitWidth() - 100) + 50);
         entity.setCenterY(Math.random() * (World.getMapLimitHeight() - 100) + 50);

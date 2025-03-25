@@ -1,14 +1,18 @@
 package com.example.agarioclientsae.worldElements;
 
-import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.factories.FactoryEnemy;
 import com.example.agarioclientsae.factories.FactoryFood;
 import com.example.agarioclientsae.player.MoveableBody;
 import com.example.agarioclientsae.player.Player;
+import com.example.agarioclientsae.worldElements.observer.WorldObserver;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class World {
     private static double mapLimitWidth = 3000;
@@ -17,12 +21,10 @@ public class World {
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
 
-    public static Group root = new Group();
-
+    public static Pane gamePane = new Pane();
     public static int enemies = 0;
 
     private ArrayList<Entity> entities = new ArrayList<>();
-
     private Player player;
 
     private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
@@ -31,107 +33,123 @@ public class World {
     public int timer = maxTimer;
 
     private static World instance = new World();
-
     private QuadTree quadTree;
 
-    private World(){}
+    // Liste des observateurs
+    private List<WorldObserver> observers = new ArrayList<>();
 
-    static public double getMapLimitWidth(){
-        return mapLimitWidth;
-    }
-    static public double getMapLimitHeight(){
-        return mapLimitHeight;
+    private World() {}
+
+    public static double getMapLimitWidth() { return mapLimitWidth; }
+    public static double getMapLimitHeight() { return mapLimitHeight; }
+
+    public static World getInstance() { return instance; }
+    public static Pane getRoot() { return gamePane; }
+
+    public Player getPlayer() { return this.player; }
+    public void addPlayer(Player p) { player = p; }
+
+    public void addEntity(Entity entity) { entities.add(entity); }
+
+    public ArrayList<Entity> getEntities() { return entities; }
+
+    public void createFood() {
+        FactoryFood factoryFood = new FactoryFood();
+        Food food = factoryFood.create(gamePane, 10);
     }
 
-    public void Update(){
-        if (timer <= 0){
-            if (root.getChildren().size() < 200){
+    public void reset() { instance = new World(); }
+
+    public static void queueFree(Object object) {
+        queuedObjectsForDeletion.add(object);
+        Entity entity = (Entity) object;
+        entity.onDeletion();
+        enemies--;
+    }
+
+    public void freeQueuedObjects() {
+        gamePane.getChildren().removeAll(queuedObjectsForDeletion);
+        queuedObjectsForDeletion.clear();
+    }
+
+    // 🔥 Ajout de la gestion des observateurs
+    public void addObserver(WorldObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(WorldObserver observer) {
+        observers.remove(observer);
+    }
+
+    // 🔥 Mettre à jour et notifier les observateurs des entités absorbées
+    public void Update() {
+        if (timer <= 0) {
+            if (gamePane.getChildren().size() < 200) {
                 createFood();
             }
             timer = maxTimer;
         }
 
-        if (enemies < 5 && enemySpawnTimer <= 0){
+        if (enemies < 5 && enemySpawnTimer <= 0) {
             FactoryEnemy factoryEnemy = new FactoryEnemy();
-            Enemy enemy = factoryEnemy.create(root, 50);
+            Enemy enemy = factoryEnemy.create(gamePane, 50);
             enemies++;
             enemySpawnTimer = enemySpawnRate;
         }
 
         enemySpawnTimer--;
-
         timer--;
 
         updateQuadTreeEntities();
+
+        // Détecter les entités absorbées
+        HashMap<Player, List<Entity>> absorbedEntities = detectAbsorptions();
+
+        // Notifier les observateurs
+        notifyObservers(absorbedEntities);
     }
 
-    public static World getInstance(){
-        return instance;
-    }
-
-    public static Group getRoot() {
-        return root;
-    }
-
-    public Player getPlayer(){
-        return this.player;
-    }
-
-    public void addPlayer(Player p){
-        player = p;
-    }
-
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
-    public ArrayList<Entity> getEntities() {
-        return entities;
-    }
-
-    public void createFood(){
-        FactoryFood factoryFood  = new FactoryFood ();
-        Food food = factoryFood.create(root, 10);
-
-    }
-
-    public void reset(){
-        instance = new World();
-    }
-
-    public static void queueFree(Object object){
-        queuedObjectsForDeletion.add(object);
-        Entity entity = (Entity) object;
-        entity.onDeletion();
-        enemies--;
-        // Retirer de l'arbre QuadTree
-
-    }
-
-
-    public void freeQueuedObjects(){
-
-        root.getChildren().removeAll(queuedObjectsForDeletion);
-        queuedObjectsForDeletion.clear();
-    }
-
-    private void updateEntities(){
-
-        for (Node entity : root.getChildren()){
-            if (entity instanceof MoveableBody){
-                MoveableBody moveableEntity = (MoveableBody) entity;
-                moveableEntity.checkCollision();
-            }
-        }
-    }
-
-    void updateQuadTreeEntities(){
+    void updateQuadTreeEntities() {
         quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
 
         for (Entity entity : entities) {
             int x = (int) entity.entity.getCenterX();
             int y = (int) entity.entity.getCenterY();
             quadTree.insert(x, y, entity);
+        }
+    }
+
+    public void setCamera(DoubleProperty zoom, DoubleProperty offsetX, DoubleProperty offsetY) {
+        gamePane.scaleXProperty().bind(zoom);
+        gamePane.scaleYProperty().bind(zoom);
+        gamePane.translateXProperty().bind(offsetX);
+        gamePane.translateYProperty().bind(offsetY);
+    }
+
+    // 🔥 Détection des absorptions
+    private HashMap<Player, List<Entity>> detectAbsorptions() {
+        HashMap<Player, List<Entity>> absorbedEntities = new HashMap<>();
+
+        for (Node entity : gamePane.getChildren()) {
+            if (entity instanceof MoveableBody) {
+                MoveableBody moveableEntity = (MoveableBody) entity;
+                Player absorber = moveableEntity.checkCollisionAndAbsorb(); // Implémente cette méthode
+
+                if (absorber != null) {
+                    absorbedEntities.putIfAbsent(absorber, new ArrayList<>());
+                    absorbedEntities.get(absorber).add((Entity) entity);
+                    queueFree(entity);
+                }
+            }
+        }
+
+        return absorbedEntities;
+    }
+
+    // 🔥 Notifier tous les observateurs
+    private void notifyObservers(HashMap<Player, List<Entity>> absorbedEntities) {
+        for (WorldObserver observer : observers) {
+            observer.onEntitiesAbsorbed(absorbedEntities);
         }
     }
 }

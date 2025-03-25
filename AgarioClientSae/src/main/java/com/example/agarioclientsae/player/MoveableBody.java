@@ -7,6 +7,7 @@ import com.example.agarioclientsae.app.HelloApplication;
 import com.example.agarioclientsae.worldElements.World;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -16,8 +17,11 @@ public abstract class MoveableBody extends Entity {
 
     public double Speed = 1.5; // self explanatory, the player's speed
 
-    protected MoveableBody(Group group, double initialSize){
-        super(group, initialSize);
+
+
+    protected MoveableBody(Pane gamePane, double initialSize){
+
+        super(gamePane, initialSize);
     }
     
     public void checkCollision(){
@@ -42,6 +46,46 @@ public abstract class MoveableBody extends Entity {
             }
          }
     }
+
+
+    public Player checkCollisionAndAbsorb() {
+        ArrayList<Entity> entities = World.getInstance().getEntities();
+        ArrayList<Entity> absorbedEntities = new ArrayList<>();
+
+        for (Entity e : entities) {
+            if (e == this) continue; // Ignore soi-même
+
+            if (e instanceof MoveableBody) {
+                MoveableBody other = (MoveableBody) e;
+
+                // Vérifier si les deux entités sont en collision
+                if (isCollidingWith(other)) {
+                    // Vérifier si on peut absorber (taille plus grande)
+                    if (this.getWeight() > other.getWeight() * 1.3) { // Facteur de sécurité 1.3
+                        absorbedEntities.add(other);
+                        this.increaseSize(other.getWeight()); // Augmenter la taille du joueur
+                    }
+                }
+            }
+        }
+
+        // Supprime les entités absorbées du monde
+        for (Entity absorbed : absorbedEntities) {
+            World.queueFree(absorbed);
+        }
+        return null;
+    }
+
+
+    private boolean isCollidingWith(MoveableBody other) {
+        double dx = this.entity.getCenterX() - other.entity.getCenterX();
+        double dy = this.entity.getCenterY() - other.entity.getCenterY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (this.entity.getRadius() + other.entity.getRadius());
+    }
+
+
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
         if (circleOne.getRadius() > circleTwo.getRadius() + 2){

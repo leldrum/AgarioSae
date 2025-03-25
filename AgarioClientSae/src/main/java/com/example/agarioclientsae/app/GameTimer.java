@@ -7,7 +7,7 @@ import javafx.scene.Node;
 
 public class GameTimer extends AnimationTimer {
 
-    private double framesPerSecond = 60;
+    private double framesPerSecond = 30;
     private double interval = 1000000000 / framesPerSecond;
     private double last = 0;
 
@@ -26,10 +26,13 @@ public class GameTimer extends AnimationTimer {
         if (now - last > interval ){
             last = now;
             world.freeQueuedObjects(); // deletes any objects queued up to be free
-            for (Node entity : world.root.getChildren()){
-                Entity convertedEntity = (Entity) entity;
-                convertedEntity.Update();
+            for (Node node : world.gamePane.getChildren()) {
+                if (node instanceof Entity) {  // ✅ Vérifie si le node est bien une Entity
+                    Entity entity = (Entity) node;
+                    entity.Update();
+                }
             }
+
             world.Update(); //calls update function every frame
 
 

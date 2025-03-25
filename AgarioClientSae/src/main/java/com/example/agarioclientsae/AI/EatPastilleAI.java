@@ -16,7 +16,7 @@ public class EatPastilleAI implements IStrategyAI {
         Food closestFood = null;
 
         // Parcourir tous les nœuds de la scène pour trouver les pastilles de nourriture
-        for (Node node : world.root.getChildren()) {
+        for (Node node : world.gamePane.getChildren()) {
             if (node instanceof Food) {
                 Food food = (Food) node;
                 double distance = enemy.distanceTo(food.getPosition());

@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class HelloApplication extends Application {
 
     public static World world;
 
-    public static Group root;
+    public static Pane root;
 
     public static Boolean gameStarted = false;
 
@@ -65,12 +66,12 @@ public class HelloApplication extends Application {
 
 
         world.addPlayer(player);
-
+        root.getChildren().add(player);
         GameTimer timer = new GameTimer();
         timer.start();
 
         scene = new Scene(root, ScreenWidth, ScreenHeight);
-        scene.setCamera(player.camera);
+        scene.setCamera(player.getScene().getCamera());
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);

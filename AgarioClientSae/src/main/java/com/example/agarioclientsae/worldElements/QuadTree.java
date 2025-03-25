@@ -2,8 +2,11 @@ package com.example.agarioclientsae.worldElements;
 
 import com.example.agarioclientsae.worldElements.Entity;
 import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class QuadTree {
     final int MAX_CAPACITY = 4;
@@ -107,6 +110,32 @@ public class QuadTree {
         }
     }
 
+    public HashSet<Entity> queryRange(Boundary range) {
+        HashSet<Entity> found = new HashSet<>();
+
+        // Si la zone ne chevauche pas ce QuadTree, retourner une liste vide
+        if (!boundary.intersects(range)) {
+            return found;
+        }
+
+        // Ajouter les entités de ce nœud si elles sont dans la zone demandée
+        for (Entity entity : nodes) {
+            if (range.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
+                found.add(entity);
+            }
+        }
+
+        // Si ce nœud a des sous-quadrants, vérifier récursivement
+        if (northWest != null) {
+            found.addAll(northWest.queryRange(range));
+            found.addAll(northEast.queryRange(range));
+            found.addAll(southWest.queryRange(range));
+            found.addAll(southEast.queryRange(range));
+        }
+
+        return found;
+    }
+
 
     public static void main(String args[]) {
         double mapLimitWidth = 700;
@@ -117,7 +146,7 @@ public class QuadTree {
         QuadTree quadTree = new QuadTree(0, boundary);
 
         // Création des entités
-        Group root = new Group();
+        Pane root = new Pane();
         Entity entity1 = new Enemy(root, 50);
         entity1.entity.setCenterX(100);
         entity1.entity.setCenterY(100);
