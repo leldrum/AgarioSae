@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import static com.example.agarioclientsae.HelloApplication.world;
 
 public class World {
-    private static double mapLimitWidth = 3000;
-    private static double mapLimitHeight = 3000;
+    private static double mapLimitWidth = 5000;
+    private static double mapLimitHeight = 5000;
+
+    private int enemySpawnTimer = 100;
+    private int enemySpawnRate = 100;
 
     public static Group root = new Group();
 
@@ -25,6 +28,8 @@ public class World {
     public int timer = maxTimer;
 
     private static World instance = new World();
+
+    private QuadTree quadTree;
 
     private World(){}
 
@@ -43,15 +48,18 @@ public class World {
             timer = maxTimer;
         }
 
-        if (enemies < 5){
+        if (enemies < 5 && enemySpawnTimer <= 0){
             FactoryEnemy factoryEnemy = new FactoryEnemy();
             Enemy enemy = factoryEnemy.create(root, 50);
             enemies++;
-
+            enemySpawnTimer = enemySpawnRate;
         }
 
-        timer--; //decrement timer
+        enemySpawnTimer--;
 
+        timer--;
+
+        updateQuadTreeEntities();
     }
 
     public static World getInstance(){
@@ -111,6 +119,16 @@ public class World {
                 MoveableBody moveableEntity = (MoveableBody) entity;
                 moveableEntity.checkCollision();
             }
+        }
+    }
+
+    void updateQuadTreeEntities(){
+        quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
+
+        for (Entity entity : entities) {
+            int x = (int) entity.entity.getCenterX();
+            int y = (int) entity.entity.getCenterY();
+            quadTree.insert(x, y, entity);
         }
     }
 }

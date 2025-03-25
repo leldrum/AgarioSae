@@ -22,22 +22,18 @@ abstract class MoveableBody extends Entity{
     }
     
     public void checkCollision(){
-        //go through each of the children of the root scene
+
         for(Node entity : HelloApplication.root.getChildren()){
             Entity collider = (Entity) entity;
-            //make sure we dont check if the body is colliding with itself
+
             if (entity != this){
 
-                //checks if the body is intersecting with the current child that we're looking at
                 Shape intersect = Shape.intersect(this.entity, collider.entity);
 
-                //if the body is colliding with something, increase the bodys size and remove the food from the scene
-                //this value will only be -1 if the player is colliding with nothing
                 if (intersect.getBoundsInLocal().getWidth() != -1){
 
                     double foodValue = 0.5;
 
-                    //if the colliders sprite is smaller than this objects sprite, then eat the collider
                     if (isSmaller(collider.entity, this.entity)){
                         World.queueFree(collider);
                         foodValue += collider.entity.getRadius() / 20;

@@ -16,8 +16,8 @@ public class Enemy extends MoveableBody{
     Enemy(Group group, double initialSize){
         super(group, initialSize);
         //new Enemy made and added to the group
-        entity.setCenterX((Math.random() * World.getMapLimitWidth() * 2) - World.getMapLimitWidth());
-        entity.setCenterY((Math.random() * World.getMapLimitHeight() * 2) - World.getMapLimitHeight());
+        entity.setCenterX(Math.random() * (World.getMapLimitWidth() - 100) + 50);
+        entity.setCenterY(Math.random() * (World.getMapLimitHeight() - 100) + 50);
 
         //puts the Enemy infront of all the food
         //puts bigger entities in front of smaller entities

@@ -68,7 +68,7 @@ public class HelloApplication extends Application {
         GameTimer timer = new GameTimer();
         timer.start();
 
-        scene = new Scene(root, ScreenWidth, ScreenHeight, Paint.valueOf("afafaf"));
+        scene = new Scene(root, ScreenWidth, ScreenHeight);
         scene.setCamera(player.camera);
 
         stage.setTitle("Agar.io");

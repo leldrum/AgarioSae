@@ -1,25 +1,36 @@
 package com.example.agarioclientsae;
 
 public class Boundary {
-    private double x, y; // Position de l'angle supérieur gauche
-    private double width, height; // Largeur et hauteur de la zone
+    int xMin, yMin, xMax, yMax;
 
-    public Boundary(double x, double y, double width, double height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
-
-    public boolean inRange(double px, double py) {
-        return px >= x && px <= x + width && py >= y && py <= y + height;
+    public Boundary(int xMin, int yMin, int xMax, int yMax) {
+        super();
+        this.xMin = xMin;
+        this.yMin = yMin;
+        this.xMax = xMax;
+        this.yMax = yMax;
     }
 
 
-    // Getters and setters
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public double getWidth() { return width; }
-    public double getHeight() { return height; }
+    public boolean inRange(int x, int y) {
+        return (x >= xMin && x < xMax) && (y >= yMin && y < yMax);
+    }
+
+
+    public int getxMin() {
+        return xMin;
+    }
+
+    public int getyMin() {
+        return yMin;
+    }
+
+    public int getxMax() {
+        return xMax;
+    }
+
+    public int getyMax() {
+        return yMax;
+    }
 }
 
