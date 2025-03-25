@@ -4,15 +4,9 @@ import javafx.scene.Group;
 
 public class FactoryFood implements Factory<Food>{
 
-    private double weight;
-    private Group group;
 
-    public FactoryFood(Group group, double weight){
-        this.weight = weight;
-        this.group = group;
-    }
     @Override
-    public Food create() {
+    public Food create(Group group, double weight) {
         return new Food(group, weight);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.agarioclientsae;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javafx.collections.ObservableMap;
@@ -9,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+
+import static com.example.agarioclientsae.HelloApplication.world;
 
 abstract class MoveableBody extends Entity{
 
@@ -54,8 +57,11 @@ abstract class MoveableBody extends Entity{
 
 
     public void increaseSize(double foodValue){
+        //called whenever the player eats food
+        //once the player gets big enough, we want the camera to start zooming out
         entity.setRadius(entity.getRadius() + foodValue);
         setViewOrder(-entity.getRadius());
+
     }
     
     public void moveToward(double[] velocity) {

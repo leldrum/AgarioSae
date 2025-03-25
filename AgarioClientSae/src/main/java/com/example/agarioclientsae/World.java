@@ -1,12 +1,15 @@
 package com.example.agarioclientsae;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 
 import java.util.ArrayList;
 
+import static com.example.agarioclientsae.HelloApplication.world;
+
 public class World {
-    private static double mapLimitWidth = 2000;
-    private static double mapLimitHeight = 2000;
+    private static double mapLimitWidth = 3000;
+    private static double mapLimitHeight = 3000;
 
     public static Group root = new Group();
 
@@ -16,7 +19,7 @@ public class World {
 
     private Player player;
 
-    private static ArrayList queuedObjectsForDeletion = new ArrayList<>();
+    private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
 
     public int maxTimer = 2;
     public int timer = maxTimer;
@@ -37,13 +40,14 @@ public class World {
             if (root.getChildren().size() < 200){
                 createFood();
             }
-
-            timer = maxTimer; //reset the timer
+            timer = maxTimer;
         }
 
         if (enemies < 5){
-            Enemy enemy = new Enemy(root, 50);
+            FactoryEnemy factoryEnemy = new FactoryEnemy();
+            Enemy enemy = factoryEnemy.create(root, 50);
             enemies++;
+
         }
 
         timer--; //decrement timer
@@ -67,30 +71,38 @@ public class World {
     }
 
     public void createFood(){
-        Food food = new Food(root, 10);
+        FactoryFood factoryFood  = new FactoryFood ();
+        Food food = factoryFood.create(root, 10);
+
     }
 
     public void reset(){
         instance = new World();
     }
+
     public static void queueFree(Object object){
-        //there are errors when deleting objects inbetween of frames, mostly just unsafe in general
-        //so when you want to delete an object, reference AgarioApplication and call this function queueFree
-        //e.g. AgarioApplication.queueFree(foodSprite);
-        //puts objects in a dynamic array, just means an array that doesnt have a fixed size
-        //every frame before the update function is called, the objects in the queue will be deleted
         queuedObjectsForDeletion.add(object);
         Entity entity = (Entity) object;
         entity.onDeletion();
         enemies--;
+        // Retirer de l'arbre QuadTree
+
     }
 
+
     public void freeQueuedObjects(){
-        //deletes all objects in the queue
-        //complicated to explain why we have to do it this way
-        //just know if we dont, there will be tons of lag and errors every frame
+
         root.getChildren().removeAll(queuedObjectsForDeletion);
         queuedObjectsForDeletion.clear();
+    }
 
+    private void updateEntities(){
+
+        for (Node entity : root.getChildren()){
+            if (entity instanceof MoveableBody){
+                MoveableBody moveableEntity = (MoveableBody) entity;
+                moveableEntity.checkCollision();
+            }
+        }
     }
 }

@@ -17,11 +17,15 @@ public class HelloApplication extends Application {
 
     private static Scene scene;
 
-    private static World world;
+    public static World world;
 
     public static Group root;
 
     public static Boolean gameStarted = false;
+
+    public static Player player;
+
+
 
 
 
@@ -54,7 +58,10 @@ public class HelloApplication extends Application {
     public static void startGame(Stage stage) {
         world = World.getInstance();
         root = world.getRoot();
-        Player player = new Player(root, 50);
+        FactoryPlayer factoryPlayer = new FactoryPlayer();
+        player = factoryPlayer.create(root, 50);
+
+
 
         world.addPlayer(player);
 
