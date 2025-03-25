@@ -54,7 +54,7 @@ public class Player extends MoveableBody{
     }
 
     @Override
-    public void Update(World world){
+    public void Update(){
         //move player towards the mouse position
         moveToward(HelloApplication.getMousePosition());
 

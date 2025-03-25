@@ -55,7 +55,7 @@ abstract class Entity extends Group{
         return weight;
     }
 
-    public void Update(World world){
+    public void Update(){
 
     }
 

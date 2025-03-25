@@ -65,7 +65,7 @@ public class HelloApplication extends Application {
 
         world.addPlayer(player);
 
-        GameTimer timer = new GameTimer(world);
+        GameTimer timer = new GameTimer();
         timer.start();
 
         scene = new Scene(root, ScreenWidth, ScreenHeight, Paint.valueOf("afafaf"));

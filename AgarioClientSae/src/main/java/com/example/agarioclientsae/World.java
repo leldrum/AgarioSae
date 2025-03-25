@@ -15,7 +15,7 @@ public class World {
 
     public static int enemies = 0;
 
-    private ArrayList<Entity> entities;
+    private ArrayList<Entity> entities = new ArrayList<>();
 
     private Player player;
 
@@ -68,6 +68,14 @@ public class World {
 
     public void addPlayer(Player p){
         player = p;
+    }
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
     }
 
     public void createFood(){

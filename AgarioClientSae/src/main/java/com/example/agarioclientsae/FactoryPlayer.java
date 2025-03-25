@@ -6,7 +6,10 @@ public class FactoryPlayer implements Factory<Player>{
 
     @Override
     public Player create(Group group, double weight) {
-        return new Player(group, weight);
+        World world = World.getInstance();
+        Player p = new Player(group, weight);
+        world.addEntity(p);
+        return p;
     }
 
 }

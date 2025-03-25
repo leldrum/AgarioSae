@@ -24,10 +24,10 @@ public class Enemy extends MoveableBody{
     }
 
     @Override
-    public void Update(World world){
+    public void Update(){
         //move player towards the mouse position
 
-        moveToward(strategy.move(world,this));
+        moveToward(strategy.move(this));
 
         
 

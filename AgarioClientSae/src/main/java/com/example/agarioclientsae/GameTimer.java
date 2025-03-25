@@ -11,8 +11,8 @@ public class GameTimer extends AnimationTimer {
 
     private World world;
 
-    public GameTimer(World world){
-        this.world = world;
+    public GameTimer(){
+        this.world = World.getInstance();
     }
     @Override
     public void handle(long now) {
@@ -26,7 +26,7 @@ public class GameTimer extends AnimationTimer {
             world.freeQueuedObjects(); // deletes any objects queued up to be free
             for (Node entity : world.root.getChildren()){
                 Entity convertedEntity = (Entity) entity;
-                convertedEntity.Update(world);
+                convertedEntity.Update();
             }
             world.Update(); //calls update function every frame
 

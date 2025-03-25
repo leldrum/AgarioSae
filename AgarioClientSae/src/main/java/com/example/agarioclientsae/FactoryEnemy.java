@@ -5,6 +5,9 @@ import javafx.scene.Group;
 public class FactoryEnemy implements Factory<Enemy>{
     @Override
     public Enemy create(Group group, double weight) {
-        return new Enemy(group, weight);
+        World world = World.getInstance();
+        Enemy enemy = new Enemy(group, weight);
+        world.addEntity(enemy);
+        return enemy;
     }
 }

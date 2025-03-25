@@ -3,7 +3,9 @@ package com.example.agarioclientsae;
 public class EatPastilleAI implements IStrategyAI{
 
     @Override
-    public double[] move(World world, Enemy enemy) {
+    public double[] move(Enemy enemy) {
+
+            World world = World.getInstance();
 
             enemy.setClosestEntityDistance(enemy.distanceTo(world.getPlayer().getPosition()));
             enemy.setClosestEntity(world.getPlayer());

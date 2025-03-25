@@ -2,8 +2,10 @@ package com.example.agarioclientsae;
 
 public class EatPlayerAI implements IStrategyAI{
 
-    public double[] move(World world, Enemy enemy){
+    public double[] move(Enemy enemy){
         //move player towards the mouse position
+
+        World world = World.getInstance();
 
         enemy.setClosestEntityDistance(enemy.distanceTo(world.getPlayer().getPosition()));
         enemy.setClosestEntity(world.getPlayer());
