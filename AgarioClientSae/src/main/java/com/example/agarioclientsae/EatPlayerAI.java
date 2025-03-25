@@ -2,7 +2,9 @@ package com.example.agarioclientsae;
 
 public class EatPlayerAI implements IStrategyAI{
 
-    public void move(){
+    public void move(World world){
+
 
     }
+
 }
