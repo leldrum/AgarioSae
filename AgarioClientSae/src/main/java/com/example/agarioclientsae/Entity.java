@@ -2,6 +2,7 @@ package com.example.agarioclientsae;
 
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -18,6 +19,7 @@ abstract class Entity extends Group{
     private int r;
     private int g;
     private int b;
+    private Label label;
 
     public Entity(Group group, double weight) {
         super();
@@ -32,6 +34,13 @@ abstract class Entity extends Group{
 
         entity = new Circle(size, Color.rgb(r, g, b, 0.99));
         getChildren().add(entity);
+
+        label = new Label("Entity");
+        label.setTextFill(Color.WHITE);
+        label.layoutXProperty().bind(entity.centerXProperty().subtract(label.widthProperty().divide(2)));
+        label.layoutYProperty().bind(entity.centerYProperty().subtract(label.heightProperty().divide(2)));
+        getChildren().add(label);
+
         group.getChildren().add(this);
     }
     public double[] getPosition() {
@@ -54,6 +63,7 @@ abstract class Entity extends Group{
     public double getWeight() {
         return weight;
     }
+
 
     public void Update(){
 

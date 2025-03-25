@@ -21,41 +21,39 @@ public class Enemy extends MoveableBody{
         entity.setCenterX((Math.random() * World.getMapLimitWidth() * 2) - World.getMapLimitWidth());
         entity.setCenterY((Math.random() * World.getMapLimitHeight() * 2) - World.getMapLimitHeight());
 
-        closestEntityDistance = (distanceTo(world.getPlayer().getPosition()));
-        closestEntity = (world.getPlayer());
-
-        //puts the Enemy infront of all the food
-        //puts bigger entities in front of smaller entities
+        closestEntityDistance = Double.MAX_VALUE;
+        closestEntity = null;
     }
 
     @Override
     public void Update(){
-        //move player towards the mouse position
-
-        //System.out.println(world.getEntities());
 
         world.getEntities().forEach(entity -> {
-            switch (entity) {
-                case MoveableBody each:
-                    if (!each.equals(this)){
-                        if (distanceTo(each.getPosition()) < closestEntityDistance) {
-                            closestEntityDistance = (distanceTo(each.getPosition()));
-                            closestEntity = (each);
-
-                            System.out.println(closestEntity);
-
-                        }
-                    }
-                    break;
-                default:
-                    break;
+            if (!entity.equals(this)){
+                double distance = distanceTo(entity.getPosition());
+                if (distance < closestEntityDistance) {
+                    closestEntityDistance = distance;
+                    closestEntity = entity;
+                }
             }
         });
 
-        moveToward(strategy.move(this));
 
-        //check if player is colliding with anything
+
+        if (closestEntity != null) {
+            moveToward(strategy.move(this));
+        }
+
+        // Check if player is colliding with anything
         checkCollision();
+
+        if(World.getInstance().getEntities().size() > 15) {
+            Entity exemple = World.getInstance().getEntities().get(15);
+
+            System.out.println("Exemple: " + exemple + exemple.getPosition()[0] + " " + exemple.getPosition()[1]);
+        }
+
+
     }
 
     public double getClosestEntityDistance() {
