@@ -2,8 +2,6 @@ package com.example.agarioclientsae.worldElements;
 
 import com.example.agarioclientsae.AI.EatPlayerAI;
 import com.example.agarioclientsae.AI.IStrategyAI;
-import com.example.agarioclientsae.AI.RandomMouvementAI;
-import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.player.MoveableBody;
 import javafx.scene.Group;
 
@@ -13,7 +11,7 @@ public class Enemy extends MoveableBody {
     private double closestEntityDistance;
     private Entity closestEntity;
 
-    private IStrategyAI strategy = new RandomMouvementAI();
+    private IStrategyAI strategy = new EatPlayerAI();
 
     private World world = World.getInstance();
 
@@ -29,7 +27,6 @@ public class Enemy extends MoveableBody {
 
     @Override
     public void Update(){
-
         world.getEntities().forEach(entity -> {
             if (!entity.equals(this)){
                 double distance = distanceTo(entity.getPosition());
@@ -41,18 +38,20 @@ public class Enemy extends MoveableBody {
         });
 
 
-
         if (closestEntity != null) {
+            System.out.println("Closest entity: " + closestEntity + closestEntity.getPosition()[0] + " " + closestEntity.getPosition()[1]);
             moveToward(strategy.move(this));
         }
 
         // Check if player is colliding with anything
-        checkCollision();
+        if(checkCollision()){
+            closestEntityDistance = Double.MAX_VALUE;
+        }
 
         if(World.getInstance().getEntities().size() > 15) {
             Entity exemple = World.getInstance().getEntities().get(15);
 
-            System.out.println("Exemple: " + exemple + exemple.getPosition()[0] + " " + exemple.getPosition()[1]);
+            //System.out.println("Exemple: " + exemple + exemple.getPosition()[0] + " " + exemple.getPosition()[1]);
         }
 
 

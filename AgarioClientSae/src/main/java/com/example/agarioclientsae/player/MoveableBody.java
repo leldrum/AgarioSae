@@ -19,8 +19,8 @@ public abstract class MoveableBody extends Entity {
     protected MoveableBody(Group group, double initialSize){
         super(group, initialSize);
     }
-    
-    public void checkCollision(){
+
+    public boolean checkCollision(){
 
         for(Node entity : HelloApplication.root.getChildren()){
             Entity collider = (Entity) entity;
@@ -38,9 +38,11 @@ public abstract class MoveableBody extends Entity {
                         foodValue += collider.entity.getRadius() / 20;
                         increaseSize(foodValue);
                     }
+                    return true;
                 }
             }
          }
+        return false;
     }
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
@@ -58,7 +60,7 @@ public abstract class MoveableBody extends Entity {
         setViewOrder(-entity.getRadius());
 
     }
-    
+
     public void moveToward(double[] velocity) {
 
         //initalize velocity, which is the mouse position - player position

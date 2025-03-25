@@ -26,12 +26,12 @@ public class QuadTree {
         if (tree == null)
             return;
 
-        System.out.printf("\nLevel = %d [X1=%d Y1=%d] \t[X2=%d Y2=%d] ",
+        /*System.out.printf("\nLevel = %d [X1=%d Y1=%d] \t[X2=%d Y2=%d] ",
                 tree.level, tree.boundary.getxMin(), tree.boundary.getyMin(),
-                tree.boundary.getxMax(), tree.boundary.getyMax());
+                tree.boundary.getxMax(), tree.boundary.getyMax());*/
 
         for (Entity node : tree.nodes) {
-            System.out.printf(" \n\t  x=%d y=%d", (int) node.entity.getCenterX(), (int) node.entity.getCenterY());
+            /*System.out.printf(" \n\t  x=%d y=%d", (int) node.entity.getCenterX(), (int) node.entity.getCenterY());*/
         }
         if (tree.nodes.size() == 0) {
             System.out.printf(" \n\t  Leaf Node.");
@@ -58,8 +58,8 @@ public class QuadTree {
 
 
         for (Entity entity : tempNodes) {
-            System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
-                    (int) entity.entity.getCenterY() + ") after split...");
+            /*System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
+                    (int) entity.entity.getCenterY() + ") after split...");*/
 
             // Insert dans le quadrant approprié
             if (this.northWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
@@ -79,18 +79,18 @@ public class QuadTree {
     // Modified to insert Entity objects
     void insert(int x, int y, Entity entity) {
         if (!this.boundary.inRange(x, y)) {
-            System.out.println("Entity (" + x + "," + y + ") is out of bounds");
+            /*System.out.println("Entity (" + x + "," + y + ") is out of bounds");*/
             return;
         }
 
         if (nodes.size() < MAX_CAPACITY) {
             nodes.add(entity);
-            System.out.println("Added entity at (" + x + "," + y + ") to level " + this.level);
+            //System.out.println("Added entity at (" + x + "," + y + ") to level " + this.level);
             return;
         }
 
         if (northWest == null) {
-            System.out.println("Splitting at level " + this.level);
+            //System.out.println("Splitting at level " + this.level);
             split();
         }
 
@@ -103,7 +103,7 @@ public class QuadTree {
         } else if (this.southEast.boundary.inRange(x, y)) {
             this.southEast.insert(x, y, entity);
         } else {
-            System.out.printf("ERROR: Unhandled partition for (%d, %d)\n", x, y);
+            //System.out.printf("ERROR: Unhandled partition for (%d, %d)\n", x, y);
         }
     }
 

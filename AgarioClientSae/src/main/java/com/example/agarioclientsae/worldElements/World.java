@@ -11,8 +11,8 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 
 public class World {
-    private static double mapLimitWidth = 3000;
-    private static double mapLimitHeight = 3000;
+    private static double mapLimitWidth = 2000;
+    private static double mapLimitHeight = 2000;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
