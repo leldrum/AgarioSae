@@ -7,6 +7,8 @@ public class EatPastilleAI implements IStrategyAI{
 
             World world = World.getInstance();
 
+
+
             enemy.setClosestEntityDistance(enemy.distanceTo(world.getPlayer().getPosition()));
             enemy.setClosestEntity(world.getPlayer());
 

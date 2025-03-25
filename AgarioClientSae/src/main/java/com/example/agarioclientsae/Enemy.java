@@ -13,28 +13,47 @@ public class Enemy extends MoveableBody{
 
     private IStrategyAI strategy = new EatPlayerAI();
 
+    private World world = World.getInstance();
+
     Enemy(Group group, double initialSize){
         super(group, initialSize);
         //new Enemy made and added to the group
         entity.setCenterX(Math.random() * (World.getMapLimitWidth() - 100) + 50);
         entity.setCenterY(Math.random() * (World.getMapLimitHeight() - 100) + 50);
 
-        //puts the Enemy infront of all the food
-        //puts bigger entities in front of smaller entities
+        closestEntityDistance = Double.MAX_VALUE;
+        closestEntity = null;
     }
 
     @Override
     public void Update(){
-        //move player towards the mouse position
 
-        moveToward(strategy.move(this));
+        world.getEntities().forEach(entity -> {
+            if (!entity.equals(this)){
+                double distance = distanceTo(entity.getPosition());
+                if (distance < closestEntityDistance) {
+                    closestEntityDistance = distance;
+                    closestEntity = entity;
+                }
+            }
+        });
 
-        
 
-        moveToward(closestEntity.getPosition());
 
-        //check if player is colliding with anything
+        if (closestEntity != null) {
+            moveToward(strategy.move(this));
+        }
+
+        // Check if player is colliding with anything
         checkCollision();
+
+        if(World.getInstance().getEntities().size() > 15) {
+            Entity exemple = World.getInstance().getEntities().get(15);
+
+            System.out.println("Exemple: " + exemple + exemple.getPosition()[0] + " " + exemple.getPosition()[1]);
+        }
+
+
     }
 
     public double getClosestEntityDistance() {
