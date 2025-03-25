@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class World {
-    private static double mapLimitWidth = 3000;
-    private static double mapLimitHeight = 3000;
+    private static double mapLimitWidth = 1000;
+    private static double mapLimitHeight = 1000;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
@@ -56,6 +56,7 @@ public class World {
     public void createFood() {
         FactoryFood factoryFood = new FactoryFood();
         Food food = factoryFood.create(gamePane, 10);
+        System.out.println("Food créé : " + food);
     }
 
     public void reset() { instance = new World(); }

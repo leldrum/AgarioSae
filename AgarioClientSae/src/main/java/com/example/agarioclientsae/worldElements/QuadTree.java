@@ -61,8 +61,8 @@ public class QuadTree {
 
 
         for (Entity entity : tempNodes) {
-            System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
-                    (int) entity.entity.getCenterY() + ") after split...");
+            //System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
+             //       (int) entity.entity.getCenterY() + ") after split...");
 
             // Insert dans le quadrant approprié
             if (this.northWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
@@ -82,18 +82,18 @@ public class QuadTree {
     // Modified to insert Entity objects
     void insert(int x, int y, Entity entity) {
         if (!this.boundary.inRange(x, y)) {
-            System.out.println("Entity (" + x + "," + y + ") is out of bounds");
+           // System.out.println("Entity (" + x + "," + y + ") is out of bounds");
             return;
         }
 
         if (nodes.size() < MAX_CAPACITY) {
             nodes.add(entity);
-            System.out.println("Added entity at (" + x + "," + y + ") to level " + this.level);
+           // System.out.println("Added entity at (" + x + "," + y + ") to level " + this.level);
             return;
         }
 
         if (northWest == null) {
-            System.out.println("Splitting at level " + this.level);
+            //System.out.println("Splitting at level " + this.level);
             split();
         }
 

@@ -16,26 +16,25 @@ public class GameTimer extends AnimationTimer {
     public GameTimer(){
         this.world = World.getInstance();
     }
+
     @Override
     public void handle(long now) {
-
-        if (last == 0){
-            last = now;
-        }
+        if (last == 0) last = now;
 
         if (now - last > interval ){
             last = now;
-            world.freeQueuedObjects(); // deletes any objects queued up to be free
-            for (Node node : world.gamePane.getChildren()) {
-                if (node instanceof Entity) {  // ✅ Vérifie si le node est bien une Entity
-                    Entity entity = (Entity) node;
-                    entity.Update();
+            System.out.println("GameTimer appelé");
+
+            world.freeQueuedObjects();
+            for (Node entity : world.gamePane.getChildren()){
+                if (entity instanceof Entity) {
+                    ((Entity) entity).Update();
+                } else {
+                    System.out.println("Attention : " + entity + " n'est pas une Entity !");
                 }
             }
-
-            world.Update(); //calls update function every frame
-
-
+            world.Update();
         }
     }
+
 }

@@ -15,5 +15,6 @@ public class Food extends Entity {
         entity.setCenterX(Math.random() * (World.getMapLimitWidth() * 2) - World.getMapLimitWidth());
         entity.setCenterY(Math.random() * (World.getMapLimitHeight() * 2) - World.getMapLimitHeight());
 
+
     }
 }

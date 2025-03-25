@@ -12,6 +12,7 @@ public class FactoryFood implements Factory<Food> {
     public Food create(Pane gamePane, double weight) {
         World world = World.getInstance();
         Food food = new Food(gamePane, weight);
+        gamePane.getChildren().add(food);
         world.addEntity(food);
 
 

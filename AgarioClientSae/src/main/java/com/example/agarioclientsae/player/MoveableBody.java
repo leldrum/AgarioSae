@@ -23,29 +23,30 @@ public abstract class MoveableBody extends Entity {
 
         super(gamePane, initialSize);
     }
-    
-    public void checkCollision(){
 
-        for(Node entity : HelloApplication.root.getChildren()){
-            Entity collider = (Entity) entity;
+    public void checkCollision() {
+        for (Node node : HelloApplication.root.getChildren()) {
+            if (node instanceof Entity) {  // ✅ Vérifier si c'est une instance d'Entity
+                Entity collider = (Entity) node;
 
-            if (entity != this){
+                if (collider != this) {  // ✅ Vérifier que ce n'est pas la même entité
+                    Shape intersect = Shape.intersect(this.entity, collider.entity);
 
-                Shape intersect = Shape.intersect(this.entity, collider.entity);
+                    if (intersect.getBoundsInLocal().getWidth() != -1) { // ✅ Vérifier l'intersection
+                        double foodValue = 0.5;
 
-                if (intersect.getBoundsInLocal().getWidth() != -1){
-
-                    double foodValue = 0.5;
-
-                    if (isSmaller(collider.entity, this.entity)){
-                        World.queueFree(collider);
-                        foodValue += collider.entity.getRadius() / 20;
-                        increaseSize(foodValue);
+                        if (isSmaller(collider.entity, this.entity)) {
+                            World.queueFree(collider);
+                            foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
+                        }
                     }
                 }
             }
-         }
+        }
     }
+
+
 
 
     public Player checkCollisionAndAbsorb() {
