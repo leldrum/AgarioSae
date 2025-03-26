@@ -118,23 +118,23 @@ public class QuadTree {
 
         // Création des entités
         Group root = new Group();
-        Entity entity1 = new Enemy(root, 50);
+        Entity entity1 = new Enemy(root, 50, 1000000);
         entity1.entity.setCenterX(100);
         entity1.entity.setCenterY(100);
 
-        Entity entity2 = new Enemy(root, 50);
+        Entity entity2 = new Enemy(root, 50, 1000000);
         entity2.entity.setCenterX(200);
         entity2.entity.setCenterY(200);
 
-        Entity entity3 = new Enemy(root, 50);
+        Entity entity3 = new Enemy(root, 50, 1000000);
         entity3.entity.setCenterX(600);
         entity3.entity.setCenterY(600);
 
-        Entity entity4 = new Enemy(root, 50);
+        Entity entity4 = new Enemy(root, 50 , 1000000);
         entity4.entity.setCenterX(500);
         entity4.entity.setCenterY(300);
 
-        Entity entity5 = new Enemy(root, 50);
+        Entity entity5 = new Enemy(root, 50, 1000000);
         entity5.entity.setCenterX(250);
         entity5.entity.setCenterY(250);
 

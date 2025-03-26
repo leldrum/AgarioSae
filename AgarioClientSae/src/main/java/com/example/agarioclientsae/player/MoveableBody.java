@@ -16,16 +16,17 @@ public class MoveableBody extends Entity {
 
     public double Speed = 1.5; // self explanatory, the player's speed
 
-    protected MoveableBody(Group group, double initialSize){
-        super(group, initialSize);
+
+    protected MoveableBody(Group group, double initialSize, int id){
+        super(group, initialSize, id);
+
     }
 
-    public boolean checkCollision(){
-
+    public double checkCollision(){
         for(Node entity : HelloApplication.root.getChildren()){
             Entity collider = (Entity) entity;
 
-            if (entity != this){
+            if (entity != this && this.getId_() != collider.getId_()){
 
                 Shape intersect = Shape.intersect(this.entity, collider.entity);
 
@@ -36,13 +37,13 @@ public class MoveableBody extends Entity {
                     if (isSmaller(collider.entity, this.entity)){
                         World.queueFree(collider);
                         foodValue += collider.entity.getRadius() / 20;
-                        increaseSize(foodValue);
+                        return foodValue;
                     }
-                    return true;
+                    return 1;
                 }
             }
          }
-        return false;
+        return 0;
     }
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
@@ -50,15 +51,6 @@ public class MoveableBody extends Entity {
             return false;
         }
         return true;
-    }
-
-
-    public void increaseSize(double foodValue){
-        //called whenever the player eats food
-        //once the player gets big enough, we want the camera to start zooming out
-        entity.setRadius(entity.getRadius() + foodValue);
-        setViewOrder(-entity.getRadius());
-
     }
 
     public void moveToward(double[] velocity) {

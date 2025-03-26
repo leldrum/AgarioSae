@@ -21,9 +21,12 @@ public abstract class Entity extends Group{
     private int b;
     private Label label;
 
-    public Entity(Group group, double weight) {
+    private int id;
+
+    public Entity(Group group, double weight, int id) {
         super();
         this.weight = weight;
+        this.id = id;
 
         Random rand = new Random();
         r = rand.nextInt(255);
@@ -48,8 +51,14 @@ public abstract class Entity extends Group{
         return new double[]{entity.getCenterX(), entity.getCenterY()};
     }
 
+
+
     public int getR() {
         return r;
+    }
+
+    public int getId_() {
+        return id;
     }
 
     public int getG() {
@@ -61,7 +70,14 @@ public abstract class Entity extends Group{
     }
 
     public double getWeight() {
+
         return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+        size = 10 * Math.sqrt(this.weight);
+        entity.setRadius(size);
     }
 
 

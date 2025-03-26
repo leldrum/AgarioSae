@@ -15,8 +15,8 @@ public class Enemy extends MoveableBody {
 
     private World world = World.getInstance();
 
-    public Enemy(Group group, double initialSize){
-        super(group, initialSize);
+    public Enemy(Group group, double initialSize, int id){
+        super(group, initialSize, id);
         //new Enemy made and added to the group
         entity.setCenterX(Math.random() * (World.getMapLimitWidth() - 100) + 50);
         entity.setCenterY(Math.random() * (World.getMapLimitHeight() - 100) + 50);
@@ -43,7 +43,7 @@ public class Enemy extends MoveableBody {
         }
 
         // Check if player is colliding with anything
-        if(checkCollision()){
+        if(checkCollision() != 0){
             closestEntityDistance = Double.MAX_VALUE;
         }
 

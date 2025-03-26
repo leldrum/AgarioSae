@@ -8,10 +8,13 @@ import javafx.scene.Group;
 
 public class FactoryPlayer implements Factory<Player> {
 
+    public static int id = 0;
+
     @Override
     public PlayableGroup create(Group group, double weight) {
         System.out.println("avant"+group.getChildren());
-        PlayableGroup p = new PlayableGroup(group, weight);
+        PlayableGroup p = new PlayableGroup(group, weight, id);
+        id++;
         System.out.println("apres" + group.getChildren());
         return p;
     }

@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
     private static double ScreenWidth = 1280;
     private static double ScreenHeight = 720;
 
-    private static Scene scene;
+    public static Scene scene;
 
     public static World world;
 
@@ -73,6 +73,16 @@ public class HelloApplication extends Application {
 
         scene = new Scene(root, ScreenWidth, ScreenHeight);
         scene.setCamera(player.getCamera());
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case SPACE:
+                    player.divide();
+                    System.out.println("Barre espace appuyée");
+                    break;
+                default:
+                    break;
+            }
+        });
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);

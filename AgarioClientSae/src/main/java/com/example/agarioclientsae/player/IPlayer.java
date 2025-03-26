@@ -4,7 +4,7 @@ import javafx.scene.Camera;
 
 public interface IPlayer {
     public void increaseSize(double foodValue);
-    public Boolean checkCollision();
+    public double checkCollision();
 
     public void Update();
 

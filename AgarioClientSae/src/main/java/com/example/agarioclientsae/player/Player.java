@@ -15,16 +15,18 @@ public class Player implements IPlayer{
 
     public MoveableBody part;
 
-    public Player(Group group, double initialSize){
-        part = new MoveableBody(group, initialSize);
+    public Player(Group group, double initialSize, int id){
+        part = new MoveableBody(group, initialSize, id);
         Random rand = new Random();
         part.entity.setCenterX(0);
         part.entity.setCenterY(0);
         part.setViewOrder(-part.entity.getRadius());
     }
 
+
+
     public void increaseSize(double foodValue){
-        part.entity.setRadius(part.entity.getRadius() + foodValue);
+        part.setWeight(part.getWeight() + foodValue);
         part.setViewOrder(-part.entity.getRadius());
         //zoom out the camera when the player gets too big
     }
@@ -43,26 +45,20 @@ public class Player implements IPlayer{
         return total;
     }
 
-    public Boolean checkCollision(){
-        return part.checkCollision();
+    public double checkCollision(){
+        double result = part.checkCollision();
+        if(result != 0 && result != 1){
+            increaseSize(result);
+            return result;
+        }
+        return 0;
     }
 
-    public void moveToward(double[] velocity) {
-        part.moveToward(velocity);
-
-        //set the position of the camera to the same position as the player
-        //minus by half of the screen resolution, keep the player in the middle of the screen
-
-    }
+    public void moveToward(double[] velocity) {}
 
     @Override
     public Camera getCamera() {
         return null;
-    }
-
-
-    public void gameOver(){
-        World.queueFree(part.entity);
     }
 
 
