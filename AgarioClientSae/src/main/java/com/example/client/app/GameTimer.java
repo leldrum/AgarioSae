@@ -1,0 +1,41 @@
+package com.example.client.app;
+
+import com.example.libraries.worldElements.Entity;
+import com.example.libraries.worldElements.World;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
+
+public class GameTimer extends AnimationTimer {
+
+    private double framesPerSecond = 60;
+    private double interval = 1000000000 / framesPerSecond;
+    private double last = 0;
+
+    private World world;
+
+    public GameTimer(){
+        this.world = World.getInstance();
+    }
+    @Override
+    public void handle(long now) {
+        if (last == 0) {
+            last = now;
+        }
+
+        if (now - last > interval) {
+            last = now;
+
+            world.freeQueuedObjects();
+
+            for (Node node : world.getRoot().getChildren()) {
+                if (node instanceof Entity) {
+                    Entity entity = (Entity) node;
+                    entity.Update();
+                }
+            }
+            world.Update(); //calls update function every frame
+            world.getPlayer().Update(); //calls update function every frame
+
+        }
+    }
+}
