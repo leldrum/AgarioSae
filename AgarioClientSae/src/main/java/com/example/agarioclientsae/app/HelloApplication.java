@@ -75,6 +75,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Agar.io");
         stage.setScene(scene);
 
+        System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
         stage.show();
     }
 

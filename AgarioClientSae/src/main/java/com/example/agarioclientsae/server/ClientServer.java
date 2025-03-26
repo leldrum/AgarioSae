@@ -1,6 +1,7 @@
 package com.example.agarioclientsae.server;
 
 import com.example.agarioclientsae.app.HelloApplication;
+import com.example.agarioclientsae.worldElements.World;
 
 import java.io.*;
 import java.net.Socket;
@@ -24,12 +25,12 @@ public class ClientServer {
 
             new Thread(new NetworkListener(input)).start();
 
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void processInitData(String data) {
+    private void processInitData(String data) throws IOException, ClassNotFoundException {
         // Exemple : "ID:1,WORLD_SIZE:1000,FOOD:100,PLAYERS:5"
         System.out.println(data);
         String[] parts = data.split(",");
@@ -37,17 +38,17 @@ public class ClientServer {
             if (part.startsWith("ID:")) {
                 playerId = Integer.parseInt(part.split(":")[1]);
             }
-            if (part.startsWith("WORLD_SIZE:")) {
-                playerId = Integer.parseInt(part.split(":")[1]);
+            if (part.startsWith("WORLD:")) {
+                World.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
+                System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
             }
-            if (part.startsWith("FOOD:")) {
-                playerId = Integer.parseInt(part.split(":")[1]);
-            }
-            if (part.startsWith("PLAYERS:")) {
-                playerId = Integer.parseInt(part.split(":")[1]);
-            }
+            /*if (part.startsWith("Taille:")) {
+                System.out.println("Taille du monde: " + part.split(":")[1]);
+            }*/
         }
         System.out.println("Connecté avec ID: " + playerId);
+
+        HelloApplication.main(null);
     }
 
     public void sendPlayerDirection() {

@@ -72,6 +72,10 @@ public class World implements Serializable {
         return instance;
     }
 
+    public static void setInstance(World world){
+        instance = world;
+    }
+
     public static Group getRoot() {
         return root;
     }
