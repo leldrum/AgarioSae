@@ -28,9 +28,6 @@ public class HelloApplication extends Application {
     public static Player player;
 
 
-
-
-
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -50,10 +47,10 @@ public class HelloApplication extends Application {
         return new double[]{mousePos.getX(), mousePos.getY()};
     }
 
-    static public double getScreenWidth(){
+    public static double getScreenWidth(){
         return scene.getWindow().getWidth();
     }
-    static public double getScreenHeight(){
+    public static double getScreenHeight(){
         return scene.getWindow().getHeight();
     }
 
@@ -75,7 +72,7 @@ public class HelloApplication extends Application {
 
         // Configuration initiale
         world.addPlayer(player);
-        world.addEntity(player);
+        //world.addEntity(player);
 
         // Gestion de la minimap
         Canvas minimapCanvas = world.getMinimapCanvas();

@@ -69,8 +69,8 @@ public class World {
     public void createMinimap() {
         if (minimapCanvas == null) {
             minimapCanvas = new Canvas(MINIMAP_SIZE, MINIMAP_SIZE);
-            minimapCanvas.setTranslateX(mapLimitWidth - MINIMAP_SIZE - 20);
-            minimapCanvas.setTranslateY(mapLimitHeight - MINIMAP_SIZE - 20);
+            minimapCanvas.setTranslateX(2000 - MINIMAP_SIZE - 20);
+            minimapCanvas.setTranslateY(2000 - MINIMAP_SIZE - 20);
             minimapCanvas.setMouseTransparent(true); // Important pour les clics
         }
     }
@@ -82,32 +82,53 @@ public class World {
             return;
         }
 
+        // Récupérer la position et la taille du joueur
+        double playerX = player.getPosition()[0];
+        double playerY = player.getPosition()[1];
+        double playerRadius = Math.sqrt(player.getWeight())*10; // Supposant que vous avez une méthode getRadius()
+
+        // Calculer dynamiquement la taille de la minimap en fonction de la taille du joueur
+        double dynamicMinimapSize = Math.max(MINIMAP_SIZE, playerRadius * 3); // Taille minimale de 150, sinon 3x le rayon du joueur
+
+        // Recréer le canvas si nécessaire pour s'adapter à la nouvelle taille
+        if (minimapCanvas.getWidth() != dynamicMinimapSize || minimapCanvas.getHeight() != dynamicMinimapSize) {
+            minimapCanvas = new Canvas(dynamicMinimapSize, dynamicMinimapSize);
+            minimapCanvas.setMouseTransparent(true);
+            root.getChildren().add(minimapCanvas);
+        }
+
+        // Calculer la nouvelle position de la minimap par rapport au joueur
+        double minimapX = playerX +1280/3;  // Déplacement en X (100 pixels à droite)
+        double minimapY = playerY +720/5;  // Déplacement en Y (100 pixels en bas)
+
+        // Mettre à jour la position de la minimap
+        minimapCanvas.setTranslateX(minimapX);
+        minimapCanvas.setTranslateY(minimapY);
+
+        // Mise à jour du graphique de la minimap
         GraphicsContext gc = minimapCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, MINIMAP_SIZE, MINIMAP_SIZE);
+        gc.clearRect(0, 0, dynamicMinimapSize, dynamicMinimapSize);
 
         // Fond de la minimap semi-transparent
         gc.setFill(Color.rgb(200, 200, 200, 0.5));
-        gc.fillRect(0, 0, MINIMAP_SIZE, MINIMAP_SIZE);
+        gc.fillRect(0, 0, dynamicMinimapSize, dynamicMinimapSize);
         gc.setStroke(Color.BLACK);
-        gc.strokeRect(0, 0, MINIMAP_SIZE, MINIMAP_SIZE);
+        gc.strokeRect(0, 0, dynamicMinimapSize, dynamicMinimapSize);
 
-        // Mise à l'échelle
-        double scaleX = MINIMAP_SIZE / mapLimitWidth;
-        double scaleY = MINIMAP_SIZE / mapLimitHeight;
+        // Calcul dynamique de l'échelle en fonction de la taille du joueur
+        double scaleX = dynamicMinimapSize / mapLimitWidth;
+        double scaleY = dynamicMinimapSize / mapLimitHeight;
 
         // Position du joueur sur la minimap
-        double playerMiniX = player.getPosition()[0] * scaleX + MINIMAP_SIZE / 2;
-        double playerMiniY = player.getPosition()[1] * scaleY + MINIMAP_SIZE / 2;
+        double playerMiniX = player.getPosition()[0] * scaleX + dynamicMinimapSize / 2;
+        double playerMiniY = player.getPosition()[1] * scaleY + dynamicMinimapSize / 2;
 
-        // Dessin du joueur
+        // Dessin du joueur sur la minimap
         gc.setFill(Color.RED);
         gc.fillOval(playerMiniX - 3, playerMiniY - 3, 6, 6);
-
-        // Ensure minimap is in the root if it's not already
-        if (!root.getChildren().contains(minimapCanvas)) {
-            root.getChildren().add(minimapCanvas);
-        }
     }
+
+
 
     // Mise à jour du monde (appelée à chaque frame)
     public void Update() {
