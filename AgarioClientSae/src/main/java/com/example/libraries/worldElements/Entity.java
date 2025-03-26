@@ -18,9 +18,12 @@ public abstract class Entity extends Group{
     private int b;
     private Label label;
 
+    private String name;
+
     public Entity(Group group, double weight) {
         super();
         this.weight = weight;
+        this.name = "Entity";
 
         Random rand = new Random();
         r = rand.nextInt(255);
@@ -32,7 +35,7 @@ public abstract class Entity extends Group{
         entity = new Circle(size, Color.rgb(r, g, b, 0.99));
         getChildren().add(entity);
 
-        label = new Label("Entity");
+        label = new Label(name);
         label.setTextFill(Color.WHITE);
         label.layoutXProperty().bind(entity.centerXProperty().subtract(label.widthProperty().divide(2)));
         label.layoutYProperty().bind(entity.centerYProperty().subtract(label.heightProperty().divide(2)));
@@ -67,6 +70,15 @@ public abstract class Entity extends Group{
         this.weight = weight;
         size = 10 * Math.sqrt(this.weight);
         entity.setRadius(size);
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+        label.setText(name);
     }
 
 

@@ -35,6 +35,7 @@ public class MoveableBody extends Entity {
                         if (isSmaller(collider.entity, this.entity)) {
                             World.queueFree(collider);
                             foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
                             return foodValue;
                         }
                         System.out.println("Dead");

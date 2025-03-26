@@ -81,18 +81,6 @@ public class HelloApplication extends Application {
         timer = new GameTimer();
         timer.start();
         // Gestion de la minimap
-        Canvas minimapCanvas = world.getMinimapCanvas();
-        if (minimapCanvas != null) {
-            // Nettoie le root en gardant seulement la minimap
-            //root.getChildren().retainAll(minimapCanvas);
-            // Réajoute le joueur
-            System.out.println("Joueur ajouté au root : " + player.parts.get(0).part.entity);
-            root.getChildren().add(player.parts.get(0).part.entity);
-
-        }
-
-        // Mise à jour de la minimap
-        world.updateMinimap();
 
         // Création de la scène
         scene = new Scene(root, ScreenWidth, ScreenHeight);

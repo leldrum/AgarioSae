@@ -1,8 +1,12 @@
 package com.example.libraries.worldElements;
 
+import com.example.client.app.HelloApplication;
 import com.example.libraries.AI.IStrategyAI;
 import com.example.libraries.player.MoveableBody;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 public class Enemy extends MoveableBody {
 
@@ -58,6 +62,40 @@ public class Enemy extends MoveableBody {
 
     }
 
+    public double checkCollision(){
+        for(Node entity : HelloApplication.root.getChildren()) {
+            if (entity instanceof Entity && entity != this.entity) {
+                Entity collider = (Entity) entity;
+
+                if (entity != this) {
+
+                    Shape intersect = Shape.intersect(this.entity, collider.entity);
+
+                    if (intersect.getBoundsInLocal().getWidth() != -1) {
+
+                        double foodValue = 0.5;
+
+                        if (isSmaller(collider.entity, this.entity)) {
+                            World.queueFree(collider);
+                            foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
+                            return foodValue;
+                        }
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    private Boolean isSmaller(Circle circleOne, Circle circleTwo){
+        if (circleOne.getRadius() > circleTwo.getRadius() + 2){
+            return false;
+        }
+        return true;
+    }
+
     public double getClosestEntityDistance() {
         return closestEntityDistance;
     }
@@ -84,6 +122,7 @@ public class Enemy extends MoveableBody {
     }
 
     public void update() {
-        setWeight(getWeight() + 0.5);
+        checkCollision();
+
     }
 }
