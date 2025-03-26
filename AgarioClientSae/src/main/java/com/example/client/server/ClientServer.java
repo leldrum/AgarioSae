@@ -40,8 +40,9 @@ public class ClientServer {
                 playerId = Integer.parseInt(part.split(":")[1]);
             }
             if (part.startsWith("WORLD:")) {
+                SerializationUtils.deserializeWorldFromString(part.split(":")[1]);
                 World.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
-                System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
+                System.out.println("Taille du mondeeeeeeee: " + World.getInstance().getMapLimitWidth() + "x" + World.getInstance().getMapLimitHeight());
             }
             /*if (part.startsWith("Taille:")) {
                 System.out.println("Taille du monde: " + part.split(":")[1]);

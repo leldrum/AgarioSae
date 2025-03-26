@@ -25,10 +25,10 @@ public class World implements Serializable{
     private Canvas minimapCanvas;
 
     private static final long serialVersionUID = 1L;
-    private static double mapLimitWidth = 2000;
-    private static double mapLimitHeight = 2000;
+    private double mapLimitWidth = 2001;
+    private double mapLimitHeight = 2001;
 
-    private int enemySpawnTimer = 100;
+    private int enemySpawnTimer = 581;
     private int enemySpawnRate = 100;
     public static int enemies = 0;
 
@@ -68,11 +68,11 @@ public class World implements Serializable{
 
     }
 
-    public static double getMapLimitWidth() {
+    public double getMapLimitWidth() {
         return mapLimitWidth;
     }
 
-    public static double getMapLimitHeight() {
+    public double getMapLimitHeight() {
         return mapLimitHeight;
     }
 
