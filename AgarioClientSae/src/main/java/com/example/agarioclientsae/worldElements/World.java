@@ -8,9 +8,12 @@ import com.example.agarioclientsae.player.Player;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class World {
+public class World implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private static double mapLimitWidth = 2000;
     private static double mapLimitHeight = 2000;
 
