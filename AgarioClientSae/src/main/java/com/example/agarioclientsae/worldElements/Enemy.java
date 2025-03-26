@@ -48,7 +48,7 @@ public class Enemy extends MoveableBody {
         }
 
         // Check if player is colliding with anything
-        if(checkCollision()){
+        if(checkCollision() != 0){
             closestEntityDistance = Double.MAX_VALUE;
         }
 

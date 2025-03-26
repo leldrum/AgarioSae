@@ -11,6 +11,8 @@ import javafx.scene.Group;
 import java.util.Random;
 
 public class FactoryEnemy implements Factory<Enemy> {
+
+    public static int id = 10000;
     @Override
     public Enemy create(Group group, double weight) {
         World world = World.getInstance();

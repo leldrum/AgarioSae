@@ -1,5 +1,7 @@
 package com.example.agarioclientsae.AI;
 
+import com.example.agarioclientsae.player.IPlayer;
+import com.example.agarioclientsae.player.PlayableGroup;
 import com.example.agarioclientsae.player.Player;
 import com.example.agarioclientsae.worldElements.Enemy;
 import com.example.agarioclientsae.worldElements.Entity;
@@ -14,10 +16,10 @@ public class EatPlayerAI implements IStrategyAI {
         // Initialiser la distance minimale à une valeur élevée
         double minDistance = Double.MAX_VALUE;
         Enemy closestEnemy = null;
-        Player closestPlayer = null;
+        IPlayer closestPlayer = null;
 
         // Parcourir tous les nœuds de la scène pour trouver les ennemis
-        for (Node node : world.root.getChildren()) {
+        for (Node node : world.getRoot().getChildren()) {
             if (node instanceof Enemy) {
                 Enemy potentialTarget = (Enemy) node;
                 if (potentialTarget.equals(enemy)) {
@@ -30,8 +32,8 @@ public class EatPlayerAI implements IStrategyAI {
                     minDistance = distance;
                     closestEnemy = potentialTarget;
                 }
-            }else if(node instanceof Player){
-                Player potentialTarget = (Player) node;
+            }else if(node instanceof IPlayer){
+                IPlayer potentialTarget = (IPlayer) node;
                 if (potentialTarget.equals(enemy)) {
                     continue;
                 }

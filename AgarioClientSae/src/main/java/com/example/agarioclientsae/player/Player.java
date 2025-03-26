@@ -1,68 +1,75 @@
+
 package com.example.agarioclientsae.player;
 
 import com.example.agarioclientsae.app.HelloApplication;
 import com.example.agarioclientsae.worldElements.World;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.util.Duration;
 
-public class Player extends MoveableBody {
+import java.util.ArrayList;
+import java.util.Random;
 
-    public CameraPlayer camera = new CameraPlayer(); // creates a camera for the player
+public class Player implements IPlayer{
 
-    public double[] cameraScale = {camera.getScaleX(), camera.getScaleY()};
-
-    public Player(Group group, double initialSize) {
-        super(group, initialSize);
-        // Initialisation à la position du centre
-        entity.setCenterX(0);
-        entity.setCenterY(0);
-
-        // Met le joueur devant les autres éléments
-        entity.setViewOrder(-entity.getRadius());
-    }
+    public MoveableBody part;
 
     @Override
-    public void increaseSize(double foodValue) {
-        super.increaseSize(foodValue);
-        // Zoom de la caméra quand le joueur grossit
+    public double[] getPosition() {
+        return part.getPosition();
+    }
 
-        ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
+    public Player(Group group, double initialSize){
+        part = new MoveableBody(group, initialSize);
+        Random rand = new Random();
+        part.entity.setCenterX(0);
+        part.entity.setCenterY(0);
+        part.setViewOrder(-part.entity.getRadius());
+    }
 
-        if (entity.getRadius() > 70) {
-            cameraScale[0] += foodValue / 200;
-            cameraScale[1] += foodValue / 200;
+    public void increaseSize(double foodValue){
+        part.setWeight(part.getWeight() + foodValue);
+        part.setViewOrder(-part.entity.getRadius());
+        //zoom out the camera when the player gets too big
+    }
+
+    public double getCenterX(){
+        return part.entity.getCenterX();
+    }
+
+    public double getCenterY(){
+        return part.entity.getCenterY();
+    }
+
+    public double totalRadius(){
+        double total = 0;
+        total += part.entity.getRadius();
+        return total;
+    }
+
+    public double checkCollision(){
+        double result = part.checkCollision();
+        if(result != 0){
+            increaseSize(result);
+            return result;
         }
-
-        cameraZoom.setToX(cameraScale[0]);
-        cameraZoom.setToY(cameraScale[1]);
-        cameraZoom.play();
+        return 0;
     }
+
+    public void moveToward(double[] velocity) {}
 
     @Override
-    public void moveToward(double[] velocity) {
-        super.moveToward(velocity);
-        velocity = normalizeDouble(velocity);
-        // Positionne la caméra au centre de l'écran
-        camera.setLayoutX((entity.getCenterX() + velocity[0]) - HelloApplication.getScreenWidth() / 2 * camera.getScaleX());
-        camera.setLayoutY((entity.getCenterY() + velocity[1]) - HelloApplication.getScreenHeight() / 2 * camera.getScaleY());
+    public Camera getCamera() {
+        return null;
     }
 
-    public void gameOver() {
-        World.queueFree(entity);
-    }
 
-    @Override
-    public void Update() {
-        // Ajoutez une vérification de nullité
-        if (this.entity == null || this.entity.getScene() == null) {
-            return;
-        }
-
-        moveToward(HelloApplication.getMousePosition());
-        checkCollision();
-
-        // Force la mise à jour de la minimap
+    public void Update(){
         World.getInstance().updateMinimap();
     }
+
+        // Force la mise à jour de la minimap
+
+
 }

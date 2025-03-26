@@ -12,7 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 
-public abstract class MoveableBody extends Entity {
+public class MoveableBody extends Entity {
 
     public double Speed = 1.5; // self explanatory, the player's speed
     protected Group group;
@@ -22,9 +22,8 @@ public abstract class MoveableBody extends Entity {
         this.group = group;
     }
 
-    public boolean checkCollision(){
-
-        for(Node entity : HelloApplication.root.getChildren()){
+    public double checkCollision(){
+        for(Node entity : HelloApplication.root.getChildren()) {
             if (entity instanceof Entity && entity != this.entity) {
                 Entity collider = (Entity) entity;
 
@@ -39,14 +38,15 @@ public abstract class MoveableBody extends Entity {
                         if (isSmaller(collider.entity, this.entity)) {
                             World.queueFree(collider);
                             foodValue += collider.entity.getRadius() / 20;
-                            increaseSize(foodValue);
+                            return foodValue;
                         }
-                        return true;
+                        System.out.println("Dead");
+                        return 1;
                     }
                 }
             }
         }
-        return false;
+        return 0;
     }
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
@@ -116,26 +116,4 @@ public abstract class MoveableBody extends Entity {
     }
 
 
-    public ArrayList<Entity> divide(){
-        //if the player is big enough, divide the player into two
-        if (entity.getRadius() > 20){
-
-            int r = getR();
-            int g  = getG();
-            int b  = getB();
-
-            //create a new player with half the size of the current player
-            Entity newPlayer = new Player(this.group, entity.getRadius() / 2);
-            newPlayer.entity.setCenterX(entity.getCenterX());
-            newPlayer.entity.setCenterY(entity.getCenterY());
-            newPlayer.entity.setFill(Color.rgb(r, g , b, 0.99));
-
-            //set the new player's position to the same as the current player
-            entity.setRadius(entity.getRadius() / 2);
-            return new ArrayList<Entity>(){{
-                add(newPlayer);
-            }};
-        }
-        return new ArrayList<Entity>(){};
-    }
 }

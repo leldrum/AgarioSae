@@ -1,5 +1,6 @@
 package com.example.agarioclientsae.app;
 
+import com.example.agarioclientsae.player.PlayableGroup;
 import com.example.agarioclientsae.worldElements.World;
 import com.example.agarioclientsae.factories.FactoryPlayer;
 import com.example.agarioclientsae.player.Player;
@@ -17,7 +18,7 @@ public class HelloApplication extends Application {
     private static double ScreenWidth = 1280;
     private static double ScreenHeight = 720;
 
-    private static Scene scene;
+    public static Scene scene;
 
     public static World world;
 
@@ -25,7 +26,9 @@ public class HelloApplication extends Application {
 
     public static Boolean gameStarted = false;
 
-    public static Player player;
+    public static PlayableGroup player;
+
+    public static GameTimer timer;
 
 
 
@@ -66,25 +69,27 @@ public class HelloApplication extends Application {
 
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
-        player = factoryPlayer.create(root, 80);
+        player = factoryPlayer.create(root, 50);
 
         if (player == null) {
             System.err.println("ERREUR : Le joueur n'a pas été créé");
             return;
         }
 
-        // Configuration initiale
-        world.addPlayer(player);
-        //world.addEntity(player);
 
+        world.addPlayer(player);
+
+        timer = new GameTimer();
+        timer.start();
         // Gestion de la minimap
         Canvas minimapCanvas = world.getMinimapCanvas();
         if (minimapCanvas != null) {
             // Nettoie le root en gardant seulement la minimap
             //root.getChildren().retainAll(minimapCanvas);
             // Réajoute le joueur
-            root.getChildren().add(player.entity);
-            System.out.println("Joueur ajouté au root : " + player.entity);
+            System.out.println("Joueur ajouté au root : " + player.parts.get(0).part);
+            root.getChildren().add(player.parts.get(0).part);
+
         }
 
         // Mise à jour de la minimap
@@ -92,7 +97,17 @@ public class HelloApplication extends Application {
 
         // Création de la scène
         scene = new Scene(root, ScreenWidth, ScreenHeight);
-        scene.setCamera(player.camera);
+        scene.setCamera(player.getCamera());
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case SPACE:
+                    player.divide();
+                    System.out.println("Barre espace appuyée");
+                    break;
+                default:
+                    break;
+            }
+        });
 
         // Affichage
         stage.setTitle("Agar.io");
@@ -100,11 +115,6 @@ public class HelloApplication extends Application {
 
         System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
         stage.show();
-
-        // Lancement du jeu
-        GameTimer timer = new GameTimer();
-        timer.start();
-
     }
 
     public static void startGameClient(Stage stage) {

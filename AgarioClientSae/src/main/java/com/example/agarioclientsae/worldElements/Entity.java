@@ -48,6 +48,8 @@ public abstract class Entity extends Group{
         return new double[]{entity.getCenterX(), entity.getCenterY()};
     }
 
+
+
     public int getR() {
         return r;
     }

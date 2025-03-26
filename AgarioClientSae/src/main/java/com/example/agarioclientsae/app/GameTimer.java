@@ -1,29 +1,21 @@
 package com.example.agarioclientsae.app;
 
-
-
 import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.worldElements.World;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 
-
-
 public class GameTimer extends AnimationTimer {
 
-
     private double framesPerSecond = 60;
-
     private double interval = 1000000000 / framesPerSecond;
-
     private double last = 0;
 
     private World world;
 
-    public GameTimer() {
+    public GameTimer(){
         this.world = World.getInstance();
     }
-
     @Override
     public void handle(long now) {
         if (last == 0) {
@@ -41,8 +33,9 @@ public class GameTimer extends AnimationTimer {
                     entity.Update();
                 }
             }
+            world.Update(); //calls update function every frame
+            world.getPlayer().Update(); //calls update function every frame
 
-            world.Update();
         }
     }
 }

@@ -52,7 +52,7 @@ public class ClientServer {
         System.out.println("Connecté avec ID: " + playerId);
 
         javafx.application.Platform.runLater(() -> {
-            HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
+           // HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
         });
     }
 

@@ -1,5 +1,7 @@
 package com.example.agarioclientsae.worldElements;
 
+import com.example.agarioclientsae.player.IPlayer;
+import com.example.agarioclientsae.player.PlayableGroup;
 import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.factories.FactoryEnemy;
 import com.example.agarioclientsae.factories.FactoryFood;
@@ -22,7 +24,6 @@ public class World implements Serializable{
     private static World instance = new World();
 
     private ArrayList<Entity> entities = new ArrayList<>();
-    private Player player;
     private Canvas minimapCanvas;
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +33,8 @@ public class World implements Serializable{
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
     public static int enemies = 0;
+
+    private PlayableGroup player;
 
     private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
     public int maxTimer = 2;
@@ -58,14 +61,13 @@ public class World implements Serializable{
         return this.minimapCanvas;
     }
 
-    public Player getPlayer() {
+    public PlayableGroup getPlayer() {
         return this.player;
     }
 
-    public void addPlayer(Player p){
+    public void addPlayer(PlayableGroup p){
         player = p;
-        updateMinimap(); // Mise à jour de la minimap en temps réel
-        updateLeaderboard();
+
     }
 
     public static double getMapLimitWidth() {
@@ -94,8 +96,8 @@ public class World implements Serializable{
         }
 
         // Récupérer la position et la taille du joueur
-        double playerX = player.getPosition()[0];
-        double playerY = player.getPosition()[1];
+        double playerX = player.getCenterX();
+        double playerY = player.getCenterY();
         double playerRadius = Math.sqrt(player.getWeight())*10; // Supposant que vous avez une méthode getRadius()
 
         // Calculer dynamiquement la taille de la minimap en fonction de la taille du joueur
@@ -131,8 +133,8 @@ public class World implements Serializable{
         double scaleY = dynamicMinimapSize / mapLimitHeight;
 
         // Position du joueur sur la minimap
-        double playerMiniX = player.getPosition()[0] * scaleX + dynamicMinimapSize / 2;
-        double playerMiniY = player.getPosition()[1] * scaleY + dynamicMinimapSize / 2;
+        double playerMiniX = player.getCenterX() * scaleX + dynamicMinimapSize / 2;
+        double playerMiniY = player.getCenterY() * scaleY + dynamicMinimapSize / 2;
 
         // Dessin du joueur
         gc.setFill(Color.RED);
@@ -175,7 +177,7 @@ public class World implements Serializable{
         int yOffset = 40;
         for (int i = 0; i < massiveEntities.size(); i++) {
             Entity e = massiveEntities.get(i);
-            String entityType = (e instanceof Player) ? "P" : "E"; // "P" pour joueur, "E" pour ennemi
+            String entityType = (e instanceof IPlayer) ? "P" : "E"; // "P" pour joueur, "E" pour ennemi
             gc.fillText((i + 1) + ". " + entityType + " - " + (int) e.getWeight(), 20, yOffset);
             yOffset += 20;
         }
@@ -189,8 +191,8 @@ public class World implements Serializable{
         leaderboardCanvas.setHeight(canvasHeight);
 
         // Débogage de la position du joueur
-        double playerX = player.getPosition()[0];
-        double playerY = player.getPosition()[1];
+        double playerX = player.getCenterX();
+        double playerY = player.getCenterY();
         System.out.println("Player X: " + playerX + ", Player Y: " + playerY);
 
         // Calcul des coordonnées pour afficher le leaderboard en fonction de la position du joueur
@@ -229,14 +231,15 @@ public class World implements Serializable{
 
         timer--;
 
+        updateMinimap(); // Mise à jour de la minimap en temps réel
+        updateLeaderboard();
+
         updateQuadTreeEntities();
     }
 
-
-    public static void setInstance(World world){
+    public static void setInstance(World world) {
         instance = world;
     }
-
 
     public void addEntity(Entity entity) {
         entities.add(entity);
