@@ -1,6 +1,7 @@
 package com.example.agarioclientsae.server;
 
 import com.example.agarioclientsae.app.HelloApplication;
+import com.example.agarioclientsae.app.MenuStart;
 import com.example.agarioclientsae.worldElements.World;
 
 import java.io.*;
@@ -44,11 +45,15 @@ public class ClientServer {
             }
             /*if (part.startsWith("Taille:")) {
                 System.out.println("Taille du monde: " + part.split(":")[1]);
+
             }*/
+
         }
         System.out.println("Connecté avec ID: " + playerId);
 
-        HelloApplication.main(null);
+        javafx.application.Platform.runLater(() -> {
+            HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
+        });
     }
 
     public void sendPlayerDirection() {

@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class MenuStart extends VBox {
 
-    Stage stage;
+    static Stage stage;
     TextField ipField;
     TextField  portField;
     Button connectButton;
@@ -60,6 +60,10 @@ public class MenuStart extends VBox {
 
 
         getChildren().addAll(label, localButton, exitButton, onlineButton);
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
 

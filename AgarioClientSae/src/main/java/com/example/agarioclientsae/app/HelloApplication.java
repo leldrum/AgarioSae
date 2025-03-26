@@ -29,7 +29,6 @@ public class HelloApplication extends Application {
 
 
 
-
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -79,6 +78,15 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    public static void startGameClient(Stage stage) {
+        if (gameStarted) {
+            System.out.println("Le jeu est déjà en cours.");
+            return;
+        }
+        gameStarted = true;
+        startGame(stage);
+
+    }
 
 
     public static void main(String[] args) {

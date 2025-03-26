@@ -1,14 +1,21 @@
 package com.example.agarioclientsae.app;
 
+
+
 import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.worldElements.World;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 
+
+
 public class GameTimer extends AnimationTimer {
 
+
     private double framesPerSecond = 60;
+
     private double interval = 1000000000 / framesPerSecond;
+
     private double last = 0;
 
     private World world;
