@@ -108,46 +108,7 @@ public class QuadTree {
     }
 
 
-    public static void main(String args[]) {
-        double mapLimitWidth = 700;
-        double mapLimitHeight = 700;
 
-        // Définir un espace pour le QuadTree
-        Boundary boundary = new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight);
-        QuadTree quadTree = new QuadTree(0, boundary);
-
-        // Création des entités
-        Group root = new Group();
-        Entity entity1 = new Enemy(root, 50);
-        entity1.entity.setCenterX(100);
-        entity1.entity.setCenterY(100);
-
-        Entity entity2 = new Enemy(root, 50);
-        entity2.entity.setCenterX(200);
-        entity2.entity.setCenterY(200);
-
-        Entity entity3 = new Enemy(root, 50);
-        entity3.entity.setCenterX(600);
-        entity3.entity.setCenterY(600);
-
-        Entity entity4 = new Enemy(root, 50);
-        entity4.entity.setCenterX(500);
-        entity4.entity.setCenterY(300);
-
-        Entity entity5 = new Enemy(root, 50);
-        entity5.entity.setCenterX(250);
-        entity5.entity.setCenterY(250);
-
-        // Ajout manuel des entités dans le QuadTree
-        quadTree.insert((int) entity1.entity.getCenterX(), (int) entity1.entity.getCenterY(), entity1);
-        quadTree.insert((int) entity2.entity.getCenterX(), (int) entity2.entity.getCenterY(), entity2);
-        quadTree.insert((int) entity3.entity.getCenterX(), (int) entity3.entity.getCenterY(), entity3);
-        quadTree.insert((int) entity4.entity.getCenterX(), (int) entity4.entity.getCenterY(), entity4);
-        quadTree.insert((int) entity5.entity.getCenterX(), (int) entity5.entity.getCenterY(), entity5); // Déclenche le split
-
-        // Vérification du QuadTree
-        QuadTree.dfs(quadTree);
-    }
 
 
 
