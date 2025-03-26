@@ -4,6 +4,7 @@ import com.example.agarioclientsae.worldElements.Entity;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class QuadTree {
     final int MAX_CAPACITY = 4;
@@ -13,12 +14,16 @@ public class QuadTree {
     QuadTree southWest = null;
     QuadTree southEast = null;
     Boundary boundary;
-    ArrayList<Entity> nodes;  // Change to store entities
+    HashSet<Entity> nodes;  // Change to store entities
 
     QuadTree(int level, Boundary boundary) {
         this.level = level;
-        this.nodes = new ArrayList<>();
+        this.nodes = new HashSet<>();
         this.boundary = boundary;
+    }
+
+    public void clear() {
+        nodes.clear();
     }
 
     /* Traveling the Graph using Depth First Search */
@@ -148,6 +153,7 @@ public class QuadTree {
         // Vérification du QuadTree
         QuadTree.dfs(quadTree);
     }
+
 
 
 

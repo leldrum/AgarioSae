@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.Random;
@@ -16,7 +17,6 @@ public abstract class Entity extends Group{
     private double weight;
     private double size;
 
-    private double lastX, lastY;
 
     private int r;
     private int g;
@@ -49,16 +49,6 @@ public abstract class Entity extends Group{
         //returns current position of the sprite
         return new double[]{entity.getCenterX(), entity.getCenterY()};
     }
-
-    public boolean hasMoved() {
-        return this.entity.getCenterX() != lastX || this.entity.getCenterY() != lastY;
-    }
-
-    public void updateLastPosition() {
-        this.lastX = this.entity.getCenterX();
-        this.lastY = this.entity.getCenterY();
-    }
-
 
 
     public int getR() {

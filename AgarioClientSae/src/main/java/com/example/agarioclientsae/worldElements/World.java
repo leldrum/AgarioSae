@@ -1,10 +1,10 @@
 package com.example.agarioclientsae.worldElements;
 
-import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.factories.FactoryEnemy;
 import com.example.agarioclientsae.factories.FactoryFood;
 import com.example.agarioclientsae.player.MoveableBody;
 import com.example.agarioclientsae.player.Player;
+import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.worldElements.observer.WorldObserver;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -39,9 +39,7 @@ public class World {
 
     private ArrayList<WorldObserver> observers = new ArrayList<>();
 
-    private World(){
-        this.quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
-    }
+    private World(){}
 
     static public double getMapLimitWidth(){
         return mapLimitWidth;
@@ -61,7 +59,6 @@ public class World {
         if (enemies < 5 && enemySpawnTimer <= 0){
             FactoryEnemy factoryEnemy = new FactoryEnemy();
             Enemy enemy = factoryEnemy.create(root, 50);
-            addEntity(enemy);
             enemies++;
             enemySpawnTimer = enemySpawnRate;
         }
@@ -98,9 +95,8 @@ public class World {
     }
 
     public void createFood(){
-        FactoryFood factoryFood  = new FactoryFood ();
+        FactoryFood factoryFood  = new FactoryFood();
         Food food = factoryFood.create(root, 10);
-        addEntity(food);
 
     }
 
@@ -112,7 +108,6 @@ public class World {
         queuedObjectsForDeletion.add(object);
         Entity entity = (Entity) object;
         entity.onDeletion();
-        root.getChildren().remove(entity.entity);
         enemies--;
         // Retirer de l'arbre QuadTree
 
@@ -135,31 +130,15 @@ public class World {
         }
     }
 
-
-    public void addObserver(WorldObserver observer) {
-        observers.add(observer);
-    }
-
-
-    private void updateQuadTreeEntities() {
-        //quadTree.clear(); // Nettoyer l'arbre actuel
+    void updateQuadTreeEntities(){
+        quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
 
         for (Entity entity : entities) {
-            if (entity.hasMoved()) {
-               // quadTree.remove(entity); // Retirer l'entité si elle a bougé
-            }
-
             int x = (int) entity.entity.getCenterX();
             int y = (int) entity.entity.getCenterY();
-
-            // Réinsérer l'entité après le déplacement
             quadTree.insert(x, y, entity);
-            entity.updateLastPosition(); // Mettre à jour la position de l'entité
         }
     }
-
-
-
 
     private HashMap<Player, List<Entity>> detectAbsorptions() {
         HashMap<Player, List<Entity>> absorbedEntities = new HashMap<>();
@@ -180,7 +159,7 @@ public class World {
         return absorbedEntities;
     }
 
-    // Notifier tous les observateurs
+    // 🔥 Notifier tous les observateurs
     private void notifyObservers(HashMap<Player, List<Entity>> absorbedEntities) {
         for (WorldObserver observer : observers) {
             observer.onEntitiesAbsorbed(absorbedEntities);
