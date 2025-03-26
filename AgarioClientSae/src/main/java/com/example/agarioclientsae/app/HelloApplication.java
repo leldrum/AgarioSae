@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class HelloApplication extends Application {
     public static Boolean gameStarted = false;
 
     public static Player player;
+
 
 
 
@@ -48,34 +50,61 @@ public class HelloApplication extends Application {
         return new double[]{mousePos.getX(), mousePos.getY()};
     }
 
-    static public double getScreenWidth(){
+    public static double getScreenWidth(){
         return scene.getWindow().getWidth();
     }
-    static public double getScreenHeight(){
+    public static double getScreenHeight(){
         return scene.getWindow().getHeight();
     }
 
     public static void startGame(Stage stage) {
+        System.out.println("Démarrage du jeu");
+
+        // Initialisation du monde
         world = World.getInstance();
-        root = world.getRoot();
+        root = World.getRoot();
+
+        // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
-        player = factoryPlayer.create(root, 50);
+        player = factoryPlayer.create(root, 80);
 
+        if (player == null) {
+            System.err.println("ERREUR : Le joueur n'a pas été créé");
+            return;
+        }
 
-
+        // Configuration initiale
         world.addPlayer(player);
+        //world.addEntity(player);
 
-        GameTimer timer = new GameTimer();
-        timer.start();
+        // Gestion de la minimap
+        Canvas minimapCanvas = world.getMinimapCanvas();
+        if (minimapCanvas != null) {
+            // Nettoie le root en gardant seulement la minimap
+            //root.getChildren().retainAll(minimapCanvas);
+            // Réajoute le joueur
+            root.getChildren().add(player.entity);
+            System.out.println("Joueur ajouté au root : " + player.entity);
+        }
 
+        // Mise à jour de la minimap
+        world.updateMinimap();
+
+        // Création de la scène
         scene = new Scene(root, ScreenWidth, ScreenHeight);
         scene.setCamera(player.camera);
 
+        // Affichage
         stage.setTitle("Agar.io");
         stage.setScene(scene);
 
         System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
         stage.show();
+
+        // Lancement du jeu
+        GameTimer timer = new GameTimer();
+        timer.start();
+
     }
 
     public static void startGameClient(Stage stage) {

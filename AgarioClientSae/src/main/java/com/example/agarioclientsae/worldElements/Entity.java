@@ -64,6 +64,14 @@ public abstract class Entity extends Group{
         return weight;
     }
 
+    public void setWeight(double weight) {
+        this.weight = weight;
+        size = 10 * Math.sqrt(this.weight);
+        entity.setRadius(size);
+    }
+
+
+
 
     public void Update(){
 
