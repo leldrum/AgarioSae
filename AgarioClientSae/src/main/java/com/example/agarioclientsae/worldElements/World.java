@@ -1,5 +1,7 @@
 package com.example.agarioclientsae.worldElements;
 
+import com.example.agarioclientsae.player.IPlayer;
+import com.example.agarioclientsae.player.PlayableGroup;
 import com.example.agarioclientsae.worldElements.Entity;
 import com.example.agarioclientsae.factories.FactoryEnemy;
 import com.example.agarioclientsae.factories.FactoryFood;
@@ -23,7 +25,7 @@ public class World {
 
     private ArrayList<Entity> entities = new ArrayList<>();
 
-    private Player player;
+    private PlayableGroup player;
 
     private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
 
@@ -73,11 +75,11 @@ public class World {
         return root;
     }
 
-    public Player getPlayer(){
+    public IPlayer getPlayer(){
         return this.player;
     }
 
-    public void addPlayer(Player p){
+    public void addPlayer(PlayableGroup p){
         player = p;
     }
 

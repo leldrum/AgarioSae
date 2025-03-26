@@ -39,7 +39,6 @@ public class Enemy extends MoveableBody {
 
 
         if (closestEntity != null) {
-            System.out.println("Closest entity: " + closestEntity + closestEntity.getPosition()[0] + " " + closestEntity.getPosition()[1]);
             moveToward(strategy.move(this));
         }
 

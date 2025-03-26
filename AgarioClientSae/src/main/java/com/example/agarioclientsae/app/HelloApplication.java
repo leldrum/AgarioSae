@@ -1,5 +1,7 @@
 package com.example.agarioclientsae.app;
 
+import com.example.agarioclientsae.player.IPlayer;
+import com.example.agarioclientsae.player.PlayableGroup;
 import com.example.agarioclientsae.worldElements.World;
 import com.example.agarioclientsae.factories.FactoryPlayer;
 import com.example.agarioclientsae.player.Player;
@@ -24,7 +26,7 @@ public class HelloApplication extends Application {
 
     public static Boolean gameStarted = false;
 
-    public static Player player;
+    public static PlayableGroup player;
 
 
 
@@ -61,7 +63,7 @@ public class HelloApplication extends Application {
         root = world.getRoot();
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         player = factoryPlayer.create(root, 50);
-
+        System.out.println(player.parts.get(0).part);
 
 
         world.addPlayer(player);
@@ -70,7 +72,7 @@ public class HelloApplication extends Application {
         timer.start();
 
         scene = new Scene(root, ScreenWidth, ScreenHeight);
-        scene.setCamera(player.camera);
+        scene.setCamera(player.getCamera());
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);

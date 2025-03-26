@@ -4,64 +4,70 @@ package com.example.agarioclientsae.player;
 import com.example.agarioclientsae.app.HelloApplication;
 import com.example.agarioclientsae.worldElements.World;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.util.Duration;
 
-public class Player extends MoveableBody{
+import java.util.ArrayList;
+import java.util.Random;
 
-    public CameraPlayer camera = new CameraPlayer(); // creates a camera for the player
+public class Player implements IPlayer{
 
-    public double[] cameraScale = {camera.getScaleX(), camera.getScaleY()};
+    public MoveableBody part;
 
     public Player(Group group, double initialSize){
-        super(group, initialSize);
-        //new player made and added to the group
-        entity.setCenterX(0);
-        entity.setCenterY(0);
-
-        //puts the player infront of all the food
-        entity.setViewOrder(-entity.getRadius());
+        part = new MoveableBody(group, initialSize);
+        Random rand = new Random();
+        part.entity.setCenterX(0);
+        part.entity.setCenterY(0);
+        part.setViewOrder(-part.entity.getRadius());
     }
 
     public void increaseSize(double foodValue){
-        super.increaseSize(foodValue);
+        part.entity.setRadius(part.entity.getRadius() + foodValue);
+        part.setViewOrder(-part.entity.getRadius());
         //zoom out the camera when the player gets too big
+    }
 
-        ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
+    public double getCenterX(){
+        return part.entity.getCenterX();
+    }
 
-        if (entity.getRadius() > 70){
-            cameraScale[0] += foodValue / 200;
-            cameraScale[1] += foodValue / 200;
-        }
+    public double getCenterY(){
+        return part.entity.getCenterY();
+    }
 
+    public double totalRadius(){
+        double total = 0;
+        total += part.entity.getRadius();
+        return total;
+    }
 
-        cameraZoom.setToX(cameraScale[0]);
-        cameraZoom.setToY(cameraScale[1]);
-        cameraZoom.play();
-
+    public Boolean checkCollision(){
+        return part.checkCollision();
     }
 
     public void moveToward(double[] velocity) {
-        super.moveToward(velocity);
-        velocity = normalizeDouble(velocity);
+        part.moveToward(velocity);
+
         //set the position of the camera to the same position as the player
         //minus by half of the screen resolution, keep the player in the middle of the screen
-        camera.setLayoutX((entity.getCenterX() + velocity[0]) - HelloApplication.getScreenWidth() / 2 * camera.getScaleX());
-        camera.setLayoutY((entity.getCenterY() + velocity[1])  - HelloApplication.getScreenHeight() / 2 * camera.getScaleY());
+
+    }
+
+    @Override
+    public Camera getCamera() {
+        return null;
     }
 
 
     public void gameOver(){
-        World.queueFree(entity);
+        World.queueFree(part.entity);
     }
 
-    @Override
+
     public void Update(){
         //move player towards the mouse position
-        moveToward(HelloApplication.getMousePosition());
-
-        //check if player is colliding with anything
-        checkCollision();
     }
 
 }

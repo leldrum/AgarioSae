@@ -31,6 +31,7 @@ public class GameTimer extends AnimationTimer {
                 convertedEntity.Update();
             }
             world.Update(); //calls update function every frame
+            world.getPlayer().Update(); //calls update function every frame
 
 
         }

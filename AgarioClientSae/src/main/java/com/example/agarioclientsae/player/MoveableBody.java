@@ -12,7 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 
-public abstract class MoveableBody extends Entity {
+public class MoveableBody extends Entity {
 
     public double Speed = 1.5; // self explanatory, the player's speed
 
@@ -112,27 +112,4 @@ public abstract class MoveableBody extends Entity {
         return new double[]{0,0};
     }
 
-
-    public ArrayList<Entity> divide(){
-        //if the player is big enough, divide the player into two
-        if (entity.getRadius() > 20){
-
-            int r = getR();
-            int g  = getG();
-            int b  = getB();
-
-            //create a new player with half the size of the current player
-            Entity newPlayer = new Player(HelloApplication.root, entity.getRadius() / 2);
-            newPlayer.entity.setCenterX(entity.getCenterX());
-            newPlayer.entity.setCenterY(entity.getCenterY());
-            newPlayer.entity.setFill(Color.rgb(r, g , b, 0.99));
-
-            //set the new player's position to the same as the current player
-            entity.setRadius(entity.getRadius() / 2);
-            return new ArrayList<Entity>(){{
-                add(newPlayer);
-            }};
-        }
-        return new ArrayList<Entity>(){};
-    }
 }
