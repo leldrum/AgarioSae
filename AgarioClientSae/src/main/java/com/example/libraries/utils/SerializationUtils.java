@@ -1,9 +1,9 @@
-// SerializationUtils.java
 package com.example.libraries.utils;
 
 import com.example.libraries.worldElements.World;
 
 import java.io.*;
+import java.util.Base64;
 
 public class SerializationUtils {
 
@@ -11,12 +11,13 @@ public class SerializationUtils {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(world);
-            return baos.toString("ISO-8859-1");
+            return Base64.getEncoder().encodeToString(baos.toByteArray());
         }
     }
 
     public static World deserializeWorldFromString(String worldString) throws IOException, ClassNotFoundException {
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(worldString.getBytes("ISO-8859-1"));
+        byte[] data = Base64.getDecoder().decode(worldString);
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(data);
              ObjectInputStream ois = new ObjectInputStream(bais)) {
             return (World) ois.readObject();
         }
