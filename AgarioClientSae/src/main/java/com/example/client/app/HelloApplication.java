@@ -86,8 +86,8 @@ public class HelloApplication extends Application {
             // Nettoie le root en gardant seulement la minimap
             //root.getChildren().retainAll(minimapCanvas);
             // Réajoute le joueur
-            System.out.println("Joueur ajouté au root : " + player.parts.get(0).part);
-            root.getChildren().add(player.parts.get(0).part.entity);
+            System.out.println("Joueur ajouté au root : " + player.parts.get(0).sprite);
+            root.getChildren().add(player.parts.get(0).sprite.entity);
 
         }
 
@@ -103,6 +103,10 @@ public class HelloApplication extends Application {
                     player.divide();
                     System.out.println("Barre espace appuyée");
                     break;
+                    case V :
+                        player.Union();
+                        System.out.println("V appuyée");
+                        break;
                 default:
                     break;
             }

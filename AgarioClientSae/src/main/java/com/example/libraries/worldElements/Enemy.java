@@ -14,8 +14,8 @@ public class Enemy extends MoveableBody {
 
     private World world = World.getInstance();
 
-    public Enemy(Group group, double initialSize, IStrategyAI strategie){
-        super(group, initialSize);
+    public Enemy(Group group, double initialSize, IStrategyAI strategie, int groupE){
+        super(group, initialSize, groupE);
         //new Enemy made and added to the group
         entity.setCenterX(Math.random() * (World.getInstance().getMapLimitWidth() - 100) + 50);
         entity.setCenterY(Math.random() * (World.getInstance().getMapLimitHeight() - 100) + 50);

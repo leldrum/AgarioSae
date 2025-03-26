@@ -8,6 +8,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PlayableGroup implements IPlayer{
 
@@ -17,8 +19,11 @@ public class PlayableGroup implements IPlayer{
 
     public double[] cameraScale = {camera.getScaleX(), camera.getScaleY()};
 
-    public PlayableGroup(Group group, double initialSize){
-        parts.add(new Player(group, initialSize));
+    private boolean canUpdate;
+
+    public PlayableGroup(Group group, double initialSize, int groupP){
+        parts.add(new Player(group, initialSize, groupP));
+        canUpdate = true;
     }
     @Override
     public void increaseSize(double foodValue) {
@@ -26,18 +31,18 @@ public class PlayableGroup implements IPlayer{
         for(Player part : parts){
             part.increaseSize(foodValue);
             if(i % 2 == 0) {
-                part.part.entity.setCenterX(part.part.entity.getCenterX() - foodValue / 2);
+                part.sprite.entity.setCenterX(part.sprite.entity.getCenterX() - foodValue / 2);
             }
             else{
-                part.part.entity.setCenterX(part.part.entity.getCenterX() + foodValue / 2);
+                part.sprite.entity.setCenterX(part.sprite.entity.getCenterX() + foodValue / 2);
             }
             i++;
         }
 
         ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
         if (totalRadius() > 70){
-            cameraScale[0] += foodValue / 100;
-            cameraScale[1] += foodValue / 100;
+            cameraScale[0] += foodValue / 150;
+            cameraScale[1] += foodValue / 150;
         }
 
 
@@ -91,7 +96,7 @@ public class PlayableGroup implements IPlayer{
     }
 
     public double getSpeed(){
-        return parts.get(0).part.Speed;
+        return parts.get(0).sprite.Speed;
     }
 
     @Override
@@ -133,7 +138,7 @@ public class PlayableGroup implements IPlayer{
 
         //used for the smooth movement depending on how far away the mouse is.
         //further away from the circle, the faster the movement is etc.
-        double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / parts.get(0).part.getWeight();
+        double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / parts.get(0).sprite.getWeight();
 
         //limit speed of smoothing
         if (magnitudeSmoothing > 4){
@@ -151,7 +156,7 @@ public class PlayableGroup implements IPlayer{
         if (getCenterX() + velocity[0] < World.getInstance().getMapLimitWidth()){
             if (getCenterX() + velocity[0] > -World.getInstance().getMapLimitWidth()){
                 for(Player part : parts){
-                    part.part.entity.setCenterX(part.getCenterX() + velocity[0] );
+                    part.sprite.entity.setCenterX(part.getCenterX() + velocity[0] );
                 }
 
             }
@@ -159,7 +164,7 @@ public class PlayableGroup implements IPlayer{
         if (getCenterY() + velocity[1] < World.getInstance().getMapLimitHeight()){
             if (getCenterY() + velocity[1] > -World.getInstance().getMapLimitHeight()){
                 for(Player part : parts){
-                    part.part.entity.setCenterY(part.getCenterY() + velocity[1] );
+                    part.sprite.entity.setCenterY(part.getCenterY() + velocity[1] );
                 }
             }
         }
@@ -170,7 +175,7 @@ public class PlayableGroup implements IPlayer{
     public double getWeight(){
         double total = 0;
         for(Player part : parts){
-            total += part.part.getWeight();
+            total += part.sprite.getWeight();
         }
         return total;
     }
@@ -187,40 +192,50 @@ public class PlayableGroup implements IPlayer{
     }
 
     public void divide() {
-        if (parts.size() == 1){
-            Player newPlayer = new Player(HelloApplication.root, parts.get(0).part.getWeight() / 2);
-            newPlayer.part.entity.setCenterX(parts.get(0).part.entity.getCenterX() + parts.get(0).part.entity.getRadius()*2 + 1);
-            newPlayer.part.entity.setCenterY(parts.get(0).part.entity.getCenterY());
-            parts.add(newPlayer);
-            parts.get(0).part.setWeight(parts.get(0).part.getWeight() / 2);
-        }
-        /*if (parts.get(0).part.getWeight() > 10){
-            int nbParts = parts.size();
-            for (int i = 0; i < nbParts; i++) {
-                Player originalPlayer = this.parts.get(i);
-                Player newPlayer = new Player(HelloApplication.root, originalPlayer.part.getWeight() /2);
-
-                this.parts.get(i).part.setWeight(originalPlayer.part.getWeight() / 2);
-                this.parts.get(i).part.entity.setRadius(originalPlayer.part.entity.getRadius() / 2);
-
-                newPlayer.part.entity.setRadius(originalPlayer.part.entity.getRadius());
-                if((nbParts / 2) % 2 == 0) {
-                    this.parts.get(i).part.entity.setCenterX(originalPlayer.part.entity.getCenterX() - totalRadius() + 1);
-                    newPlayer.part.entity.setCenterX(originalPlayer.part.entity.getCenterX() + totalRadius() + 1);
-                    newPlayer.part.entity.setCenterY(originalPlayer.part.entity.getCenterY());
-                }
-                else{
-                    newPlayer.part.entity.setCenterX(originalPlayer.part.entity.getCenterX());
-                    newPlayer.part.entity.setCenterY(originalPlayer.part.entity.getCenterY() + totalRadius() + 1);
-                }
-
-                this.parts.add(newPlayer);
-
-                this.parts.get(i).part.setViewOrder(-this.parts.get(i).part.entity.getRadius());
-
-                newPlayer.part.setViewOrder(-newPlayer.part.entity.getRadius());
+        ArrayList<Player> newParts = new ArrayList<>();
+        for (Player part : parts) {
+            if (part.sprite.getWeight() < 50) {
+                return;
             }
-        }*/
+        }
+        Iterator<Player> iterator = parts.iterator();
+        while (iterator.hasNext()) {
+            Player part = iterator.next();
+            Player newPlayer = part.divide();
+            if (newPlayer != null) {
+                newParts.add(newPlayer);
+                part.sprite.setWeight(parts.get(0).sprite.getWeight() / 2);
+            }
+        }
+        parts.addAll(newParts);
+        canUpdate = false;
+        System.out.println(canUpdate);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                canUpdate = true;
+            }
+        }, 10000); // 10 secondes
+    }
+
+    public void Union(){
+        if(canUpdate) {
+            if(parts.size() > 1) {
+                for (Player part : parts) {
+                    part.sprite.setWeight(parts.get(0).sprite.getWeight() * 2);
+                }
+                Iterator<Player> iterator = parts.iterator();
+                int i = 1;
+                while (iterator.hasNext()) {
+                    Player part = iterator.next();
+                    if (parts.size() / 2 < i) {
+                        iterator.remove();
+                        part.sprite.entity.setVisible(false);
+                    }
+                    i++;
+                }
+            }
+        }
     }
 
     public void gameOver(){
