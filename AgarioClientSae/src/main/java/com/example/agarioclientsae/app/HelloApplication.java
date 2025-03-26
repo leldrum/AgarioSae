@@ -6,12 +6,8 @@ import com.example.agarioclientsae.player.Player;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,20 +17,30 @@ public class HelloApplication extends Application {
     private static double ScreenWidth = 1280;
     private static double ScreenHeight = 720;
 
+    private static Scene scene;
+
     public static World world;
+
     public static Group root;
-    public static Scene scene;
+
     public static Boolean gameStarted = false;
+
     public static Player player;
+
+
+
+
 
     @Override
     public void start(Stage stage) throws IOException {
-        Pane pane = new Pane();
+
         MenuStart menu = new MenuStart(stage);
         scene = new Scene(menu, ScreenWidth, ScreenHeight);
 
+
         stage.setTitle("Agar.io");
         stage.setScene(scene);
+
         stage.show();
     }
 
@@ -44,13 +50,11 @@ public class HelloApplication extends Application {
         return new double[]{mousePos.getX(), mousePos.getY()};
     }
 
-
-    public static double getScreenWidth() {
-        return scene.getWidth(); // Changed from getWindow().getWidth()
+    static public double getScreenWidth(){
+        return scene.getWindow().getWidth();
     }
-
-    public static double getScreenHeight() {
-        return scene.getHeight(); // Changed from getWindow().getHeight()
+    static public double getScreenHeight(){
+        return scene.getWindow().getHeight();
     }
 
     public static void startGame(Stage stage) {
@@ -77,12 +81,11 @@ public class HelloApplication extends Application {
         Canvas minimapCanvas = world.getMinimapCanvas();
         if (minimapCanvas != null) {
             // Nettoie le root en gardant seulement la minimap
-            root.getChildren().retainAll(minimapCanvas);
+            //root.getChildren().retainAll(minimapCanvas);
             // Réajoute le joueur
             root.getChildren().add(player.entity);
             System.out.println("Joueur ajouté au root : " + player.entity);
         }
-
 
         // Mise à jour de la minimap
         world.updateMinimap();
@@ -101,6 +104,8 @@ public class HelloApplication extends Application {
         timer.start();
 
     }
+
+
 
     public static void main(String[] args) {
         launch();

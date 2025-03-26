@@ -22,22 +22,27 @@ public abstract class MoveableBody extends Entity {
         this.group = group;
     }
 
-    public boolean checkCollision() {
-        for (Node node : World.getRoot().getChildren()) {
-            // Vérification du type avant le cast
-            if (node instanceof Entity && node != this.entity) {
-                Entity collider = (Entity) node;
-                Shape intersect = Shape.intersect(this.entity, collider.entity);
+    public boolean checkCollision(){
 
-                if (intersect.getBoundsInLocal().getWidth() != -1) {
-                    double foodValue = 0.5;
+        for(Node entity : HelloApplication.root.getChildren()){
+            if (entity instanceof Entity && entity != this.entity) {
+                Entity collider = (Entity) entity;
 
-                    if (isSmaller(collider.entity, this.entity)) {
-                        World.queueFree(collider);
-                        foodValue += collider.entity.getRadius() / 20;
-                        increaseSize(foodValue);
+                if (entity != this) {
+
+                    Shape intersect = Shape.intersect(this.entity, collider.entity);
+
+                    if (intersect.getBoundsInLocal().getWidth() != -1) {
+
+                        double foodValue = 0.5;
+
+                        if (isSmaller(collider.entity, this.entity)) {
+                            World.queueFree(collider);
+                            foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
+                        }
+                        return true;
                     }
-                    return true;
                 }
             }
         }

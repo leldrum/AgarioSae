@@ -69,8 +69,8 @@ public class World {
     public void createMinimap() {
         if (minimapCanvas == null) {
             minimapCanvas = new Canvas(MINIMAP_SIZE, MINIMAP_SIZE);
-            minimapCanvas.setTranslateX(1280 - MINIMAP_SIZE - 20);
-            minimapCanvas.setTranslateY(720 - MINIMAP_SIZE - 20);
+            minimapCanvas.setTranslateX(mapLimitWidth - MINIMAP_SIZE - 20);
+            minimapCanvas.setTranslateY(mapLimitHeight - MINIMAP_SIZE - 20);
             minimapCanvas.setMouseTransparent(true); // Important pour les clics
         }
     }
