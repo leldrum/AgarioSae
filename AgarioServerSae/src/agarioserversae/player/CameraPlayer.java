@@ -1,4 +1,4 @@
-package player;
+package agarioserversae.player;
 
 import javafx.scene.ParallelCamera;
 

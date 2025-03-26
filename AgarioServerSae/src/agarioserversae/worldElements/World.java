@@ -1,10 +1,9 @@
-package worldElements;
+package agarioserversae.worldElements;
 
-import com.example.agarioclientsae.worldElements.Entity;
-import com.example.agarioclientsae.factories.FactoryEnemy;
-import com.example.agarioclientsae.factories.FactoryFood;
-import com.example.agarioclientsae.player.MoveableBody;
-import com.example.agarioclientsae.player.Player;
+import agarioserversae.factories.FactoryEnemy;
+import agarioserversae.factories.FactoryFood;
+import agarioserversae.player.MoveableBody;
+import agarioserversae.player.Player;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 public class World implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static double mapLimitWidth = 2000;
-    private static double mapLimitHeight = 2000;
+    private static double mapLimitWidth = 100;
+    private static double mapLimitHeight = 100;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;

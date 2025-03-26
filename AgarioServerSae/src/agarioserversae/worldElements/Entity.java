@@ -1,11 +1,10 @@
-package worldElements;
+package agarioserversae.worldElements;
 
 import java.util.Random;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 public abstract class Entity extends Group{
 

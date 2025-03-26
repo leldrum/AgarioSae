@@ -1,7 +1,7 @@
-package factories;
+package agarioserversae.factories;
 
-import com.example.agarioclientsae.worldElements.Food;
-import com.example.agarioclientsae.worldElements.World;
+import agarioserversae.worldElements.Food;
+import agarioserversae.worldElements.World;
 import javafx.scene.Group;
 
 public class FactoryFood implements Factory<Food> {

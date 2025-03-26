@@ -1,6 +1,6 @@
-package server;
+package agarioserversae.server;
 
-import worldElements.World;
+import agarioserversae.worldElements.World;
 
 import java.io.*;
 

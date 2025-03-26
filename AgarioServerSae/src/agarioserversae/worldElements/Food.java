@@ -1,8 +1,6 @@
+package agarioserversae.worldElements;
 
-package worldElements;
 
-
-import com.example.agarioclientsae.worldElements.Entity;
 import javafx.scene.Group;
 
 

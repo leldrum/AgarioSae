@@ -1,8 +1,6 @@
-package factories;
+package agarioserversae.factories;
 
 import javafx.scene.Group;
-
-import javax.swing.*;
 
 public interface Factory<Entity> {
 

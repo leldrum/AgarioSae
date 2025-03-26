@@ -1,6 +1,6 @@
-package AI;
+package agarioserversae.AI;
 
-import com.example.agarioclientsae.worldElements.Enemy;
+import agarioserversae.worldElements.Enemy;
 
 public interface IStrategyAI {
     double[] move(Enemy enemy);

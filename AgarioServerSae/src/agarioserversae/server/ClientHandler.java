@@ -1,9 +1,12 @@
-package server;
+package agarioserversae.server;
+
+import agarioserversae.worldElements.World;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -24,23 +27,14 @@ public class ClientHandler implements Runnable {
 
             server.addClient(out);
 
-            String message;
-
-            while ((message = in.readLine()) != null) {
-                server.broadcastMessage(message);
-            }
+            server.sendMessage("WORLD:"+SerializationUtils.serializeWorldToString(World.getInstance()), out);
+            System.out.println("Taille : " + World.getInstance().getMapLimitHeight() + ";" + World.getInstance().getMapLimitWidth());
+        }  catch (SocketException e) {
+            System.err.println("Connection reset by client: " + socket);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                server.removeClient(out);
-                in.close();
-                out.close();
-                socket.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
+
     }
 
 }

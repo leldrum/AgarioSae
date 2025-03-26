@@ -1,11 +1,11 @@
-package factories;
+package agarioserversae.factories;
 
-import com.example.agarioclientsae.AI.EatPastilleAI;
-import com.example.agarioclientsae.AI.EatPlayerAI;
-import com.example.agarioclientsae.AI.RandomMouvementAI;
-import com.example.agarioclientsae.worldElements.Enemy;
-import com.example.agarioclientsae.worldElements.World;
-import com.example.agarioclientsae.AI.IStrategyAI;
+import agarioserversae.AI.EatPastilleAI;
+import agarioserversae.AI.EatPlayerAI;
+import agarioserversae.AI.RandomMouvementAI;
+import agarioserversae.worldElements.Enemy;
+import agarioserversae.worldElements.World;
+import agarioserversae.AI.IStrategyAI;
 import javafx.scene.Group;
 
 import java.util.Random;

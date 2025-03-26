@@ -1,10 +1,7 @@
-package worldElements;
+package agarioserversae.worldElements;
 
-import com.example.agarioclientsae.AI.EatPastilleAI;
-import com.example.agarioclientsae.AI.EatPlayerAI;
-import com.example.agarioclientsae.AI.IStrategyAI;
-import com.example.agarioclientsae.AI.RandomMouvementAI;
-import com.example.agarioclientsae.player.MoveableBody;
+import agarioserversae.AI.IStrategyAI;
+import agarioserversae.player.MoveableBody;
 import javafx.scene.Group;
 
 public class Enemy extends MoveableBody {
@@ -47,7 +44,7 @@ public class Enemy extends MoveableBody {
             moveToward(strategy.move(this));
         }
 
-        // Check if player is colliding with anything
+        // Check if agarioserversae.player is colliding with anything
         if(checkCollision()){
             closestEntityDistance = Double.MAX_VALUE;
         }

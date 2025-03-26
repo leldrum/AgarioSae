@@ -1,8 +1,8 @@
-package AI;
+package agarioserversae.AI;
 
-import com.example.agarioclientsae.worldElements.Enemy;
-import com.example.agarioclientsae.worldElements.World;
-import com.example.agarioclientsae.worldElements.Food;
+import agarioserversae.worldElements.Enemy;
+import agarioserversae.worldElements.World;
+import agarioserversae.worldElements.Food;
 import javafx.scene.Node;
 
 public class EatPastilleAI implements IStrategyAI {

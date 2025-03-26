@@ -1,7 +1,7 @@
-package factories;
+package agarioserversae.factories;
 
-import com.example.agarioclientsae.worldElements.World;
-import com.example.agarioclientsae.player.Player;
+import agarioserversae.worldElements.World;
+import agarioserversae.player.Player;
 import javafx.scene.Group;
 
 public class FactoryPlayer implements Factory<Player> {

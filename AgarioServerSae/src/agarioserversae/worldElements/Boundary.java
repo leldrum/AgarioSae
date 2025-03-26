@@ -1,4 +1,4 @@
-package worldElements;
+package agarioserversae.worldElements;
 
 public class Boundary {
     int xMin, yMin, xMax, yMax;

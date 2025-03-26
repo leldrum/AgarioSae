@@ -1,7 +1,7 @@
-package AI;
+package agarioserversae.AI;
 
-import com.example.agarioclientsae.worldElements.Enemy;
-import com.example.agarioclientsae.worldElements.World;
+import agarioserversae.worldElements.Enemy;
+import agarioserversae.worldElements.World;
 import java.util.Random;
 
 

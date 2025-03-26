@@ -1,10 +1,10 @@
-package player;
+package agarioserversae.player;
 
 import java.util.ArrayList;
 
-import com.example.agarioclientsae.worldElements.Entity;
-import com.example.agarioclientsae.app.HelloApplication;
-import com.example.agarioclientsae.worldElements.World;
+import agarioserversae.app.HelloApplication;
+import agarioserversae.worldElements.Entity;
+import agarioserversae.worldElements.World;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
 
 public abstract class MoveableBody extends Entity {
 
-    public double Speed = 1.5; // self explanatory, the player's speed
+    public double Speed = 1.5; // self explanatory, the agarioserversae.player's speed
 
     protected MoveableBody(Group group, double initialSize){
         super(group, initialSize);
@@ -54,8 +54,8 @@ public abstract class MoveableBody extends Entity {
 
 
     public void increaseSize(double foodValue){
-        //called whenever the player eats food
-        //once the player gets big enough, we want the camera to start zooming out
+        //called whenever the agarioserversae.player eats food
+        //once the agarioserversae.player gets big enough, we want the camera to start zooming out
         entity.setRadius(entity.getRadius() + foodValue);
         setViewOrder(-entity.getRadius());
 
@@ -63,7 +63,7 @@ public abstract class MoveableBody extends Entity {
 
     public void moveToward(double[] velocity) {
 
-        //initalize velocity, which is the mouse position - player position
+        //initalize velocity, which is the mouse position - agarioserversae.player position
         velocity = new double[]{velocity[0] - entity.getCenterX(), velocity[1] - entity.getCenterY()};
 
         //used for the smooth movement depending on how far away the mouse is.
@@ -74,7 +74,7 @@ public abstract class MoveableBody extends Entity {
         if (magnitudeSmoothing > 4){
             magnitudeSmoothing = 4 * Speed;
         }
-        //normalize the position the player is going towards to get the direction
+        //normalize the position the agarioserversae.player is going towards to get the direction
         velocity = normalizeDouble(velocity);
 
         //multiply direction by Speed to get the final velocity value, multiply smoothing for smoother movement
@@ -82,7 +82,7 @@ public abstract class MoveableBody extends Entity {
         velocity[1] *= Speed * magnitudeSmoothing;
 
         //change Sprite position based on velocity
-        //also check if the player is at the world limit, if it is then it doesnt move
+        //also check if the agarioserversae.player is at the world limit, if it is then it doesnt move
         if (entity.getCenterX() + velocity[0] < World.getMapLimitWidth()){
             if (entity.getCenterX() + velocity[0] > -World.getMapLimitWidth()){
                 entity.setCenterX(entity.getCenterX() + velocity[0] );
@@ -114,20 +114,20 @@ public abstract class MoveableBody extends Entity {
 
 
     public ArrayList<Entity> divide(){
-        //if the player is big enough, divide the player into two
+        //if the agarioserversae.player is big enough, divide the agarioserversae.player into two
         if (entity.getRadius() > 20){
 
             int r = getR();
             int g  = getG();
             int b  = getB();
 
-            //create a new player with half the size of the current player
+            //create a new agarioserversae.player with half the size of the current agarioserversae.player
             Entity newPlayer = new Player(HelloApplication.root, entity.getRadius() / 2);
             newPlayer.entity.setCenterX(entity.getCenterX());
             newPlayer.entity.setCenterY(entity.getCenterY());
             newPlayer.entity.setFill(Color.rgb(r, g , b, 0.99));
 
-            //set the new player's position to the same as the current player
+            //set the new agarioserversae.player's position to the same as the current agarioserversae.player
             entity.setRadius(entity.getRadius() / 2);
             return new ArrayList<Entity>(){{
                 add(newPlayer);

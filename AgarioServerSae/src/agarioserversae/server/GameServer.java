@@ -1,4 +1,4 @@
-package server;
+package agarioserversae.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,8 @@ public class GameServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Nouvelle connexion : " + clientSocket);
+                System.out.println("Nouvelle connexion : " + clientSocket +
+                        "connecté à : " + System.currentTimeMillis());
 
                 ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                 new Thread(clientHandler).start();
@@ -44,6 +45,10 @@ public class GameServer {
         for (PrintWriter writer : clientWriters) {
             writer.println(message);
         }
+    }
+
+    public synchronized void sendMessage(String message, PrintWriter client){
+        client.println(message);
     }
 
     public static void main(String[] args) {
