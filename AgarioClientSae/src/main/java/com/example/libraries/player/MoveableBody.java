@@ -14,17 +14,18 @@ public class MoveableBody extends Entity {
     public double Speed = 1.5; // self explanatory, the player's speed
     protected Group group;
 
-    protected MoveableBody(Group group, double initialSize){
-        super(group, initialSize);
+    protected MoveableBody(Group group, double initialSize, int groupP){
+        super(group, initialSize, groupP);
         this.group = group;
     }
 
     public double checkCollision(){
         for(Node entity : HelloApplication.root.getChildren()) {
             if (entity instanceof Entity && entity != this.entity) {
+
                 Entity collider = (Entity) entity;
 
-                if (entity != this) {
+                if (entity != this && collider.groupP != this.groupP) {
 
                     Shape intersect = Shape.intersect(this.entity, collider.entity);
 

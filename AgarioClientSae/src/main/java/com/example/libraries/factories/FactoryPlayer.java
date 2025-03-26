@@ -6,9 +6,11 @@ import javafx.scene.Group;
 
 public class FactoryPlayer implements Factory<Player> {
 
+    static int groupP = 0;
     @Override
     public PlayableGroup create(Group group, double weight) {
-        PlayableGroup p = new PlayableGroup(group, weight);
+        PlayableGroup p = new PlayableGroup(group, weight, groupP);
+        groupP++;
         return p;
     }
 

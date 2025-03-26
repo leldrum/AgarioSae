@@ -13,14 +13,18 @@ public abstract class Entity extends Group{
     private double weight;
     private double size;
 
+    public int groupP;
+
     private int r;
     private int g;
     private int b;
     private Label label;
 
-    public Entity(Group group, double weight) {
+    public Entity(Group group, double weight, int groupP) {
         super();
         this.weight = weight;
+        this.groupP = groupP;
+
 
         Random rand = new Random();
         r = rand.nextInt(255);
