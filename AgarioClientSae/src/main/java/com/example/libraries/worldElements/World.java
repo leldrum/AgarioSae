@@ -37,9 +37,9 @@ public class World implements Serializable {
     private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
     public int maxTimer = 2;
     public int timer = maxTimer;
-    private transient QuadTree quadTree;
-    private transient Group root;
-    private transient Canvas leaderboardCanvas;
+    private QuadTree quadTree;
+    private Group root;
+    private Canvas leaderboardCanvas;
 
     private World() {
         this.root = new Group();

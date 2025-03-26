@@ -30,6 +30,7 @@ public class ClientHandler implements Runnable {
             server.addClient(out);
 
             server.sendMessage("WORLD:"+ SerializationUtils.serializeWorldToString(World.getInstance()), out);
+            System.out.println("World : " + SerializationUtils.serializeWorldToString(World.getInstance()));
             System.out.println("Taille : " + World.getInstance().getMapLimitHeight() + ";" + World.getInstance().getMapLimitWidth());
             System.out.println("Group : " + World.getInstance().getRoot());
         }  catch (SocketException e) {
