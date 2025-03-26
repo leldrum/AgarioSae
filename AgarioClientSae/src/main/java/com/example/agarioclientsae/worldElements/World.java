@@ -9,8 +9,11 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class World {
     private static final double mapLimitWidth = 2000;
@@ -31,10 +34,12 @@ public class World {
     public int timer = maxTimer;
     private QuadTree quadTree;
     private Group root;
+    private Canvas leaderboardCanvas;
 
     private World() {
         this.root = new Group();
         createMinimap();
+        createLeaderboard();
     }
 
     public static World getInstance() {
@@ -109,6 +114,78 @@ public class World {
         }
     }
 
+    public void createLeaderboard() {
+        if (leaderboardCanvas == null) {
+            leaderboardCanvas = new Canvas(200, 150);
+            leaderboardCanvas.setMouseTransparent(true); // Pour ne pas interférer avec les autres éléments
+            root.getChildren().add(leaderboardCanvas);  // Ajouter le canvas une seule fois au groupe
+        }
+    }
+
+    public void updateLeaderboard() {
+
+        GraphicsContext gc = leaderboardCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, leaderboardCanvas.getWidth(), leaderboardCanvas.getHeight());
+
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, leaderboardCanvas.getWidth(), leaderboardCanvas.getHeight()); // Remplir le fond en noir
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font(16));
+        gc.fillText("Top 5 Masses", 50, 20);
+
+        // Liste des entités triées par masse
+        List<Entity> massiveEntities = entities.stream()
+                .filter(e -> !(e instanceof Food)) // Exclure les Food
+                .sorted(Comparator.comparingDouble(Entity::getWeight).reversed()) // Tri décroissant par masse
+                .limit(5)
+                .toList();
+
+        // Affichage des entités
+        int yOffset = 40;
+        for (int i = 0; i < massiveEntities.size(); i++) {
+            Entity e = massiveEntities.get(i);
+            String entityType = (e instanceof Player) ? "P" : "E"; // "P" pour joueur, "E" pour ennemi
+            gc.fillText((i + 1) + ". " + entityType + " - " + (int) e.getWeight(), 20, yOffset);
+            yOffset += 20;
+        }
+
+        // Calcul de la taille du Canvas en fonction de la masse du joueur
+        double playerMass = player.getWeight(); // Masse du joueur
+        double canvasWidth = 200 + playerMass / 2; // Par exemple, augmenter la largeur en fonction de la masse
+        double canvasHeight = 150 + playerMass / 2; // De même pour la hauteur
+
+        leaderboardCanvas.setWidth(canvasWidth);
+        leaderboardCanvas.setHeight(canvasHeight);
+
+        // Débogage de la position du joueur
+        double playerX = player.getPosition()[0];
+        double playerY = player.getPosition()[1];
+        System.out.println("Player X: " + playerX + ", Player Y: " + playerY);
+
+        // Calcul des coordonnées pour afficher le leaderboard en fonction de la position du joueur
+        double canvasOffset = 400 + playerMass; // Espacement pour placer le leaderboard à droite du joueur
+        double leaderboardX = playerX + canvasOffset;
+        double leaderboardY = playerY - canvasOffset;
+
+        // Affichage des coordonnées du leaderboard
+        System.out.println("Leaderboard X: " + leaderboardX);
+        System.out.println("Leaderboard Y: " + leaderboardY);
+
+        // Mise à jour de la position du canvas
+        leaderboardCanvas.setTranslateX(leaderboardX);
+        leaderboardCanvas.setTranslateY(leaderboardY);
+    }
+
+
+
+
+
+
+
+
+
+
     // Mise à jour du monde (appelée à chaque frame)
     public void Update() {
         if (timer <= 0) {
@@ -130,6 +207,7 @@ public class World {
 
         updateQuadTreeEntities();
         updateMinimap(); // Mise à jour de la minimap en temps réel
+        updateLeaderboard();
     }
 
     public void addEntity(Entity entity) {

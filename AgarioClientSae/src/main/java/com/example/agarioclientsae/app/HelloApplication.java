@@ -66,7 +66,7 @@ public class HelloApplication extends Application {
 
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
-        player = factoryPlayer.create(root, 50);
+        player = factoryPlayer.create(root, 80);
 
         if (player == null) {
             System.err.println("ERREUR : Le joueur n'a pas été créé");
@@ -75,7 +75,7 @@ public class HelloApplication extends Application {
 
         // Configuration initiale
         world.addPlayer(player);
-        world.addEntity(player);
+        //world.addEntity(player);
 
         // Gestion de la minimap
         Canvas minimapCanvas = world.getMinimapCanvas();
