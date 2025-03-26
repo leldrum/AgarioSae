@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class World implements Serializable {
-    private static final int MINIMAP_SIZE = 150;
+    private final int MINIMAP_SIZE = 150;
     private static World instance = new World();
 
     private ArrayList<Entity> entities = new ArrayList<>();
@@ -30,7 +30,7 @@ public class World implements Serializable {
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
-    public static int enemies = 0;
+    public int enemies = 0;
 
     private PlayableGroup player;
 
@@ -51,7 +51,7 @@ public class World implements Serializable {
         return instance;
     }
 
-    public static Group getRoot() {
+    public Group getRoot() {
         return getInstance().root;
     }
 
@@ -230,7 +230,7 @@ public class World implements Serializable {
         instance = new World();
     }
 
-    public static void queueFree(Object object) {
+    public void queueFree(Object object) {
         queuedObjectsForDeletion.add(object);
         Entity entity = (Entity) object;
         entity.onDeletion();

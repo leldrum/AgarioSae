@@ -33,7 +33,7 @@ public class MoveableBody extends Entity {
                         double foodValue = 0.5;
 
                         if (isSmaller(collider.entity, this.entity)) {
-                            World.queueFree(collider);
+                            World.getInstance().queueFree(collider);
                             foodValue += collider.entity.getRadius() / 20;
                             return foodValue;
                         }

@@ -31,6 +31,7 @@ public class ClientHandler implements Runnable {
 
             server.sendMessage("WORLD:"+ SerializationUtils.serializeWorldToString(World.getInstance()), out);
             System.out.println("Taille : " + World.getInstance().getMapLimitHeight() + ";" + World.getInstance().getMapLimitWidth());
+            System.out.println("Group : " + World.getInstance().getRoot());
         }  catch (SocketException e) {
             System.err.println("Connection reset by client: " + socket);
         } catch (Exception e) {
