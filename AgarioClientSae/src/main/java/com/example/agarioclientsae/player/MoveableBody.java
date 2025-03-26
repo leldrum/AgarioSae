@@ -58,9 +58,8 @@ public abstract class MoveableBody extends Entity {
 
 
     public void increaseSize(double foodValue){
-        //called whenever the player eats food
-        //once the player gets big enough, we want the camera to start zooming out
-        entity.setRadius(entity.getRadius() + foodValue);
+
+        setWeight(getWeight() + foodValue);
         setViewOrder(-entity.getRadius());
 
     }
