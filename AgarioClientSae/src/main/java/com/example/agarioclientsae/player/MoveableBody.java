@@ -26,7 +26,7 @@ public class MoveableBody extends Entity {
         for(Node entity : HelloApplication.root.getChildren()){
             Entity collider = (Entity) entity;
 
-            if (entity != this && this.getId_() != collider.getId_()){
+            if (entity != this){
 
                 Shape intersect = Shape.intersect(this.entity, collider.entity);
 
@@ -39,6 +39,7 @@ public class MoveableBody extends Entity {
                         foodValue += collider.entity.getRadius() / 20;
                         return foodValue;
                     }
+                    System.out.println("Dead");
                     return 1;
                 }
             }

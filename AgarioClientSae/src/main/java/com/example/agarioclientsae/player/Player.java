@@ -47,7 +47,7 @@ public class Player implements IPlayer{
 
     public double checkCollision(){
         double result = part.checkCollision();
-        if(result != 0 && result != 1){
+        if(result != 0){
             increaseSize(result);
             return result;
         }

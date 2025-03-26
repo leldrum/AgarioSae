@@ -28,6 +28,8 @@ public class HelloApplication extends Application {
 
     public static PlayableGroup player;
 
+    public static GameTimer timer;
+
 
 
 
@@ -63,12 +65,11 @@ public class HelloApplication extends Application {
         root = world.getRoot();
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         player = factoryPlayer.create(root, 50);
-        System.out.println(player.parts.get(0).part);
 
 
         world.addPlayer(player);
 
-        GameTimer timer = new GameTimer();
+        timer = new GameTimer();
         timer.start();
 
         scene = new Scene(root, ScreenWidth, ScreenHeight);

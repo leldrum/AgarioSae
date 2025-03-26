@@ -12,10 +12,8 @@ public class FactoryPlayer implements Factory<Player> {
 
     @Override
     public PlayableGroup create(Group group, double weight) {
-        System.out.println("avant"+group.getChildren());
         PlayableGroup p = new PlayableGroup(group, weight, id);
         id++;
-        System.out.println("apres" + group.getChildren());
         return p;
     }
 

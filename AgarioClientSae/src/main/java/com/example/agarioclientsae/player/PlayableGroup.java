@@ -1,5 +1,6 @@
 package com.example.agarioclientsae.player;
 
+import com.example.agarioclientsae.app.GameTimer;
 import com.example.agarioclientsae.app.HelloApplication;
 import com.example.agarioclientsae.app.MenuStart;
 import com.example.agarioclientsae.worldElements.World;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PlayableGroup implements IPlayer{
 
@@ -27,17 +29,16 @@ public class PlayableGroup implements IPlayer{
         for(Player part : parts){
             part.increaseSize(foodValue);
             if(i % 2 == 0) {
-                part.part.entity.setCenterX(part.part.entity.getCenterX() - foodValue);
+                part.part.entity.setCenterX(part.part.entity.getCenterX() - foodValue / 2);
             }
             else{
-                part.part.entity.setCenterX(part.part.entity.getCenterX() + foodValue);
+                part.part.entity.setCenterX(part.part.entity.getCenterX() + foodValue / 2);
             }
             i++;
         }
 
         ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
         if (totalRadius() > 70){
-            System.out.println("zooming out");
             cameraScale[0] += foodValue / 100;
             cameraScale[1] += foodValue / 100;
         }
@@ -52,13 +53,31 @@ public class PlayableGroup implements IPlayer{
 
     @Override
     public double checkCollision() {
-        for(Player part : parts){
-            double result = part.checkCollision();
-            if(result != 0){
-                increaseSize(result);
-            }
-            if (result == 1){
-                parts.remove(part);
+        if (parts.size() >= 1) {
+            Iterator<Player> iterator = parts.iterator();
+            while (iterator.hasNext()) {
+                Player part = iterator.next();
+                double result = part.checkCollision();
+                if (result != 0 && result != 1) {
+                    increaseSize(result);
+                }
+                if (result == 1) {
+                    ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
+
+                    cameraScale[0] -= part.totalRadius() / 600;
+                    cameraScale[1] -= part.totalRadius() / 600;
+
+                    cameraZoom.setToX(cameraScale[0]);
+                    cameraZoom.setToY(cameraScale[1]);
+                    cameraZoom.play();
+                    iterator.remove();
+
+                    if (parts.size() < 1) {
+                        System.out.println("gra");
+                        HelloApplication.timer.stop();
+                        gameOver();
+                    }
+                }
             }
         }
         return 0;
@@ -72,9 +91,6 @@ public class PlayableGroup implements IPlayer{
     public void Update() {
         moveToward(HelloApplication.getMousePosition());
         checkCollision();
-        if(parts.size() < 1){
-            gameOver();
-        }
     }
 
     @Override
@@ -202,7 +218,6 @@ public class PlayableGroup implements IPlayer{
 
     public void gameOver(){
         World.getInstance().reset();
-        HelloApplication.scene.setRoot(new MenuStart(new Stage()));
     }
 
     public CameraPlayer getCamera() {
