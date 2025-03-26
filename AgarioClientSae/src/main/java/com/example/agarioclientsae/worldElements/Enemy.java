@@ -13,15 +13,17 @@ public class Enemy extends MoveableBody {
     private double closestEntityDistance;
     private Entity closestEntity;
 
-    private IStrategyAI strategy = new EatPlayerAI();
+    private IStrategyAI strategy;
 
     private World world = World.getInstance();
 
-    public Enemy(Group group, double initialSize){
+    public Enemy(Group group, double initialSize, IStrategyAI strategie){
         super(group, initialSize);
         //new Enemy made and added to the group
         entity.setCenterX(Math.random() * (World.getMapLimitWidth() - 100) + 50);
         entity.setCenterY(Math.random() * (World.getMapLimitHeight() - 100) + 50);
+
+        strategy = strategie;
 
         closestEntityDistance = Double.MAX_VALUE;
         closestEntity = null;
@@ -41,7 +43,7 @@ public class Enemy extends MoveableBody {
 
 
         if (closestEntity != null) {
-            System.out.println("Closest entity: " + closestEntity + closestEntity.getPosition()[0] + " " + closestEntity.getPosition()[1]);
+
             moveToward(strategy.move(this));
         }
 
@@ -69,6 +71,10 @@ public class Enemy extends MoveableBody {
 
     public void setClosestEntityDistance(double closestEntityDistance) {
         this.closestEntityDistance = closestEntityDistance;
+    }
+
+    public IStrategyAI getStrategy() {
+        return strategy;
     }
 
     public void setClosestEntity(Entity closestEntity) {
