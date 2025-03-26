@@ -2,13 +2,14 @@ package com.example.agarioclientsae;
 
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 import java.util.Random;
 
-abstract class Entity extends Group{
+abstract class Entity extends Pane {
 
 
     public Circle entity;
@@ -53,6 +54,10 @@ abstract class Entity extends Group{
 
     public double getWeight() {
         return weight;
+    }
+
+    public double getSize() {
+        return size;
     }
 
     public void Update(){

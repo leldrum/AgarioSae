@@ -23,25 +23,27 @@ abstract class MoveableBody extends Entity{
     
     public void checkCollision(){
 
-        for(Node entity : HelloApplication.root.getChildren()){
-            Entity collider = (Entity) entity;
+        for (Node entity : HelloApplication.root.getChildren()) {
+            if (entity instanceof Entity) { // Vérification
+                Entity collider = (Entity) entity; // ✅ Cast sécurisé
 
-            if (entity != this){
+                if (collider != this) {
+                    Shape intersect = Shape.intersect(this.entity, collider.entity);
+                    if (intersect.getBoundsInLocal().getWidth() != -1) {
+                        double foodValue = 0.5;
 
-                Shape intersect = Shape.intersect(this.entity, collider.entity);
-
-                if (intersect.getBoundsInLocal().getWidth() != -1){
-
-                    double foodValue = 0.5;
-
-                    if (isSmaller(collider.entity, this.entity)){
-                        World.queueFree(collider);
-                        foodValue += collider.entity.getRadius() / 20;
-                        increaseSize(foodValue);
+                        if (isSmaller(collider.entity, this.entity)) {
+                            World.queueFree(collider);
+                            foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
+                        }
                     }
                 }
+            } else {
+                System.out.println("Ignoré : " + entity.getClass().getSimpleName()); // Debug
             }
-         }
+        }
+
     }
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
@@ -112,7 +114,7 @@ abstract class MoveableBody extends Entity{
     }
 
 
-    public ArrayList<Entity> divide(){
+    /*public ArrayList<Entity> divide(){
         //if the player is big enough, divide the player into two
         if (entity.getRadius() > 20){
 
@@ -133,5 +135,5 @@ abstract class MoveableBody extends Entity{
             }};
         }
         return new ArrayList<Entity>(){};
-    }
+    }*/
 }

@@ -5,9 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
@@ -20,6 +26,10 @@ public class HelloApplication extends Application {
     public static World world;
 
     public static Group root;
+    public static Pane uiLayer; // Un calque pour les éléments d'interface
+
+
+    public static Pane gamePane;
 
     public static Boolean gameStarted = false;
 
@@ -55,27 +65,47 @@ public class HelloApplication extends Application {
         return scene.getWindow().getHeight();
     }
 
+    public static Minimap minimap; // Ajouter la minimap
+
     public static void startGame(Stage stage) {
         world = World.getInstance();
         root = world.getRoot();
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         player = factoryPlayer.create(root, 50);
 
+        // Calque UI qui restera fixe
+        Pane uiLayer = new Pane();
+        uiLayer.setPickOnBounds(false);
 
+        // Ajouter la minimap
+        minimap = new Minimap(150, 150, (world.getMapLimitWidth() * world.getMapLimitHeight()));
+        Canvas minimapCanvas = minimap.getCanvas();
+        minimapCanvas.setManaged(false); // Important pour éviter les redimensionnements automatiques
+        minimapCanvas.setTranslateX(ScreenWidth - 160); // Positionner en haut à droite
+        minimapCanvas.setTranslateY(10);
+
+        uiLayer.getChildren().add(minimapCanvas);
+
+        // Ajouter root (jeu) et uiLayer (interface) dans un Group
+        Group rootLayer = new Group();
+        rootLayer.getChildren().add(root);  // Jeu
+        rootLayer.getChildren().add(uiLayer);  // UI fixe
 
         world.addPlayer(player);
 
         GameTimer timer = new GameTimer();
         timer.start();
 
-        scene = new Scene(root, ScreenWidth, ScreenHeight);
+        scene = new Scene(rootLayer, ScreenWidth, ScreenHeight);
         scene.setCamera(player.camera);
 
         stage.setTitle("Agar.io");
         stage.setScene(scene);
-
         stage.show();
     }
+
+
+
 
 
 
