@@ -1,6 +1,7 @@
 package com.example.client.server;
 
 import com.example.client.app.HelloApplication;
+import com.example.client.app.MenuStart;
 import com.example.libraries.utils.SerializationUtils;
 import com.example.libraries.worldElements.World;
 
@@ -53,7 +54,7 @@ public class ClientServer {
         System.out.println("Connecté avec ID: " + playerId);
 
         javafx.application.Platform.runLater(() -> {
-           // HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
+           HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
         });
     }
 
