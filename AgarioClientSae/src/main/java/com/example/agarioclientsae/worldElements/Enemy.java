@@ -3,6 +3,7 @@ package com.example.agarioclientsae.worldElements;
 import com.example.agarioclientsae.AI.EatPastilleAI;
 import com.example.agarioclientsae.AI.EatPlayerAI;
 import com.example.agarioclientsae.AI.IStrategyAI;
+import com.example.agarioclientsae.AI.RandomMouvementAI;
 import com.example.agarioclientsae.player.MoveableBody;
 import javafx.scene.Group;
 
