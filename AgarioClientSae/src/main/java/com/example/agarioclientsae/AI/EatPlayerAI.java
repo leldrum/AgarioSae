@@ -7,35 +7,43 @@ import com.example.agarioclientsae.worldElements.World;
 
 public class EatPlayerAI implements IStrategyAI {
 
-    public double[] move(Enemy enemy){
-        System.out.println(World.getInstance().getEntities());
-        if(enemy.getClosestEntity() instanceof Food){
-            System.out.println(3);
+    @Override
+    public double[] move(Enemy enemy) {
+        World world = World.getInstance();
+        double minDistance = Double.MAX_VALUE;
+        Entity closestTarget = null;
 
-            for (Entity entity : World.getInstance().getEntities()) {
-                if (!entity.equals(enemy) && !(entity instanceof Food)){
-                    System.out.println(4);
-                    enemy.setClosestEntity(entity);
-                    enemy.setClosestEntityDistance(enemy.distanceTo(entity.getPosition()));
-                    if (enemy.distanceTo(entity.getPosition()) < enemy.getClosestEntityDistance()) {
-                        enemy.setClosestEntityDistance(enemy.distanceTo(entity.getPosition()));
-                        enemy.setClosestEntity(entity);
-                        System.out.println(2);
-                        return enemy.getClosestEntity().getPosition();
-                    }
+        System.out.println("IA Enemy: Recherche d'une cible...");
+
+        for (Entity entity : world.getEntities()) {
+            if (!entity.equals(enemy) && !(entity instanceof Food)) {  // Ignorer Food et soi-même
+                double distance = enemy.distanceTo(entity.getPosition());
+
+                System.out.println("IA Enemy: Vérification de l'entité " + entity + " - Distance: " + distance);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestTarget = entity;
+                    System.out.println("IA Enemy: Nouvelle cible trouvée -> " + entity);
                 }
             }
         }
 
-        System.out.println(1);
-        return enemy.getClosestEntity().getPosition();
+        // Met à jour la cible
+        if (closestTarget != null) {
+            System.out.println("IA Enemy: Cible finale -> " + closestTarget);
+            enemy.setClosestEntity(closestTarget);
+            enemy.setClosestEntityDistance(minDistance);
+            return closestTarget.getPosition();
+        }
 
-
+        // Aucun joueur trouvé, rester immobile
+        System.out.println("IA Enemy: Aucune cible trouvée.");
+        return enemy.getPosition();
     }
 
     @Override
     public void move() {
-
+        // Pas utilisé
     }
-
 }
