@@ -66,6 +66,8 @@ public class HelloApplication extends Application {
         world = World.getInstance();
         root = World.getRoot();
 
+        System.out.println("World: " + world.getInstance());
+        System.out.println("Root: " + root);
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         player = factoryPlayer.create(root, 50);

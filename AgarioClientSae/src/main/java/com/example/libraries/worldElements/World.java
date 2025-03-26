@@ -52,6 +52,7 @@ public class World implements Serializable{
     }
 
     public static Group getRoot() {
+        System.out.println("Root" + getInstance().root);
         return getInstance().root;
     }
 
