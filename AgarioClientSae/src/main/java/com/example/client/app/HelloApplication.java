@@ -68,7 +68,7 @@ public class HelloApplication extends Application {
 
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
-        player = factoryPlayer.create(root, 50);
+        player = factoryPlayer.create(root, 30);
 
         if (player == null) {
             System.err.println("ERREUR : Le joueur n'a pas été créé");
@@ -86,7 +86,7 @@ public class HelloApplication extends Application {
             // Nettoie le root en gardant seulement la minimap
             //root.getChildren().retainAll(minimapCanvas);
             // Réajoute le joueur
-            System.out.println("Joueur ajouté au root : " + player.parts.get(0).part);
+            System.out.println("Joueur ajouté au root : " + player.parts.get(0).part.entity);
             root.getChildren().add(player.parts.get(0).part.entity);
 
         }

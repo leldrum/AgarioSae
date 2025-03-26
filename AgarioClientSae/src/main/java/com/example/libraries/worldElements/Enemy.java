@@ -82,4 +82,8 @@ public class Enemy extends MoveableBody {
     public void onDeletion(){
 
     }
+
+    public void update() {
+        setWeight(getWeight() + 0.5);
+    }
 }

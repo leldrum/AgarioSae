@@ -62,7 +62,9 @@ public class Player implements IPlayer{
 
 
     public void Update(){
+
         World.getInstance().updateMinimap();
+
     }
 
         // Force la mise à jour de la minimap

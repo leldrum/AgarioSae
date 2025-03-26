@@ -5,6 +5,7 @@ import com.example.libraries.player.PlayableGroup;
 import com.example.libraries.factories.FactoryEnemy;
 import com.example.libraries.factories.FactoryFood;
 import com.example.libraries.player.MoveableBody;
+import com.example.libraries.player.Player;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -154,7 +155,6 @@ public class World implements Serializable{
     }
 
     public void updateLeaderboard() {
-
         GraphicsContext gc = leaderboardCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, leaderboardCanvas.getWidth(), leaderboardCanvas.getHeight());
 
@@ -165,48 +165,55 @@ public class World implements Serializable{
         gc.setFont(new Font(16));
         gc.fillText("Top 5 Masses", 50, 20);
 
-        // Liste des entités triées par masse
-        List<Entity> massiveEntities = entities.stream()
+        // Liste des entités triées par masse (inclure le joueur dans le leaderboard)
+        List<Entity> massiveEntities = new ArrayList<>(entities.stream()
                 .filter(e -> !(e instanceof Food)) // Exclure les Food
                 .sorted(Comparator.comparingDouble(Entity::getWeight).reversed()) // Tri décroissant par masse
                 .limit(5)
-                .toList();
+                .toList());
 
-        // Affichage des entités
+        // Ajouter le joueur à la première position
+        massiveEntities.add(0, player.parts.get(0).part);
+
+        // Affichage des entités (et du joueur)
         int yOffset = 40;
         for (int i = 0; i < massiveEntities.size(); i++) {
             Entity e = massiveEntities.get(i);
-            String entityType = (e instanceof IPlayer) ? "P" : "E"; // "P" pour joueur, "E" pour ennemi
+
+            // Changer la logique pour afficher plus d'informations sur le type d'entité
+            String entityType;
+
+            if (e instanceof Enemy) {
+                entityType = "Ennemi";
+            } else {
+                entityType = "Joueur"; // Pour toute autre entité
+            }
+
             gc.fillText((i + 1) + ". " + entityType + " - " + (int) e.getWeight(), 20, yOffset);
             yOffset += 20;
         }
 
         // Calcul de la taille du Canvas en fonction de la masse du joueur
-        double playerMass = player.getWeight(); // Masse du joueur
+        double playerMass = player.getWeight(); // Masse du joueur (calculée via `getWeight()` de `PlayableGroup`)
         double canvasWidth = 200 + playerMass / 2; // Par exemple, augmenter la largeur en fonction de la masse
         double canvasHeight = 150 + playerMass / 2; // De même pour la hauteur
 
         leaderboardCanvas.setWidth(canvasWidth);
         leaderboardCanvas.setHeight(canvasHeight);
 
-        // Débogage de la position du joueur
-        double playerX = player.getCenterX();
-        double playerY = player.getCenterY();
-        System.out.println("Player X: " + playerX + ", Player Y: " + playerY);
-
         // Calcul des coordonnées pour afficher le leaderboard en fonction de la position du joueur
+        double playerX = player.getCenterX();  // Position du joueur
+        double playerY = player.getCenterY();  // Position du joueur
         double canvasOffset = 400 + playerMass; // Espacement pour placer le leaderboard à droite du joueur
         double leaderboardX = playerX + canvasOffset;
         double leaderboardY = playerY - canvasOffset;
-
-        // Affichage des coordonnées du leaderboard
-        System.out.println("Leaderboard X: " + leaderboardX);
-        System.out.println("Leaderboard Y: " + leaderboardY);
 
         // Mise à jour de la position du canvas
         leaderboardCanvas.setTranslateX(leaderboardX);
         leaderboardCanvas.setTranslateY(leaderboardY);
     }
+
+
 
 
 
@@ -230,6 +237,7 @@ public class World implements Serializable{
 
         timer--;
 
+        updateEntities();
         updateMinimap(); // Mise à jour de la minimap en temps réel
         updateLeaderboard();
 
@@ -278,6 +286,7 @@ public class World implements Serializable{
             if (entity instanceof MoveableBody) {
                 MoveableBody moveableEntity = (MoveableBody) entity;
                 moveableEntity.checkCollision();
+                moveableEntity.Update();
             }
         }
     }
@@ -291,4 +300,7 @@ public class World implements Serializable{
             quadTree.insert(x, y, entity);
         }
     }
+
+
+
 }

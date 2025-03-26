@@ -74,6 +74,7 @@ public abstract class Entity extends Group{
 
     public void Update(){
 
+
     }
 
     public void onDeletion(){
