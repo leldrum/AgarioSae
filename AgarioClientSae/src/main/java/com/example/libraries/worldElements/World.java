@@ -25,10 +25,10 @@ public class World implements Serializable{
     private Canvas minimapCanvas;
 
     private static final long serialVersionUID = 1L;
-    private double mapLimitWidth = 2001;
-    private double mapLimitHeight = 2001;
+    private double mapLimitWidth = 100;
+    private double mapLimitHeight = 100;
 
-    private int enemySpawnTimer = 581;
+    private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
     public static int enemies = 0;
 
