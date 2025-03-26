@@ -13,26 +13,29 @@ public class GameTimer extends AnimationTimer {
 
     private World world;
 
-    public GameTimer(){
+    public GameTimer() {
         this.world = World.getInstance();
     }
+
     @Override
     public void handle(long now) {
-
-        if (last == 0){
+        if (last == 0) {
             last = now;
         }
 
-        if (now - last > interval ){
+        if (now - last > interval) {
             last = now;
-            world.freeQueuedObjects(); // deletes any objects queued up to be free
-            for (Node entity : world.root.getChildren()){
-                Entity convertedEntity = (Entity) entity;
-                convertedEntity.Update();
+
+            world.freeQueuedObjects();
+
+            for (Node node : world.getRoot().getChildren()) {
+                if (node instanceof Entity) {
+                    Entity entity = (Entity) node;
+                    entity.Update();
+                }
             }
-            world.Update(); //calls update function every frame
 
-
+            world.Update();
         }
     }
 }

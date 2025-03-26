@@ -15,25 +15,24 @@ import javafx.scene.shape.Shape;
 public abstract class MoveableBody extends Entity {
 
     public double Speed = 1.5; // self explanatory, the player's speed
+    protected Group group;
 
     protected MoveableBody(Group group, double initialSize){
         super(group, initialSize);
+        this.group = group;
     }
 
-    public boolean checkCollision(){
-
-        for(Node entity : HelloApplication.root.getChildren()){
-            Entity collider = (Entity) entity;
-
-            if (entity != this){
-
+    public boolean checkCollision() {
+        for (Node node : World.getRoot().getChildren()) {
+            // Vérification du type avant le cast
+            if (node instanceof Entity && node != this.entity) {
+                Entity collider = (Entity) node;
                 Shape intersect = Shape.intersect(this.entity, collider.entity);
 
-                if (intersect.getBoundsInLocal().getWidth() != -1){
-
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
                     double foodValue = 0.5;
 
-                    if (isSmaller(collider.entity, this.entity)){
+                    if (isSmaller(collider.entity, this.entity)) {
                         World.queueFree(collider);
                         foodValue += collider.entity.getRadius() / 20;
                         increaseSize(foodValue);
@@ -41,7 +40,7 @@ public abstract class MoveableBody extends Entity {
                     return true;
                 }
             }
-         }
+        }
         return false;
     }
 
@@ -122,7 +121,7 @@ public abstract class MoveableBody extends Entity {
             int b  = getB();
 
             //create a new player with half the size of the current player
-            Entity newPlayer = new Player(HelloApplication.root, entity.getRadius() / 2);
+            Entity newPlayer = new Player(this.group, entity.getRadius() / 2);
             newPlayer.entity.setCenterX(entity.getCenterX());
             newPlayer.entity.setCenterY(entity.getCenterY());
             newPlayer.entity.setFill(Color.rgb(r, g , b, 0.99));
