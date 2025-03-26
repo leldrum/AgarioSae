@@ -148,16 +148,16 @@ public class PlayableGroup implements IPlayer{
 
         //change Sprite position based on velocity
         //also check if the player is at the world limit, if it is then it doesnt move
-        if (getCenterX() + velocity[0] < World.getMapLimitWidth()){
-            if (getCenterX() + velocity[0] > -World.getMapLimitWidth()){
+        if (getCenterX() + velocity[0] < World.getInstance().getMapLimitWidth()){
+            if (getCenterX() + velocity[0] > -World.getInstance().getMapLimitWidth()){
                 for(Player part : parts){
                     part.part.entity.setCenterX(part.getCenterX() + velocity[0] );
                 }
 
             }
         }
-        if (getCenterY() + velocity[1] < World.getMapLimitHeight()){
-            if (getCenterY() + velocity[1] > -World.getMapLimitHeight()){
+        if (getCenterY() + velocity[1] < World.getInstance().getMapLimitHeight()){
+            if (getCenterY() + velocity[1] > -World.getInstance().getMapLimitHeight()){
                 for(Player part : parts){
                     part.part.entity.setCenterY(part.getCenterY() + velocity[1] );
                 }

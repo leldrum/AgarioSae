@@ -25,8 +25,8 @@ public class World implements Serializable{
     private Canvas minimapCanvas;
 
     private static final long serialVersionUID = 1L;
-    private static double mapLimitWidth = 2000;
-    private static double mapLimitHeight = 2000;
+    private  double mapLimitWidth = 2000;
+    private  double mapLimitHeight = 2000;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
@@ -55,6 +55,14 @@ public class World implements Serializable{
         return getInstance().root;
     }
 
+    public void setMapLimitHeight(double mapHeight) {
+        this.mapLimitHeight = mapHeight;
+    }
+
+    public void setMapLimitWidth(double mapWidth) {
+        this.mapLimitWidth = mapWidth;
+    }
+
     public Canvas getMinimapCanvas() {
         return this.minimapCanvas;
     }
@@ -68,11 +76,11 @@ public class World implements Serializable{
 
     }
 
-    public static double getMapLimitWidth() {
+    public double getMapLimitWidth() {
         return mapLimitWidth;
     }
 
-    public static double getMapLimitHeight() {
+    public double getMapLimitHeight() {
         return mapLimitHeight;
     }
 
@@ -128,8 +136,8 @@ public class World implements Serializable{
         gc.strokeRect(0, 0, dynamicMinimapSize, dynamicMinimapSize);
 
         // Calcul dynamique de l'échelle en fonction de la taille du joueur
-        double scaleX = dynamicMinimapSize / mapLimitWidth;
-        double scaleY = dynamicMinimapSize / mapLimitHeight;
+        double scaleX = MINIMAP_SIZE / mapLimitWidth;
+        double scaleY = MINIMAP_SIZE / mapLimitHeight;
 
         // Position du joueur sur la minimap
         double playerMiniX = player.getCenterX() * scaleX + dynamicMinimapSize / 2;

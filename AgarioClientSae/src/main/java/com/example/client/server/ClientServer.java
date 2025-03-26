@@ -41,7 +41,6 @@ public class ClientServer {
             }
             if (part.startsWith("WORLD:")) {
                 World.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
-                System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
             }
             /*if (part.startsWith("Taille:")) {
                 System.out.println("Taille du monde: " + part.split(":")[1]);

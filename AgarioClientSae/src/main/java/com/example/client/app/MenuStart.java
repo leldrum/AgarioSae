@@ -66,11 +66,11 @@ public class MenuStart extends VBox {
 
 
     private void handleStartButton() {
-        // Implement logic for start button click
         System.out.println("Local button clicked");
         HelloApplication.gameStarted = true;
-        HelloApplication.startGame(stage);
+        HelloApplication.openConfigMenu(stage);  // ← Affiche le menu de configuration au lieu de démarrer le jeu directement.
     }
+
 
     private void handleOnlineButton() {
         // Affichage des champs IP, Port et bouton "Se connecter"

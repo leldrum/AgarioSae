@@ -34,8 +34,8 @@ public class RandomMouvementAI implements IStrategyAI{
 
     private void setNewTarget() {
         // Définit une nouvelle position cible aléatoire dans les limites de la carte
-        targetX = (random.nextDouble() * World.getMapLimitWidth() * 2) - World.getMapLimitWidth();
-        targetY = (random.nextDouble() * World.getMapLimitHeight() * 2) - World.getMapLimitHeight();
+        targetX = (random.nextDouble() * World.getInstance().getMapLimitWidth() * 2) - World.getInstance().getMapLimitHeight();
+        targetY = (random.nextDouble() * World.getInstance().getMapLimitHeight()* 2) - World.getInstance().getMapLimitHeight();
     }
 
     private boolean isNearTarget(Enemy enemy) {

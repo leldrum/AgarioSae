@@ -83,13 +83,13 @@ public class MoveableBody extends Entity {
 
         //change Sprite position based on velocity
         //also check if the player is at the world limit, if it is then it doesnt move
-        if (entity.getCenterX() + velocity[0] < World.getMapLimitWidth()){
-            if (entity.getCenterX() + velocity[0] > -World.getMapLimitWidth()){
+        if (entity.getCenterX() + velocity[0] < World.getInstance().getMapLimitWidth()){
+            if (entity.getCenterX() + velocity[0] > -World.getInstance().getMapLimitWidth()){
                 entity.setCenterX(entity.getCenterX() + velocity[0] );
             }
         }
-        if (entity.getCenterY() + velocity[1] < World.getMapLimitHeight()){
-            if (entity.getCenterY() + velocity[1] > -World.getMapLimitHeight()){
+        if (entity.getCenterY() + velocity[1] < World.getInstance().getMapLimitHeight()){
+            if (entity.getCenterY() + velocity[1] > -World.getInstance().getMapLimitHeight()){
                 entity.setCenterY(entity.getCenterY() + velocity[1]);
             }
         }
