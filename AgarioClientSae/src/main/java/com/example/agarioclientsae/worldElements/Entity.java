@@ -16,6 +16,8 @@ public abstract class Entity extends Group{
     private double weight;
     private double size;
 
+    private double lastX, lastY;
+
     private int r;
     private int g;
     private int b;
@@ -47,6 +49,17 @@ public abstract class Entity extends Group{
         //returns current position of the sprite
         return new double[]{entity.getCenterX(), entity.getCenterY()};
     }
+
+    public boolean hasMoved() {
+        return this.entity.getCenterX() != lastX || this.entity.getCenterY() != lastY;
+    }
+
+    public void updateLastPosition() {
+        this.lastX = this.entity.getCenterX();
+        this.lastY = this.entity.getCenterY();
+    }
+
+
 
     public int getR() {
         return r;

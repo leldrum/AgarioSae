@@ -133,4 +133,42 @@ public abstract class MoveableBody extends Entity {
         }
         return new ArrayList<Entity>(){};
     }
+
+    public Player checkCollisionAndAbsorb() {
+        ArrayList<Entity> entities = World.getInstance().getEntities();
+        ArrayList<Entity> absorbedEntities = new ArrayList<>();
+
+        for (Entity e : entities) {
+            if (e == this) continue; // Ignore soi-même
+
+            if (e instanceof MoveableBody) {
+                MoveableBody other = (MoveableBody) e;
+
+                // Vérifier si les deux entités sont en collision
+                if (isCollidingWith(other)) {
+                    // Vérifier si on peut absorber (taille plus grande)
+                    if (this.getWeight() > other.getWeight() * 1.3) { // Facteur de sécurité 1.3
+                        absorbedEntities.add(other);
+                        this.increaseSize(other.getWeight()); // Augmenter la taille du joueur
+                    }
+                }
+            }
+        }
+
+        // Supprime les entités absorbées du monde
+        for (Entity absorbed : absorbedEntities) {
+            World.queueFree(absorbed);
+        }
+        return null;
+    }
+
+
+
+    private boolean isCollidingWith(MoveableBody other) {
+        double dx = this.entity.getCenterX() - other.entity.getCenterX();
+        double dy = this.entity.getCenterY() - other.entity.getCenterY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (this.entity.getRadius() + other.entity.getRadius());
+    }
 }

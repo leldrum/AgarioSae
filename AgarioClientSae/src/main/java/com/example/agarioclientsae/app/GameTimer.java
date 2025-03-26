@@ -7,7 +7,7 @@ import javafx.scene.Node;
 
 public class GameTimer extends AnimationTimer {
 
-    private double framesPerSecond = 60;
+    private double framesPerSecond = 150;
     private double interval = 1000000000 / framesPerSecond;
     private double last = 0;
 
