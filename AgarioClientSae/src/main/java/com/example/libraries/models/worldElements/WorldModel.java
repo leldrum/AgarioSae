@@ -22,6 +22,11 @@ public class WorldModel implements Serializable {
     private int enemySpawnRate = 100;
     private int enemies = 0;
 
+    private int maxFood = 200; // Nombre max de pastilles sur la map
+    private int foodSpawnRate = 10; // Combien de ticks entre chaque spawn
+    private int foodSpawnTimer = foodSpawnRate;
+
+
     private static final long serialVersionUID = 1L;
 
     private WorldModel() {}
@@ -47,6 +52,19 @@ public class WorldModel implements Serializable {
         entities.add(entity);
     }
 
+    public void spawnFood(int count) {
+        Random rand = new Random();
+        for (int i = 0; i < count; i++) {
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            double size = 0.5;
+
+            Food food = new Food(x, y, size);
+            entities.add(food);
+        }
+    }
+
+
     public List<Entity> getEntities() {
         return entities;
     }
@@ -64,6 +82,13 @@ public class WorldModel implements Serializable {
             enemySpawnTimer = enemySpawnRate;
         }
         enemySpawnTimer--;
+
+        // Ajout dynamique de la nourriture
+        if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
+            spawnFood(5); // Ajoute 5 nouvelles pastilles à la fois
+            foodSpawnTimer = foodSpawnRate; // Reset du timer
+        }
+        foodSpawnTimer--;
     }
 
     public List<Entity> getTopEntities() {

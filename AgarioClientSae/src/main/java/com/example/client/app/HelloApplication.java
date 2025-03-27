@@ -67,13 +67,17 @@ public class HelloApplication extends Application {
         player = factoryPlayer.create(x, y, 50);
         world.addEntity(player);
 
+        world = WorldModel.getInstance();
+        world.spawnFood(100); // Générer 100 pastilles de nourriture
+
+
         // Ajout des entités visuelles
         for (Entity entity : world.getEntities()) {
-            if(entity instanceof Food) {
+            /*if(entity instanceof Food) {
                 FoodView foodView = new FoodView((Food) entity);
                 root.getChildren().add(foodView);
             }
-            /*if(entity instanceof PlayerModel) {
+            if(entity instanceof PlayerModel) {
                 PlayableGroupView playerView = new PlayableGroupView((PlayerModel) entity);
                 root.getChildren().add(playerView);
             }*/
