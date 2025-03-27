@@ -1,16 +1,36 @@
 package com.example.client.views;
 
+import com.example.libraries.models.player.PlayerModel;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Group;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import javafx.scene.paint.Color;
 import com.example.libraries.models.player.CameraPlayer;
 
-public class PlayableGroupView {
+public class PlayableGroupView extends Group {
     private CameraPlayer camera;
     private double[] cameraScale;
 
-    public PlayableGroupView() {
+    private PlayerModel player;
+
+    private Circle circle;
+
+
+    public PlayableGroupView(PlayerModel player) {
         this.camera = new CameraPlayer();
         this.cameraScale = new double[]{camera.getScaleX(), camera.getScaleY()};
+
+        this.player = player;
+        int r = player.getR();
+        int g = player.getG();
+        int b = player.getB();
+
+        circle = new Circle(10 * Math.sqrt(player.getWeight()), Color.rgb(r, g, b, 0.99));
+        circle.setCenterX(player.getX());
+        circle.setCenterY(player.getY());
+
+        getChildren().add(circle);
     }
 
     public void zoom(double factor) {

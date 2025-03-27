@@ -48,4 +48,7 @@ public class MoveableBodyModel extends Entity {
     }
 
 
+    protected double checkCollision() {
+        return 1;
+    }
 }

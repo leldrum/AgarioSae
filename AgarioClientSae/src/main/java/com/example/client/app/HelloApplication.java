@@ -1,14 +1,16 @@
 package com.example.client.app;
 
+import com.example.client.controllers.MoveableBodyController;
+import com.example.client.controllers.PlayableGroupController;
 import com.example.client.controllers.WorldController;
 import com.example.client.views.*;
 import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.factories.FactoryPlayer;
 import com.example.libraries.models.worldElements.*;
 import com.example.libraries.models.worldElements.WorldModel;
-import com.example.libraries.views.WorldView;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -27,7 +29,10 @@ public class HelloApplication extends Application {
     public static GameTimer timer;
     private static WorldView worldView;
     private static WorldModel world;
-    private static WorldController controller;
+    private static WorldController worldController;
+    private static PlayableGroupController playableGroupController;
+
+    private static EntityView entityView;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -57,15 +62,21 @@ public class HelloApplication extends Application {
         world = WorldModel.getInstance();
         root = new Group();
         worldView = new WorldView(root);
-        controller = new WorldController(world, worldView);
+        worldController = new WorldController(world, worldView);
+
 
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         Random rand = new Random();
         double x = rand.nextDouble() * world.getMapWidth();
         double y = rand.nextDouble() * world.getMapHeight();
-        player = factoryPlayer.create(x, y, 50);
+        player = factoryPlayer.create(0, 0, 50);
         world.addEntity(player);
+        PlayableGroupView playerView = new PlayableGroupView(player);
+        MoveableBodyView mvview = new MoveableBodyView(player);
+        MoveableBodyController mv = new MoveableBodyController(player,mvview);
+        entityView = new EntityView(player);
+        playableGroupController = new PlayableGroupController(player,playerView,mv,entityView);
 
         // Ajout des entités visuelles
         for (Entity entity : world.getEntities()) {
@@ -73,10 +84,10 @@ public class HelloApplication extends Application {
                 FoodView foodView = new FoodView((Food) entity);
                 root.getChildren().add(foodView);
             }
-            /*if(entity instanceof PlayerModel) {
-                PlayableGroupView playerView = new PlayableGroupView((PlayerModel) entity);
-                root.getChildren().add(playerView);
-            }*/
+            if(entity instanceof PlayerModel) {
+                PlayableGroupView player = new PlayableGroupView((PlayerModel) entity);
+                root.getChildren().add(player);
+            }
 
             if(entity instanceof EnemyModel) {
                 EnemyView enemyView = new EnemyView((EnemyModel) entity);
@@ -93,10 +104,11 @@ public class HelloApplication extends Application {
         stage.show();
 
         // Boucle de jeu
-        timer = new GameTimer(controller);
+        timer = new GameTimer(worldController, playableGroupController);
         timer.start();
 
         System.out.println(world.getEntities());
+        System.out.println("Group : " + root.getChildren());
     }
 
     public static void startGameClient(Stage stage) {

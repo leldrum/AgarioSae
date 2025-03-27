@@ -1,9 +1,10 @@
 package com.example.client.controllers;
 
+import com.example.client.views.WorldView;
 import com.example.libraries.models.worldElements.WorldModel;
-import com.example.libraries.views.WorldView;
+import javafx.scene.Group;
 
-public class WorldController {
+public class WorldController extends Group {
     private WorldModel world;
     private WorldView view;
 
@@ -17,6 +18,8 @@ public class WorldController {
         view.updateMinimap(world);
         view.updateLeaderboard(world);
         System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());
+
+
     }
 
     public WorldModel getWorld() {

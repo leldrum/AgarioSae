@@ -36,14 +36,16 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
 
     }
 
-    /*public double checkCollision() {
+    public double checkCollision() {
         double result = super.checkCollision();
         if (result != 0) {
             increaseSize(result);
             return result;
         }
         return 0;
-    }*/
+    }
+
+
 
     @Override
     public void update() {
@@ -55,4 +57,7 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
         return 0;
     }
 
+    public boolean isGameOver() {
+        return false;
+    }
 }

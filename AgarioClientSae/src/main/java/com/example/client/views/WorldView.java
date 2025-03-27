@@ -1,4 +1,4 @@
-package com.example.libraries.views;
+package com.example.client.views;
 
 import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.WorldModel;
