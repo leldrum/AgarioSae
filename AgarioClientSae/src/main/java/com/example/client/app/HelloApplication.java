@@ -101,6 +101,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
 
         System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
+        stage.setResizable(false);
         stage.show();
     }
 
