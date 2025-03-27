@@ -37,7 +37,7 @@ public class Leaderboard {
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(16));
-        gc.fillText("Top 5 Masses", 50, 20);
+        gc.fillText("Top 10 Masses", 50, 20);
 
         // Liste des entités triées par masse (inclure le joueur dans le leaderboard)
         List<Entity> massiveEntities = new ArrayList<>(entities);
@@ -47,7 +47,7 @@ public class Leaderboard {
         massiveEntities = massiveEntities.stream()
                 .filter(e -> !(e instanceof Food)) // Exclure la nourriture
                 .sorted(Comparator.comparingDouble(Entity::getWeight).reversed()) // Tri décroissant
-                .limit(5)
+                .limit(10)
                 .toList();
 
         // Affichage du leaderboard
