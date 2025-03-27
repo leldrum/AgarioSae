@@ -1,6 +1,8 @@
 package com.example.libraries.models.worldElements;
 
+import com.example.libraries.models.AI.EatPastilleAI;
 import com.example.libraries.models.AI.IStrategyAI;
+import com.example.libraries.models.AI.RandomMouvementAI;
 import com.example.libraries.models.player.MoveableBodyModel;
 import java.util.List;
 
@@ -11,10 +13,11 @@ public class EnemyModel extends MoveableBodyModel {
     private IStrategyAI strategy;
 
     public EnemyModel(double startX, double startY, double weight, IStrategyAI strategy) {
-        super(startX, startY, weight);
+        super(500, 500, weight);
         this.strategy = strategy;
         this.closestEntityDistance = Double.MAX_VALUE;
         this.closestEntity = null;
+        System.out.println("EnemyModel instancié à : " + getX() + ", " + getY());
     }
 
     public void update(List<Entity> entities) {
@@ -32,7 +35,15 @@ public class EnemyModel extends MoveableBodyModel {
         }
 
         if (closestEntity != null) {
-            moveToward(strategy.move(this));
+            double[] targetPosition = strategy.move(this); // Position cible retournée par l'IA
+            double dx = targetPosition[0] - getX();
+            double dy = targetPosition[1] - getY();
+
+            // Convertir en un vecteur direction normalisé
+            double magnitude = Math.sqrt(dx * dx + dy * dy);
+            double[] direction = (magnitude > 0) ? new double[]{dx / magnitude, dy / magnitude} : new double[]{0, 0};
+
+            moveToward(direction); // Déplacement vers la cible
         }
     }
 

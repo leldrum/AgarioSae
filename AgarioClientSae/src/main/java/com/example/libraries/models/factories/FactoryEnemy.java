@@ -28,6 +28,8 @@ public class FactoryEnemy implements Factory<EnemyModel> {
         EnemyModel enemy = new EnemyModel(x, y, weight, selectedStrategy);
         id++;
         world.addEntity(enemy);
+        System.out.println("Enemy créé à : " + x + ", " + y);
+
         return enemy;
     }
 }

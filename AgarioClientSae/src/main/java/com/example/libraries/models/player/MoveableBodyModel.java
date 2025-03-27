@@ -7,9 +7,7 @@ import org.w3c.dom.Node;
 
 public class MoveableBodyModel extends Entity {
 
-    protected double x, y; // Position
     protected double speed = 1.5;
-    protected double weight;
 
     public MoveableBodyModel(double startX, double startY, double weight) {
         super(startX, startY, weight);
@@ -26,25 +24,15 @@ public class MoveableBodyModel extends Entity {
         velocity[0] *= speed;
         velocity[1] *= speed;
 
-        x += velocity[0];
-        y += velocity[1];
+        setPosition(getX() + velocity[0], getY() + velocity[1]);
+
 
         // Empêcher de sortir des limites du monde
         WorldModel world = WorldModel.getInstance();
-        x = Math.max(-world.getMapWidth(), Math.min(world.getMapWidth(), x));
-        y = Math.max(-world.getMapHeight(), Math.min(world.getMapHeight(), y));
-    }
-
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public double getWeight() { return weight; }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public double[] getPosition() {
-        return new double[]{x, y};
+        setPosition(
+                Math.max(0, Math.min(world.getMapWidth(), getX())),
+                Math.max(0, Math.min(world.getMapHeight(), getY()))
+        );
     }
 
 

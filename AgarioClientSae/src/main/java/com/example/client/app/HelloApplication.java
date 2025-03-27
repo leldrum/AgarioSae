@@ -60,12 +60,7 @@ public class HelloApplication extends Application {
         controller = new WorldController(world, worldView);
 
         // Création du joueur
-        FactoryPlayer factoryPlayer = new FactoryPlayer();
-        Random rand = new Random();
-        double x = rand.nextDouble() * world.getMapWidth();
-        double y = rand.nextDouble() * world.getMapHeight();
-        player = factoryPlayer.create(x, y, 50);
-        world.addEntity(player);
+
 
         world = WorldModel.getInstance();
         world.spawnFood(100); // Générer 100 pastilles de nourriture
