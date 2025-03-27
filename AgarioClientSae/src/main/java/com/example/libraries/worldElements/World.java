@@ -28,12 +28,14 @@ public class World implements Serializable{
     private ArrayList<Entity> entities = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
-    private static double mapLimitWidth = 2000;
-    private static double mapLimitHeight = 2000;
+    private  double mapLimitWidth = 2000;
+    private  double mapLimitHeight = 2000;
 
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
     public static int enemies = 0;
+
+    public int enemiesMax;
 
     private PlayableGroup player;
 
@@ -62,6 +64,19 @@ public class World implements Serializable{
         return getInstance().root;
     }
 
+    public void setMapLimitHeight(double mapHeight) {
+        this.mapLimitHeight = mapHeight;
+    }
+
+    public void setMapLimitWidth(double mapWidth) {
+        this.mapLimitWidth = mapWidth;
+    }
+
+    public void setEnemiesMax(int enemies){
+        this.enemiesMax = enemies;
+    }
+
+
 
     public PlayableGroup getPlayer() {
         return this.player;
@@ -72,11 +87,11 @@ public class World implements Serializable{
 
     }
 
-    public static double getMapLimitWidth() {
+    public double getMapLimitWidth() {
         return mapLimitWidth;
     }
 
-    public static double getMapLimitHeight() {
+    public double getMapLimitHeight() {
         return mapLimitHeight;
     }
 
@@ -90,16 +105,17 @@ public class World implements Serializable{
     }
 
 
+
     // Mise à jour du monde (appelée à chaque frame)
     public void Update() {
         if (timer <= 0) {
-            if (root.getChildren().size() < 200) {
+            if (root.getChildren().size() < 200*(getMapLimitWidth()*getMapLimitHeight()/(2000*2000))  ) {
                 createFood();
             }
             timer = maxTimer;
         }
 
-        if (enemies < 5 && enemySpawnTimer <= 0){
+        if (enemies < enemiesMax && enemySpawnTimer <= 0){
             FactoryEnemy factoryEnemy = new FactoryEnemy();
             Enemy enemy = factoryEnemy.create(root, 50);
             enemy.setName(NameGenerator.generateRandomName());

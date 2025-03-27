@@ -51,8 +51,8 @@ public class Minimap {
         gc.setStroke(Color.BLACK);
         gc.strokeRect(0, 0, dynamicMinimapSize, dynamicMinimapSize);
 
-        double scaleX = dynamicMinimapSize / World.getMapLimitWidth();
-        double scaleY = dynamicMinimapSize / World.getMapLimitHeight();
+        double scaleX = dynamicMinimapSize / World.getInstance().getMapLimitWidth();
+        double scaleY = dynamicMinimapSize / World.getInstance().getMapLimitHeight();
 
         double playerMiniX = player.getCenterX() * scaleX + dynamicMinimapSize / 2;
         double playerMiniY = player.getCenterY() * scaleY + dynamicMinimapSize / 2;

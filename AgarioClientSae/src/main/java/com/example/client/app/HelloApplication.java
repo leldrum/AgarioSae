@@ -8,6 +8,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,9 +31,10 @@ public class HelloApplication extends Application {
 
     public static GameTimer timer;
 
-
-
-
+    // Paramètres modifiables
+    public static double mapWidth = 2000;
+    public static double mapHeight = 2000;
+    public static int enemyCount = 5;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -46,16 +49,17 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    static public double[] getMousePosition(){
+    static public double[] getMousePosition() {
         java.awt.Point mouse = java.awt.MouseInfo.getPointerInfo().getLocation();
         Point2D mousePos = root.screenToLocal(mouse.x, mouse.y);
         return new double[]{mousePos.getX(), mousePos.getY()};
     }
 
-    public static double getScreenWidth(){
+    public static double getScreenWidth() {
         return scene.getWindow().getWidth();
     }
-    public static double getScreenHeight(){
+
+    public static double getScreenHeight() {
         return scene.getWindow().getHeight();
     }
 
@@ -65,10 +69,13 @@ public class HelloApplication extends Application {
         // Initialisation du monde
         world = World.getInstance();
         root = World.getRoot();
+        world.setMapLimitWidth(mapWidth);
+        world.setMapLimitHeight(mapHeight);
+        world.setEnemiesMax(enemyCount);
 
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
-        player = factoryPlayer.create(root, 30);
+        player = factoryPlayer.create(root, 50);
 
         if (player == null) {
             System.err.println("ERREUR : Le joueur n'a pas été créé");
@@ -100,7 +107,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Agar.io");
         stage.setScene(scene);
 
-        System.out.println("Taille du monde: " + World.getMapLimitWidth() + "x" + World.getMapLimitHeight());
+
         stage.setResizable(false);
         stage.show();
     }
