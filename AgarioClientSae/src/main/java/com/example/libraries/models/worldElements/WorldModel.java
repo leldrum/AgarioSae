@@ -26,6 +26,7 @@ public class WorldModel implements Serializable {
     private int foodSpawnRate = 10; // Combien de ticks entre chaque spawn
     private int foodSpawnTimer = foodSpawnRate;
 
+    private ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
 
@@ -57,10 +58,11 @@ public class WorldModel implements Serializable {
         for (int i = 0; i < count; i++) {
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
-            double size = 0.5;
+            double size = 10;
 
             Food food = new Food(x, y, size);
             entities.add(food);
+            System.out.println("x:" + x +";" + y);
         }
     }
 
@@ -84,11 +86,26 @@ public class WorldModel implements Serializable {
         enemySpawnTimer--;
 
         // Ajout dynamique de la nourriture
-        if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
+        /*if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
             spawnFood(5); // Ajoute 5 nouvelles pastilles à la fois
             foodSpawnTimer = foodSpawnRate; // Reset du timer
-        }
+        }*/
         foodSpawnTimer--;
+    }
+
+    public void queueFree(Object object) {
+        queuedObjectsForDeletion.add(object);
+        Entity entity = (Entity) object;
+        entity.onDeletion();
+        enemies--;
+    }
+
+    public ArrayList<Object> getQueuedObjectsForDeletion() {
+        return queuedObjectsForDeletion;
+    }
+
+    public void clearQueudObjects() {
+        queuedObjectsForDeletion.clear();
     }
 
     public List<Entity> getTopEntities() {

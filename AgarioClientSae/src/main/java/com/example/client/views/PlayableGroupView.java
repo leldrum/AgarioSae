@@ -36,7 +36,7 @@ public class PlayableGroupView extends Group {
         HelloApplication.root.setTranslateY(-y + HelloApplication.getScreenHeight() / 2);
         camera.setX(x);
         camera.setY(y);
-        System.out.println("X:" + camera.getX() +"Y:" + camera.getY());
+        //System.out.println("X:" + camera.getX() +"Y:" + camera.getY());
     }
 
     public CameraPlayer getCamera() {

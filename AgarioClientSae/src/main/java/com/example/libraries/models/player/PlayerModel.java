@@ -28,32 +28,6 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
         return super.getPosition()[1];
     }
 
-    /*@Override
-    public void moveToward(double[] mousePos) {
-        // Calculer la direction vers la souris
-        double dx = mousePos[0] - this.getX();
-        double dy = mousePos[1] - this.getY();
-
-        // Normaliser la direction
-        double magnitude = Math.sqrt(dx * dx + dy * dy);
-        if (magnitude > 0) {
-            dx /= magnitude;
-            dy /= magnitude;
-        }
-
-        // Appliquer la vitesse
-        dx *= speed;
-        dy *= speed;
-
-        // Modifier la position
-        this.setX(this.getX() + dx);
-        this.setY(this.getY() + dy);
-
-    }*/
-
-
-
-
     /*public double checkCollision() {
         double result = super.checkCollision();
         if (result != 0) {

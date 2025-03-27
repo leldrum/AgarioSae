@@ -2,8 +2,11 @@ package com.example.client.controllers;
 
 import com.example.client.views.EntityView;
 import com.example.client.views.MoveableBodyView;
+import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.WorldModel;
 import com.example.libraries.views.WorldView;
+
+import static com.example.client.app.HelloApplication.root;
 
 public class WorldController {
     private WorldModel world;
@@ -13,14 +16,19 @@ public class WorldController {
 
     private EntityView entityView;
 
-    private MoveableBodyView mbv;
+    private MoveableBodyController mbc;
 
-    public WorldController(WorldModel world, WorldView view, PlayableGroupController pc, EntityView entityView, MoveableBodyView mbv) {
+    public WorldController(WorldModel world, WorldView view, PlayableGroupController pc, EntityView entityView, MoveableBodyController mbc) {
         this.world = world;
         this.view = view;
         this.pc = pc;
         this.entityView = entityView;
-        this.mbv = mbv;
+        this.mbc = mbc;
+    }
+
+    public void freeQueuedObjects() {
+        root.getChildren().removeAll(WorldModel.getInstance().getQueuedObjectsForDeletion());
+        WorldModel.getInstance().clearQueudObjects();
     }
 
     public void update() {
@@ -29,7 +37,13 @@ public class WorldController {
         view.updateLeaderboard(world);
         pc.update();
         entityView.updateView();
-        mbv.updateView();
+        mbc.getView().updateView();
+        mbc.checkCollision();
+
+        freeQueuedObjects();
+
+
+
 
 
         System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());

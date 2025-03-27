@@ -2,6 +2,7 @@ package com.example.client.app;
 
 import com.example.client.controllers.PlayableGroupController;
 import com.example.client.controllers.WorldController;
+import com.example.libraries.models.worldElements.WorldModel;
 import javafx.animation.AnimationTimer;
 
 public class GameTimer extends AnimationTimer {
@@ -26,6 +27,8 @@ public class GameTimer extends AnimationTimer {
 
         if (now - last > interval) {
             last = now;
+
+            WorldModel.getInstance().
 
             worldController.update(); // Met à jour le monde et libère les objets supprimés
             pc.update();

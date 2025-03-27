@@ -1,5 +1,6 @@
 package com.example.client.app;
 
+import com.example.client.controllers.MoveableBodyController;
 import com.example.client.controllers.PlayableGroupController;
 import com.example.client.controllers.WorldController;
 import com.example.client.views.*;
@@ -68,6 +69,7 @@ public class HelloApplication extends Application {
 
         MoveableBodyView mbv = new MoveableBodyView(player);
         mbv.updateView();
+        MoveableBodyController mbc = new MoveableBodyController(player,mbv);
         root.getChildren().add(mbv.getSprite());
 
         PlayableGroupView pv = new PlayableGroupView(player);
@@ -102,7 +104,7 @@ public class HelloApplication extends Application {
             entityView.updateView();
 
             worldView = new WorldView(root);
-            controller = new WorldController(world, worldView,pc,entityView,mbv);
+            controller = new WorldController(world, worldView,pc,entityView,mbc);
 
 
         }
@@ -117,7 +119,7 @@ public class HelloApplication extends Application {
         timer = new GameTimer(controller,pc);
         timer.start();
 
-        System.out.println(world.getEntities());
+        //System.out.println(world.getEntities());
     }
 
     public static void startGameClient(Stage stage) {

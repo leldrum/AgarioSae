@@ -50,6 +50,6 @@ public class Entity implements Serializable {
     }
 
     public void onDeletion() {
-        // Logique de suppression
+
     }
 }
