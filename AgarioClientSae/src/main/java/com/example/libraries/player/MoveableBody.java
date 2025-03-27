@@ -36,6 +36,7 @@ public class MoveableBody extends Entity {
                         if (isSmaller(collider.entity, this.entity)) {
                             World.getInstance().queueFree(collider);
                             foodValue += collider.entity.getRadius() / 20;
+                            increaseSize(foodValue);
                             return foodValue;
                         }
                         System.out.println("Dead");
@@ -48,7 +49,7 @@ public class MoveableBody extends Entity {
     }
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
-        if (circleOne.getRadius() > circleTwo.getRadius() + 2){
+        if (circleOne.getRadius() >= circleTwo.getRadius() + 2){
             return false;
         }
         return true;

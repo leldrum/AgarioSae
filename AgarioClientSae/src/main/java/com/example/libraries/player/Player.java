@@ -63,7 +63,9 @@ public class Player implements IPlayer{
 
 
     public void Update(){
+
         World.getInstance().updateMinimap();
+
     }
 
     public Player divide() {
