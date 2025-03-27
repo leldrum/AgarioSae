@@ -2,7 +2,6 @@ package com.example.libraries.models.worldElements;
 
 import com.example.libraries.models.AI.EatPastilleAI;
 import com.example.libraries.models.AI.IStrategyAI;
-import com.example.libraries.models.AI.RandomMouvementAI;
 import com.example.libraries.models.player.MoveableBodyModel;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class EnemyModel extends MoveableBodyModel {
     private IStrategyAI strategy;
 
     public EnemyModel(double startX, double startY, double weight, IStrategyAI strategy) {
-        super(500, 500, weight);
+        super(startX, startY, weight);
         this.strategy = strategy;
         this.closestEntityDistance = Double.MAX_VALUE;
         this.closestEntity = null;
