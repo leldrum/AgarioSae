@@ -1,6 +1,7 @@
 package com.example.libraries.models.worldElements;
 
 import com.example.libraries.models.factories.FactoryEnemy;
+import com.example.libraries.models.factories.FactoryFood;
 import com.example.libraries.models.player.PlayableGroupModel;
 import com.example.libraries.models.player.PlayerModel;
 
@@ -52,6 +53,13 @@ public class WorldModel implements Serializable {
     }
 
     public void updateWorld() {
+        FactoryFood factoryFood = new FactoryFood();
+        Random rand2 = new Random();
+        double x2 = rand2.nextDouble() * mapWidth;
+        double y2 = rand2.nextDouble() * mapHeight;
+        Food food = factoryFood.create(x2,y2, 10);
+        entities.add(food);
+
         if (enemies < 5 && enemySpawnTimer <= 0) {
             FactoryEnemy factoryEnemy = new FactoryEnemy();
 
@@ -65,6 +73,7 @@ public class WorldModel implements Serializable {
         }
         enemySpawnTimer--;
     }
+
 
     public List<Entity> getTopEntities() {
         return entities.stream()
