@@ -68,7 +68,7 @@ public class MenuStart extends VBox {
     private void handleStartButton() {
         System.out.println("Local button clicked");
         HelloApplication.gameStarted = true;
-        HelloApplication.openConfigMenu(stage);  // ← Affiche le menu de configuration au lieu de démarrer le jeu directement.
+        MenuConfig.openConfigMenu(stage);  // ← Affiche le menu de configuration au lieu de démarrer le jeu directement.
     }
 
 
