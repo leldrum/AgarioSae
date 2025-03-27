@@ -3,7 +3,7 @@ package com.example.libraries.models.worldElements;
 import java.util.ArrayList;
 
 public class QuadTree {
-    final int MAX_CAPACITY = 4;
+    final int MAX_CAPACITY = 5;
     int level = 0;
     QuadTree northWest = null;
     QuadTree northEast = null;
@@ -18,26 +18,6 @@ public class QuadTree {
         this.boundary = boundary;
     }
 
-    /* Traveling the Graph using Depth First Search */
-    static void dfs(QuadTree tree) {
-        if (tree == null)
-            return;
-
-        /*System.out.printf("\nLevel = %d [X1=%d Y1=%d] \t[X2=%d Y2=%d] ",
-                tree.level, tree.boundary.getxMin(), tree.boundary.getyMin(),
-                tree.boundary.getxMax(), tree.boundary.getyMax());*/
-
-        for (Entity node : tree.nodes) {
-            /*System.out.printf(" \n\t  x=%d y=%d", (int) node.getPosition()[0], (int) node.getPosition()[1]);*/
-        }
-        if (tree.nodes.size() == 0) {
-            System.out.printf(" \n\t  Leaf Node.");
-        }
-        dfs(tree.northWest);
-        dfs(tree.northEast);
-        dfs(tree.southWest);
-        dfs(tree.southEast);
-    }
 
     void split() {
         int xOffset = this.boundary.getxMin() + (this.boundary.getxMax() - this.boundary.getxMin()) / 2;

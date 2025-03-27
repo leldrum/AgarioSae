@@ -1,6 +1,8 @@
 package com.example.libraries.models.worldElements;
 
+import com.example.libraries.models.factories.Factory;
 import com.example.libraries.models.factories.FactoryEnemy;
+import com.example.libraries.models.factories.FactoryFood;
 import com.example.libraries.models.player.PlayableGroupModel;
 import com.example.libraries.models.player.PlayerModel;
 
@@ -35,6 +37,10 @@ public class WorldModel implements Serializable {
         return instance;
     }
 
+    public static void setInstance(WorldModel deserializeWorldFromString) {
+        instance = deserializeWorldFromString;
+    }
+
 
     public PlayableGroupModel getPlayer() {
         return this.player;
@@ -57,9 +63,9 @@ public class WorldModel implements Serializable {
         for (int i = 0; i < count; i++) {
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
-            double size = 0.5;
+            double size = 10;
 
-            Food food = new Food(x, y, size);
+            Food food = new FactoryFood().create(x, y, size);
             entities.add(food);
         }
     }

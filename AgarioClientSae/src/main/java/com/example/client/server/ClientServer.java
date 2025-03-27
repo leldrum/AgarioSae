@@ -2,6 +2,7 @@ package com.example.client.server;
 
 import com.example.client.app.HelloApplication;
 import com.example.client.app.MenuStart;
+import com.example.client.controllers.WorldController;
 import com.example.libraries.models.worldElements.WorldModel;
 import com.example.libraries.utils.SerializationUtils;
 
@@ -34,7 +35,7 @@ public class ClientServer {
 
     private void processInitData(String data) throws IOException, ClassNotFoundException {
         // Exemple : "ID:1,WORLD_SIZE:1000,FOOD:100,PLAYERS:5"
-        System.out.println(data);
+        System.out.println("Données reçues : " + data);
         String[] parts = data.split(",");
         for (String part : parts) {
             if (part.startsWith("ID:")) {
@@ -43,7 +44,7 @@ public class ClientServer {
             if (part.startsWith("WORLD:")) {
                 SerializationUtils.deserializeWorldFromString(part.split(":")[1]);
                 //WorldModel.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
-                //System.out.println("Taille du mondeeeeeeee: " + World.getInstance().getMapLimitWidth() + "x" + World.getInstance().getMapLimitHeight());
+                System.out.println("Taille du mondeeeeeeee: " + WorldModel.getInstance().getMapWidth() + "x" + WorldModel.getInstance().getMapHeight());
             }
             /*if (sprite.startsWith("Taille:")) {
                 System.out.println("Taille du monde: " + sprite.split(":")[1]);
