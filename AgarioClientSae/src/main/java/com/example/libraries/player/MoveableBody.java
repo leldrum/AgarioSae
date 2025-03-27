@@ -2,6 +2,7 @@ package com.example.libraries.player;
 
 import com.example.libraries.worldElements.Entity;
 import com.example.client.app.HelloApplication;
+import com.example.libraries.worldElements.SpecialFood;
 import com.example.libraries.worldElements.World;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,9 +15,19 @@ public class MoveableBody extends Entity {
     public double Speed = 1.5; // self explanatory, the player's speed
     protected Group group;
 
+    private double defaultSpeed = Speed;
+
     protected MoveableBody(Group group, double initialSize){
         super(group, initialSize);
         this.group = group;
+    }
+
+    public void setSpeed(double speed) {
+        Speed = speed;
+    }
+
+    public double getSpeed() {
+        return Speed;
     }
 
     public double checkCollision(){
@@ -32,6 +43,10 @@ public class MoveableBody extends Entity {
 
                         double foodValue = 0.5;
 
+                        if (collider instanceof SpecialFood) {
+                            ((SpecialFood) collider).applyEffect(this);
+                        }
+
                         if (isSmaller(collider.entity, this.entity)) {
                             World.queueFree(collider);
                             foodValue += collider.entity.getRadius() / 20;
@@ -46,6 +61,23 @@ public class MoveableBody extends Entity {
         }
         return 0;
     }
+
+    public void applySpeedBoost(double factor, int duration) {
+       Speed = defaultSpeed;
+        Speed *= factor;
+        System.out.println("Speed Boost activé ! Nouvelle vitesse : " + Speed);
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(duration);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Speed = defaultSpeed;
+            System.out.println("Speed Boost terminé, retour à la vitesse normale.");
+        }).start();
+    }
+
 
     private Boolean isSmaller(Circle circleOne, Circle circleTwo){
         if (circleOne.getRadius() >= circleTwo.getRadius() + 2){

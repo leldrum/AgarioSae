@@ -9,6 +9,7 @@ import com.example.libraries.factories.FactoryEnemy;
 import com.example.libraries.factories.FactoryFood;
 import com.example.libraries.player.MoveableBody;
 import com.example.libraries.player.Player;
+import com.example.libraries.worldElements.SpecialFood;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class World implements Serializable{
 
@@ -149,6 +151,23 @@ public class World implements Serializable{
     public void createFood() {
         FactoryFood factoryFood = new FactoryFood();
         Food food = factoryFood.create(root, 10);
+
+        Random rand = new Random();
+
+        if (rand.nextInt(6) == 0) {
+            SpecialFood specialFood = new SpecialFood(root, 10, true, 1.5, 3000);
+            specialFood.setName("Speed Power");
+            addEntity(specialFood);
+        }
+
+        if (rand.nextInt(10) == 0) {
+            SpecialFood specialFood = new SpecialFood(root, 15, false, 1.5, 3000);
+            specialFood.setName("Division Power");
+            addEntity(specialFood);
+        }
+
+
+
 
     }
 
