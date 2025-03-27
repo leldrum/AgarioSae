@@ -10,7 +10,7 @@ public class Entity implements Serializable {
 
     private double x;
     private double y;
-    private double weight;
+    protected double weight;
     private int r, g, b;
 
     public Entity(double x, double y, double weight) {
@@ -38,8 +38,15 @@ public class Entity implements Serializable {
     public int getG() { return g; }
     public int getB() { return b; }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     public void update() {
-        // Logique de mise à jour (déplacement, actions, etc.)
     }
 
     public void onDeletion() {

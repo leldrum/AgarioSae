@@ -3,13 +3,14 @@ package com.example.client.controllers;
 import com.example.client.app.HelloApplication;
 import com.example.client.views.PlayableGroupView;
 import com.example.libraries.models.player.PlayableGroupModel;
+import com.example.libraries.models.player.PlayerModel;
 
 
 public class PlayableGroupController {
-    private PlayableGroupModel model;
+    private PlayerModel model;
     private PlayableGroupView view;
 
-    public PlayableGroupController(PlayableGroupModel model, PlayableGroupView view) {
+    public PlayableGroupController(PlayerModel model, PlayableGroupView view) {
         this.model = model;
         this.view = view;
     }
@@ -24,6 +25,8 @@ public class PlayableGroupController {
             double x = model.getPosition()[0];
             double y = model.getPosition()[1];
             view.updateCameraPosition(x, y);
+            model.moveToward(mousePos);
+            System.out.println("mouse position:" + mousePos[0]+";"+ mousePos[1]);
         }
     }
 

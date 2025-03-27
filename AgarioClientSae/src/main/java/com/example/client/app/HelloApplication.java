@@ -1,5 +1,6 @@
 package com.example.client.app;
 
+import com.example.client.controllers.PlayableGroupController;
 import com.example.client.controllers.WorldController;
 import com.example.client.views.*;
 import com.example.libraries.models.player.PlayerModel;
@@ -54,18 +55,27 @@ public class HelloApplication extends Application {
     public static void startGame(Stage stage) {
         System.out.println("Démarrage du jeu");
 
+
         world = WorldModel.getInstance();
         root = new Group();
-        worldView = new WorldView(root);
-        controller = new WorldController(world, worldView);
-
         // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         Random rand = new Random();
         double x = rand.nextDouble() * world.getMapWidth();
         double y = rand.nextDouble() * world.getMapHeight();
-        player = factoryPlayer.create(x, y, 50);
+        player = factoryPlayer.create(650, 350, 50);
         world.addEntity(player);
+
+        MoveableBodyView mbv = new MoveableBodyView(player);
+        mbv.updateView();
+        root.getChildren().add(mbv.getSprite());
+
+        PlayableGroupView pv = new PlayableGroupView(player);
+        PlayableGroupController pc = new PlayableGroupController(player, pv);
+
+
+
+
 
         world = WorldModel.getInstance();
         world.spawnFood(100); // Générer 100 pastilles de nourriture
@@ -88,6 +98,13 @@ public class HelloApplication extends Application {
             }
             EntityView entityView = new EntityView(entity);
             root.getChildren().add(entityView);
+
+            entityView.updateView();
+
+            worldView = new WorldView(root);
+            controller = new WorldController(world, worldView,pc,entityView,mbv);
+
+
         }
 
 
@@ -97,7 +114,7 @@ public class HelloApplication extends Application {
         stage.show();
 
         // Boucle de jeu
-        timer = new GameTimer(controller);
+        timer = new GameTimer(controller,pc);
         timer.start();
 
         System.out.println(world.getEntities());
