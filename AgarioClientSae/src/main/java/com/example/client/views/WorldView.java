@@ -1,11 +1,13 @@
 package com.example.libraries.views;
 
 import com.example.libraries.models.worldElements.Entity;
+import com.example.libraries.models.worldElements.Food;
 import com.example.libraries.models.worldElements.WorldModel;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 import java.util.List;
@@ -52,6 +54,20 @@ public class WorldView {
             Entity e = topEntities.get(i);
             gc.fillText((i + 1) + ". " + (int) e.getWeight(), 20, yOffset);
             yOffset += 20;
+        }
+    }
+
+    public void update(List<Entity> entities) {
+        root.getChildren().clear();
+
+        for (Entity entity : entities) {
+            if (entity instanceof Food) {
+                Circle foodCircle = new Circle(entity., Color.GREEN);
+                foodCircle.setCenterX(entity.entity.getCenterX());
+                foodCircle.setCenterY(entity.entity.getCenterY());
+                root.getChildren().add(foodCircle);
+            }
+            // Ajoutez des cas similaires pour les autres types d'entités
         }
     }
 

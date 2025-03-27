@@ -65,26 +65,21 @@ public class HelloApplication extends Application {
         double x = rand.nextDouble() * world.getMapWidth();
         double y = rand.nextDouble() * world.getMapHeight();
         player = factoryPlayer.create(x, y, 50);
+
+
+        if (player == null) {
+            System.err.println("ERREUR : Le joueur n'a pas été créé");
+            return;
+        }
+
         world.addEntity(player);
 
-        // Ajout des entités visuelles
-        for (Entity entity : world.getEntities()) {
-            if(entity instanceof Food) {
-                FoodView foodView = new FoodView((Food) entity);
-                root.getChildren().add(foodView);
-            }
-            /*if(entity instanceof PlayerModel) {
-                PlayableGroupView playerView = new PlayableGroupView((PlayerModel) entity);
-                root.getChildren().add(playerView);
-            }*/
 
-            if(entity instanceof EnemyModel) {
-                EnemyView enemyView = new EnemyView((EnemyModel) entity);
-                root.getChildren().add(enemyView.getSprite());
-            }
-            EntityView entityView = new EntityView(entity);
-            root.getChildren().add(entityView);
-        }
+
+
+        EntityView entityView = new EntityView(root, player);
+        root.getChildren().add(entityView);
+
 
 
         // Initialisation de la scène

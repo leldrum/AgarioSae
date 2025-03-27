@@ -11,7 +11,7 @@ public class EntityView extends Group {
     private Circle circle;
     private Label label;
 
-    public EntityView(Entity entity) {
+    public EntityView(Group group, Entity entity) {
         this.entity = entity;
 
         circle = new Circle(10 * Math.sqrt(entity.getWeight()),
@@ -24,7 +24,7 @@ public class EntityView extends Group {
         label.layoutXProperty().bind(circle.centerXProperty().subtract(label.widthProperty().divide(2)));
         label.layoutYProperty().bind(circle.centerYProperty().subtract(label.heightProperty().divide(2)));
 
-        getChildren().addAll(circle, label);
+        group.getChildren().addAll(circle, label);
     }
 
     public void updateView() {

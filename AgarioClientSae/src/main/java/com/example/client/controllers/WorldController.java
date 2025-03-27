@@ -14,8 +14,9 @@ public class WorldController {
 
     public void update() {
         world.updateWorld();
-        view.updateMinimap(world);
-        view.updateLeaderboard(world);
+        //view.updateMinimap(world);
+        //view.updateLeaderboard(world);
+        view.update(world.getEntities());
         System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());
     }
 

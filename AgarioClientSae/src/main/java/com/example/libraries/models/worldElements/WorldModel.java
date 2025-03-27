@@ -1,6 +1,7 @@
 package com.example.libraries.models.worldElements;
 
 import com.example.libraries.models.factories.FactoryEnemy;
+import com.example.libraries.models.factories.FactoryFood;
 import com.example.libraries.models.player.PlayableGroupModel;
 import com.example.libraries.models.player.PlayerModel;
 
@@ -21,6 +22,9 @@ public class WorldModel implements Serializable {
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
     private int enemies = 0;
+
+    public int maxTimer = 2;
+    public int timer = maxTimer;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,6 +57,7 @@ public class WorldModel implements Serializable {
 
     public void updateWorld() {
         if (enemies < 5 && enemySpawnTimer <= 0) {
+            System.out.println("creer");
             FactoryEnemy factoryEnemy = new FactoryEnemy();
 
             Random rand = new Random();
@@ -63,7 +68,23 @@ public class WorldModel implements Serializable {
             enemies++;
             enemySpawnTimer = enemySpawnRate;
         }
+        System.out.println("Enemy spawn timer before decrement: " + enemySpawnTimer);
         enemySpawnTimer--;
+        System.out.println("Enemy spawn timer after decrement: " + enemySpawnTimer);
+        if (entities.size() < 200 * (getMapWidth() * getMapHeight() / (2000 * 2000))) {
+            createFood();
+        }
+    }
+
+    private void createFood() {
+        FactoryFood factoryFood = new FactoryFood();
+        Random rand = new Random();
+
+        double x = rand.nextDouble() * mapWidth;
+        double y = rand.nextDouble() * mapHeight;
+
+        Food food = factoryFood.create(x, y, 10); // Taille 10 pour la nourriture
+        entities.add(food);
     }
 
     public List<Entity> getTopEntities() {
