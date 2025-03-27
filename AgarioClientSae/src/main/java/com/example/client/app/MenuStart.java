@@ -9,6 +9,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
+import static com.example.client.app.HelloApplication.startGameWithServer;
+
 public class MenuStart extends VBox {
 
     static Stage stage;
@@ -105,7 +107,16 @@ public class MenuStart extends VBox {
 
         // Créer une instance du ClientServer et se connecter
         System.out.println("Connexion au serveur " + serverIp + ":" + port);
-        ClientServer clientServer = new ClientServer(serverIp, port);
+        try {
+            ClientServer clientServer = new ClientServer(serverIp, port); // Connexion au serveur
+
+            // Une fois la connexion établie, lancer la fenêtre du jeu
+            startGameWithServer(stage, serverIp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur Erreur de connexion au serveur.");
+        }
 
     }
 

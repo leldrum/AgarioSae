@@ -1,31 +1,34 @@
 package com.example.client.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 
 public class NetworkListener implements Runnable {
-    private BufferedReader input;
+    private ObjectInputStream input;  // Utilise ObjectInputStream au lieu de BufferedReader
 
-    public NetworkListener(BufferedReader input) {
+    public NetworkListener(ObjectInputStream input) {
         this.input = input;
     }
 
     @Override
     public void run() {
         try {
-            String serverMessage;
-            while ((serverMessage = input.readLine()) != null) {
+            Object serverMessage;
+            while ((serverMessage = input.readObject()) != null) {
                 processServerMessage(serverMessage);
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void processServerMessage(String message) {
-        System.out.println("Mise à jour du serveur: " + message);
-        // Ici, on pourrait mettre à jour les entités du jeu (joueurs, pastilles, etc.)
-        //String[] parts = data.split(",");
+    private void processServerMessage(Object message) {
+        if (message instanceof String) {
+            // Si le message est une chaîne de caractères
+            System.out.println("Mise à jour du serveur: " + message);
+        } else {
+            // Par défaut, affiche un message pour les autres types d'objets
+            System.out.println("Message du serveur reçu: " + message);
+        }
     }
 }
-

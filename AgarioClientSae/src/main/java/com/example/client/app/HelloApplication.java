@@ -1,5 +1,6 @@
 package com.example.client.app;
 
+import com.example.client.server.ClientServer;
 import com.example.libraries.player.PlayableGroup;
 import com.example.libraries.worldElements.World;
 import com.example.libraries.factories.FactoryPlayer;
@@ -15,6 +16,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+
+    private static ClientServer clientServer;
 
     private static double ScreenWidth = 1280;
     private static double ScreenHeight = 720;
@@ -65,31 +68,20 @@ public class HelloApplication extends Application {
 
     public static void startGame(Stage stage) {
         System.out.println("Démarrage du jeu");
-
-        // Initialisation du monde
         world = World.getInstance();
         root = World.getRoot();
         world.setMapLimitWidth(mapWidth);
         world.setMapLimitHeight(mapHeight);
         world.setEnemiesMax(enemyCount);
-
-        // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         player = factoryPlayer.create(root, 50);
-
         if (player == null) {
             System.err.println("ERREUR : Le joueur n'a pas été créé");
             return;
         }
-
-
         world.addPlayer(player);
-
         timer = new GameTimer();
         timer.start();
-        // Gestion de la minimap
-
-        // Création de la scène
         scene = new Scene(root, ScreenWidth, ScreenHeight);
         scene.setCamera(player.getCamera());
         scene.setOnKeyPressed(event -> {
@@ -102,15 +94,72 @@ public class HelloApplication extends Application {
                     break;
             }
         });
-
-        // Affichage
         stage.setTitle("Agar.io");
         stage.setScene(scene);
-
-
         stage.setResizable(false);
         stage.show();
     }
+
+    public static void startGameWithServer(Stage stage, String serverIp) {
+        if (gameStarted) {
+            System.out.println("Le jeu est déjà en cours.");
+            return;
+        }
+        gameStarted = true;
+
+        System.out.println("Connexion au serveur " + serverIp);
+
+        // Connexion au serveur
+        try {
+            clientServer = new ClientServer(serverIp, 1234); // Utilise l'IP et le port corrects
+
+            // Initialiser le monde et le joueur
+            world = World.getInstance();
+            root = World.getRoot(); // On s'assure que root est bien initialisé
+
+            if (root == null) {
+                System.err.println("ERREUR : Le Group 'root' est nul");
+                return;
+            }
+
+            world.setMapLimitWidth(mapWidth);
+            world.setMapLimitHeight(mapHeight);
+            world.setEnemiesMax(enemyCount);
+
+            FactoryPlayer factoryPlayer = new FactoryPlayer();
+            player = factoryPlayer.create(root, 50);
+            if (player == null) {
+                System.err.println("ERREUR : Le joueur n'a pas été créé");
+                return;
+            }
+
+            world.addPlayer(player);
+            timer = new GameTimer();
+            timer.start();
+            scene = new Scene(root, ScreenWidth, ScreenHeight);
+            scene.setCamera(player.getCamera());
+            scene.setOnKeyPressed(event -> {
+                switch (event.getCode()) {
+                    case SPACE:
+                        player.divide();
+                        System.out.println("Barre espace appuyée");
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            // Affichage
+            stage.setTitle("Agar.io");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void startGameClient(Stage stage) {
         if (gameStarted) {
@@ -118,7 +167,7 @@ public class HelloApplication extends Application {
             return;
         }
         gameStarted = true;
-        startGame(stage);
+        startGameWithServer(stage, "127.0.0.1");
 
     }
 

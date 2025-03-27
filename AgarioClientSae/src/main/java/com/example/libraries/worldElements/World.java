@@ -23,42 +23,40 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class World implements Serializable{
+public class World implements Serializable {
 
     private static World instance = new World();
 
     private ArrayList<Entity> entities = new ArrayList<>();
-
     private static final long serialVersionUID = 1L;
-    private  double mapLimitWidth = 2000;
-    private  double mapLimitHeight = 2000;
 
+    private double mapLimitWidth = 2000;
+    private double mapLimitHeight = 2000;
     private int enemySpawnTimer = 100;
     private int enemySpawnRate = 100;
     public static int enemies = 0;
-
     public int enemiesMax;
 
     private PlayableGroup player;
-
     private static ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
+
     public int maxTimer = 2;
     public int timer = maxTimer;
-    private QuadTree quadTree;
-    private Group root;
+    private transient QuadTree quadTree;
+    private static transient Group root;
 
-    private Minimap minimap;
-    private Leaderboard leaderboard;
+    private transient Minimap minimap;
+    private transient Leaderboard leaderboard;
 
-
-    private World() {
-        this.root = new Group();
-        this.minimap = new Minimap(root);
-        this.leaderboard = new Leaderboard(root);
-
+    public World() {
+        root = new Group();
+        initializeUIElements();
     }
 
     public static World getInstance() {
+        if (instance == null) {
+            instance = new World();
+        }
         return instance;
     }
 
@@ -74,19 +72,16 @@ public class World implements Serializable{
         this.mapLimitWidth = mapWidth;
     }
 
-    public void setEnemiesMax(int enemies){
+    public void setEnemiesMax(int enemies) {
         this.enemiesMax = enemies;
     }
-
-
 
     public PlayableGroup getPlayer() {
         return this.player;
     }
 
-    public void addPlayer(PlayableGroup p){
+    public void addPlayer(PlayableGroup p) {
         player = p;
-
     }
 
     public double getMapLimitWidth() {
@@ -97,27 +92,52 @@ public class World implements Serializable{
         return mapLimitHeight;
     }
 
+    // Initialisation des éléments UI minimap et leaderboard
+    private void initializeUIElements() {
+        if (minimap == null) {
+            minimap = new Minimap(root);
+            System.out.println("✅ Minimap initialisée !");
+        }
+        if (leaderboard == null) {
+            leaderboard = new Leaderboard(root);
+            System.out.println("✅ Leaderboard initialisé !");
+        }
+    }
+
+    // Correction de la désérialisation pour éviter que minimap et leaderboard soient null
+    private Object readResolve() {
+        System.out.println("♻️ readResolve() : Réinitialisation après désérialisation...");
+        root = new Group();
+        initializeUIElements();
+        return this;
+    }
 
     public void updateMinimap() {
-        minimap.updateMinimap(player);
+        if (minimap != null && player != null) {
+            minimap.updateMinimap(player);
+        } else {
+            System.out.println("⚠️ Erreur : minimap ou player est null.");
+        }
     }
 
     public void updateLeaderboard() {
-        leaderboard.updateLeaderboard(player, entities);
+        if (leaderboard != null) {
+            leaderboard.updateLeaderboard(player, entities);
+        } else {
+            System.out.println("⚠️ Erreur : leaderboard est null.");
+        }
     }
-
-
 
     // Mise à jour du monde (appelée à chaque frame)
     public void Update() {
         if (timer <= 0) {
-            if (root.getChildren().size() < 200*(getMapLimitWidth()*getMapLimitHeight()/(2000*2000))  ) {
+            if (root.getChildren().size() < 200 * (getMapLimitWidth() * getMapLimitHeight() / (2000 * 2000))) {
                 createFood();
             }
             timer = maxTimer;
         }
 
-        if (enemies < enemiesMax && enemySpawnTimer <= 0){
+        if (enemies < enemiesMax && enemySpawnTimer <= 0) {
             FactoryEnemy factoryEnemy = new FactoryEnemy();
             Enemy enemy = factoryEnemy.create(root, 50);
             enemy.setName(NameGenerator.generateRandomName());
@@ -126,18 +146,17 @@ public class World implements Serializable{
         }
 
         enemySpawnTimer--;
-
         timer--;
 
         updateEnemy();
-        updateMinimap(); // Mise à jour de la minimap en temps réel
+        updateMinimap();
         updateLeaderboard();
-
         updateQuadTreeEntities();
     }
 
     public static void setInstance(World world) {
         instance = world;
+        instance.initializeUIElements();
     }
 
     public void addEntity(Entity entity) {
@@ -151,7 +170,6 @@ public class World implements Serializable{
     public void createFood() {
         FactoryFood factoryFood = new FactoryFood();
         Food food = factoryFood.create(root, 10);
-
         Random rand = new Random();
 
         if (rand.nextInt(6) == 0) {
@@ -165,25 +183,20 @@ public class World implements Serializable{
             specialFood.setName("Division Power");
             addEntity(specialFood);
         }
-
-
-
-
     }
 
     public void reset() {
         instance = new World();
+        instance.initializeUIElements();
     }
 
     public static void queueFree(Object object) {
         queuedObjectsForDeletion.add(object);
-        Entity entity = (Entity) object;
-        entity.onDeletion();
+        if (object instanceof Entity entity) {
+            entity.onDeletion();
+        }
         enemies--;
-        // Retirer de l'arbre QuadTree
-
     }
-
 
     public void freeQueuedObjects() {
         root.getChildren().removeAll(queuedObjectsForDeletion);
@@ -192,8 +205,7 @@ public class World implements Serializable{
 
     private void updateEnemy() {
         for (Node entity : root.getChildren()) {
-            if (entity instanceof Enemy) {
-                Enemy enemy = (Enemy) entity;
+            if (entity instanceof Enemy enemy) {
                 enemy.checkCollision();
                 enemy.Update();
             }
@@ -202,14 +214,10 @@ public class World implements Serializable{
 
     private void updateQuadTreeEntities() {
         quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
-
         for (Entity entity : entities) {
             int x = (int) entity.entity.getCenterX();
             int y = (int) entity.entity.getCenterY();
             quadTree.insert(x, y, entity);
         }
     }
-
-
-
 }
