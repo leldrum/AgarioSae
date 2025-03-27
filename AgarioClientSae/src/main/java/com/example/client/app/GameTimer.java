@@ -9,7 +9,7 @@ public class GameTimer extends AnimationTimer {
     private final WorldController worldController;
 
     private final PlayableGroupController pc;
-    private double framesPerSecond = 30;
+    private double framesPerSecond = 120;
     private double interval = 1000000000 / framesPerSecond;
     private double last = 0;
 
