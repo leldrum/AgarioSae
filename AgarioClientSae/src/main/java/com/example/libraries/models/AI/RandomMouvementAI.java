@@ -1,7 +1,8 @@
-package com.example.libraries.AI;
+package com.example.libraries.models.AI;
 
-import com.example.libraries.worldElements.Enemy;
-import com.example.libraries.worldElements.World;
+import com.example.libraries.models.worldElements.EnemyModel;
+import com.example.libraries.models.worldElements.WorldModel;
+
 import java.util.Random;
 
 
@@ -17,7 +18,7 @@ public class RandomMouvementAI implements IStrategyAI{
     }
 
     @Override
-    public double[] move(Enemy enemy) {
+    public double[] move(EnemyModel enemy) {
         updateCounter++;
 
         Random random = new Random();
@@ -34,11 +35,11 @@ public class RandomMouvementAI implements IStrategyAI{
 
     private void setNewTarget() {
         // Définit une nouvelle position cible aléatoire dans les limites de la carte
-        targetX = (random.nextDouble() * World.getInstance().getMapLimitWidth() * 2) - World.getInstance().getMapLimitWidth();
-        targetY = (random.nextDouble() * World.getInstance().getMapLimitHeight() * 2) - World.getInstance().getMapLimitHeight();
+        targetX = (random.nextDouble() * WorldModel.getInstance().getMapWidth() * 2) - WorldModel.getInstance().getMapWidth();
+        targetY = (random.nextDouble() * WorldModel.getInstance().getMapHeight() * 2) - WorldModel.getInstance().getMapHeight();
     }
 
-    private boolean isNearTarget(Enemy enemy) {
+    private boolean isNearTarget(EnemyModel enemy) {
         double dx = targetX - enemy.getPosition()[0];
         double dy = targetY - enemy.getPosition()[1];
         double distance = Math.sqrt(dx * dx + dy * dy);

@@ -1,4 +1,4 @@
-package com.example.libraries.worldElements;
+package com.example.libraries.models.worldElements;
 
 public class Boundary {
     int xMin, yMin, xMax, yMax;

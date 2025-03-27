@@ -1,24 +1,25 @@
-package com.example.libraries.AI;
+package com.example.libraries.models.AI;
 
-import com.example.libraries.worldElements.Enemy;
-import com.example.libraries.worldElements.World;
-import com.example.libraries.worldElements.Food;
+import com.example.libraries.models.worldElements.EnemyModel;
+import com.example.libraries.models.worldElements.Entity;
+import com.example.libraries.models.worldElements.Food;
+import com.example.libraries.models.worldElements.WorldModel;
 import javafx.scene.Node;
 
 public class EatPastilleAI implements IStrategyAI {
 
     @Override
-    public double[] move(Enemy enemy) {
+    public double[] move(EnemyModel enemy) {
 
-        World world = World.getInstance();
+        WorldModel world = WorldModel.getInstance();
         // Initialiser la distance minimale à une valeur élevée
         double minDistance = Double.MAX_VALUE;
         Food closestFood = null;
 
         // Parcourir tous les nœuds de la scène pour trouver les pastilles de nourriture
-        for (Node node : world.getRoot().getChildren()) {
-            if (node instanceof Food) {
-                Food food = (Food) node;
+        for (Entity entity : WorldModel.getInstance().getEntities()) {
+            if (entity instanceof Food) {
+                Food food = (Food) entity;
                 double distance = enemy.distanceTo(food.getPosition());
 
                 // Vérifier si cette pastille est plus proche que la précédente

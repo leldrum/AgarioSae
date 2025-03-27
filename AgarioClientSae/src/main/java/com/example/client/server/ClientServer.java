@@ -1,8 +1,9 @@
 package com.example.client.server;
 
 import com.example.client.app.HelloApplication;
+import com.example.client.app.MenuStart;
+import com.example.libraries.models.worldElements.WorldModel;
 import com.example.libraries.utils.SerializationUtils;
-import com.example.libraries.worldElements.World;
 
 import java.io.*;
 import java.net.Socket;
@@ -41,8 +42,8 @@ public class ClientServer {
             }
             if (part.startsWith("WORLD:")) {
                 SerializationUtils.deserializeWorldFromString(part.split(":")[1]);
-                World.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
-                System.out.println("Taille du mondeeeeeeee: " + World.getInstance().getMapLimitWidth() + "x" + World.getInstance().getMapLimitHeight());
+                //WorldModel.setInstance(SerializationUtils.deserializeWorldFromString(part.split(":")[1]));
+                //System.out.println("Taille du mondeeeeeeee: " + World.getInstance().getMapLimitWidth() + "x" + World.getInstance().getMapLimitHeight());
             }
             /*if (sprite.startsWith("Taille:")) {
                 System.out.println("Taille du monde: " + sprite.split(":")[1]);
@@ -53,7 +54,7 @@ public class ClientServer {
         System.out.println("Connecté avec ID: " + playerId);
 
         javafx.application.Platform.runLater(() -> {
-           // HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
+           HelloApplication.startGameClient(MenuStart.getStage()); // Utilisez une méthode spécifique pour démarrer le jeu
         });
     }
 

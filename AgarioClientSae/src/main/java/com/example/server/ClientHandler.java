@@ -2,7 +2,7 @@ package com.example.server;
 
 
 import com.example.libraries.utils.SerializationUtils;
-import com.example.libraries.worldElements.World;
+import com.example.libraries.models.worldElements.WorldModel;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -29,9 +29,8 @@ public class ClientHandler implements Runnable {
 
             server.addClient(out);
 
-            server.sendMessage("WORLD:"+ SerializationUtils.serializeWorldToString(World.getInstance()), out);
-            System.out.println("Taille : " + World.getInstance().getMapLimitHeight() + ";" + World.getInstance().getMapLimitWidth());
-            System.out.println("Group : " + World.getInstance().getRoot());
+            server.sendMessage("WORLD:"+ SerializationUtils.serializeWorldToString(WorldModel.getInstance()), out);
+            System.out.println("Taille : " + WorldModel.getInstance().getMapHeight() + ";" + WorldModel.getInstance().getMapWidth());
         }  catch (SocketException e) {
             System.err.println("Connection reset by client: " + socket);
         } catch (Exception e) {

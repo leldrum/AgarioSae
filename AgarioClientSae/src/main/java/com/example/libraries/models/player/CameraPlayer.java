@@ -1,4 +1,4 @@
-package com.example.libraries.player;
+package com.example.libraries.models.player;
 
 import javafx.scene.ParallelCamera;
 

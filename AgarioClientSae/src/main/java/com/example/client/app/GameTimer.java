@@ -1,21 +1,19 @@
 package com.example.client.app;
 
-import com.example.libraries.worldElements.Entity;
-import com.example.libraries.worldElements.World;
+import com.example.client.controllers.WorldController;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Node;
 
 public class GameTimer extends AnimationTimer {
 
-    private double framesPerSecond = 60;
+    private final WorldController worldController;
+    private double framesPerSecond = 30;
     private double interval = 1000000000 / framesPerSecond;
     private double last = 0;
 
-    private World world;
-
-    public GameTimer(){
-        this.world = World.getInstance();
+    public GameTimer(WorldController controller){
+        this.worldController = controller;
     }
+
     @Override
     public void handle(long now) {
         if (last == 0) {
@@ -25,17 +23,7 @@ public class GameTimer extends AnimationTimer {
         if (now - last > interval) {
             last = now;
 
-            world.freeQueuedObjects();
-
-            for (Node node : world.getRoot().getChildren()) {
-                if (node instanceof Entity) {
-                    Entity entity = (Entity) node;
-                    entity.Update();
-                }
-            }
-            world.Update(); //calls update function every frame
-            world.getPlayer().Update(); //calls update function every frame
-
+            worldController.update(); // Met à jour le monde et libère les objets supprimés
         }
     }
 }

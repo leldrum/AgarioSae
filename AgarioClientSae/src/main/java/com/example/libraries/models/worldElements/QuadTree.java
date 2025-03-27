@@ -1,4 +1,4 @@
-package com.example.libraries.worldElements;
+package com.example.libraries.models.worldElements;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class QuadTree {
                 tree.boundary.getxMax(), tree.boundary.getyMax());*/
 
         for (Entity node : tree.nodes) {
-            /*System.out.printf(" \n\t  x=%d y=%d", (int) node.entity.getCenterX(), (int) node.entity.getCenterY());*/
+            /*System.out.printf(" \n\t  x=%d y=%d", (int) node.getPosition()[0], (int) node.getPosition()[1]);*/
         }
         if (tree.nodes.size() == 0) {
             System.out.printf(" \n\t  Leaf Node.");
@@ -55,18 +55,18 @@ public class QuadTree {
 
 
         for (Entity entity : tempNodes) {
-            /*System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
-                    (int) entity.entity.getCenterY() + ") after split...");*/
+            /*System.out.println("Redistributing entity (" + (int) entity.getPosition()[0] + "," +
+                    (int) entity.getPosition()[1] + ") after split...");*/
 
             // Insert dans le quadrant approprié
-            if (this.northWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.northWest.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.northEast.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.northEast.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.southWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.southWest.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.southEast.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.southEast.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
+            if (this.northWest.boundary.inRange((int) entity.getPosition()[0], (int) entity.getPosition()[1])) {
+                this.northWest.insert((int) entity.getPosition()[0], (int) entity.getPosition()[1], entity);
+            } else if (this.northEast.boundary.inRange((int) entity.getPosition()[0], (int) entity.getPosition()[1])) {
+                this.northEast.insert((int) entity.getPosition()[0], (int) entity.getPosition()[1], entity);
+            } else if (this.southWest.boundary.inRange((int) entity.getPosition()[0], (int) entity.getPosition()[1])) {
+                this.southWest.insert((int) entity.getPosition()[0], (int) entity.getPosition()[1], entity);
+            } else if (this.southEast.boundary.inRange((int) entity.getPosition()[0], (int) entity.getPosition()[1])) {
+                this.southEast.insert((int) entity.getPosition()[0], (int) entity.getPosition()[1], entity);
             }
         }
     }

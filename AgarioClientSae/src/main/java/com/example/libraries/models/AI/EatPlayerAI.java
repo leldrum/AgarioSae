@@ -1,23 +1,24 @@
-package com.example.libraries.AI;
+package com.example.libraries.models.AI;
 
-import com.example.libraries.player.IPlayer;
-import com.example.libraries.worldElements.Enemy;
-import com.example.libraries.worldElements.World;
+import com.example.libraries.models.player.IPlayerModel;
+import com.example.libraries.models.worldElements.EnemyModel;
+import com.example.libraries.models.worldElements.Entity;
+import com.example.libraries.models.worldElements.WorldModel;
 import javafx.scene.Node;
 
 public class EatPlayerAI implements IStrategyAI {
 
-    public double[] move(Enemy enemy){
-        World world = World.getInstance();
+    public double[] move(EnemyModel enemy){
+        WorldModel world = WorldModel.getInstance();
         // Initialiser la distance minimale à une valeur élevée
         double minDistance = Double.MAX_VALUE;
-        Enemy closestEnemy = null;
-        IPlayer closestPlayer = null;
+        EnemyModel closestEnemy = null;
+        IPlayerModel closestPlayer = null;
 
         // Parcourir tous les nœuds de la scène pour trouver les ennemis
-        for (Node node : world.getRoot().getChildren()) {
-            if (node instanceof Enemy) {
-                Enemy potentialTarget = (Enemy) node;
+        for (Entity entity : WorldModel.getInstance().getEntities()) {
+            if (entity instanceof EnemyModel) {
+                EnemyModel potentialTarget = (EnemyModel) entity;
                 if (potentialTarget.equals(enemy)) {
                     continue;
                 }
@@ -28,8 +29,8 @@ public class EatPlayerAI implements IStrategyAI {
                     minDistance = distance;
                     closestEnemy = potentialTarget;
                 }
-            }else if(node instanceof IPlayer){
-                IPlayer potentialTarget = (IPlayer) node;
+            }else if(entity instanceof IPlayerModel){
+                IPlayerModel potentialTarget = (IPlayerModel) entity;
                 if (potentialTarget.equals(enemy)) {
                     continue;
                 }
