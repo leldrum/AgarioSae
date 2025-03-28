@@ -4,6 +4,4 @@ import com.example.libraries.models.worldElements.EnemyModel;
 
 public interface IStrategyAI {
     double[] move(EnemyModel enemy);
-
-    void move();
 }

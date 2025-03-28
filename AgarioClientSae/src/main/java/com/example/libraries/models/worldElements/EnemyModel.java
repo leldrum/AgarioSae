@@ -42,7 +42,7 @@ public class EnemyModel extends MoveableBodyModel {
             double magnitude = Math.sqrt(dx * dx + dy * dy);
             double[] direction = (magnitude > 0) ? new double[]{dx / magnitude, dy / magnitude} : new double[]{0, 0};
 
-            moveToward(direction); // Déplacement vers la cible
+            moveToward(targetPosition); // Déplacement vers la cible
         }
     }
 
@@ -56,7 +56,7 @@ public class EnemyModel extends MoveableBodyModel {
         return closestEntity;
     }
 
-    public IStrategyAI getStrategy() {
+        public IStrategyAI getStrategy() {
         return strategy;
     }
 }

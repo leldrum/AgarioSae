@@ -41,11 +41,6 @@ public class WorldController {
         pc.getView().zoom(mbc.checkCollision());
 
         //freeQueuedObjects();
-
-
-
-
-
         //System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());
         for (Entity entity : world.getEntities()) {
             if (entity instanceof EnemyModel) {
@@ -58,6 +53,8 @@ public class WorldController {
                 }
             }
         }
+
+
         //System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());
     }
 

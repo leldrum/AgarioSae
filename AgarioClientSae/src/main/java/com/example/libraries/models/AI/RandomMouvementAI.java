@@ -46,7 +46,4 @@ public class RandomMouvementAI implements IStrategyAI{
         return distance < 10;
     }
 
-    public void move(){
-
-    }
 }
