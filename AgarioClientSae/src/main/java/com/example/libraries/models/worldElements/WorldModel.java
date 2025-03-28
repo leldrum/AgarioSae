@@ -3,6 +3,8 @@ package com.example.libraries.models.worldElements;
 import com.example.client.app.HelloApplication;
 import com.example.client.views.EntitiesView;
 import com.example.libraries.models.factories.FactoryEnemy;
+import com.example.libraries.models.factories.FactoryFood;
+import com.example.libraries.models.factories.FactoryPlayer;
 import com.example.libraries.models.player.PlayableGroupModel;
 
 import java.io.Serializable;
@@ -57,11 +59,16 @@ public class WorldModel implements Serializable {
     public void spawnFood(int count) {
         Random rand = new Random();
         for (int i = 0; i < count; i++) {
-            double x = rand.nextDouble() * mapWidth;
-            double y = rand.nextDouble() * mapHeight;
+            double x = (rand.nextDouble() * 2 - 1) * mapWidth;
+            double y = (rand.nextDouble() * 2 - 1) * mapHeight;
+
             double size = 10;
 
-            Food food = new Food(x, y, size);
+            /*FactoryFood factoryFood = new FactoryFood();
+            Food food = factoryFood.create(x, y, size);*/
+
+            Food food = new Food(x,y,size);
+
             entities.add(food);
             //System.out.println("x:" + x +";" + y);
         }
@@ -93,7 +100,8 @@ public class WorldModel implements Serializable {
         enemySpawnTimer--;
 
         if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
-            spawnFood(5);
+            System.out.println("apagnan");
+            spawnFood(40);
             foodSpawnTimer = foodSpawnRate;
         }
         foodSpawnTimer--;

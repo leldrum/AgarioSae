@@ -12,7 +12,6 @@ public class FactoryFood implements Factory<Food> {
         Food food = new Food(x, y, weight);
         world.addEntity(food);
 
-
         return food;
     }
 }

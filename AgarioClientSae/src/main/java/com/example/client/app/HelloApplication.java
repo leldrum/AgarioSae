@@ -76,10 +76,10 @@ public class HelloApplication extends Application {
 
 
         world = WorldModel.getInstance();
-        world.spawnFood(100); // Générer 100 pastilles de nourriture
+        world.spawnFood(200); // Générer 100 pastilles de nourriture
 
         EntitiesView entityView = new EntitiesView((ArrayList<Entity>) world.getEntities());
-        entityView.addEntityGraphics(player);
+        //entityView.addEntityGraphics(player);
 
 
         entityView.updateView();
