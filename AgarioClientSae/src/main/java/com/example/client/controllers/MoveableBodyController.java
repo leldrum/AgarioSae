@@ -2,29 +2,31 @@ package com.example.client.controllers;
 
 import com.example.client.views.MoveableBodyView;
 import com.example.libraries.models.player.MoveableBodyModel;
+import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.WorldModel;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 public class MoveableBodyController {
     private MoveableBodyModel model;
     private MoveableBodyView view;
 
     public double checkCollision() {
-        //System.out.println("Total entities: " + WorldModel.getInstance().getEntities().size());
 
         for (Entity entity : WorldModel.getInstance().getEntities()) {
+            System.out.println("Total entities: " + entity.getClass().getSimpleName());
             if(!(entity.equals(model))) {
                 Entity collider = entity;
+
+
 
                 double dx = collider.getX() - model.getX();
                 double dy = collider.getY() - model.getY();
                 double distance = Math.sqrt(dx * dx + dy * dy);
                 double sumRadii = collider.getWeight() + model.getWeight(); // Somme des rayons
 
-                if (distance <= sumRadii && (sumRadii * distance)/100 >= 33) { // Vérifie si les cercles se touchent ou se chevauchent
+                if (distance <= sumRadii) { // Vérifie si les cercles se touchent ou se chevauchent
                     double foodValue = 0.5;
+                    System.out.println("NANANANANAN");
 
                     if (isSmaller(collider.getWeight(), model.getWeight())) {
                         WorldModel.getInstance().queueFree(collider);

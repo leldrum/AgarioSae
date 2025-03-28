@@ -60,7 +60,6 @@ public class HelloApplication extends Application {
 
         world = WorldModel.getInstance();
         root = new Group();
-        // Création du joueur
         FactoryPlayer factoryPlayer = new FactoryPlayer();
         Random rand = new Random();
         double x = rand.nextDouble() * world.getMapWidth();

@@ -46,6 +46,19 @@ public class Entity implements Serializable {
         this.y = y;
     }
 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Entity entity = (Entity) o;
+
+        // Compare des propriétés significatives, comme les coordonnées X et Y, ou l'identifiant unique
+        return Double.compare(entity.getX(), getX()) == 0 &&
+                Double.compare(entity.getY(), getY()) == 0 &&
+                Double.compare(entity.getWeight(), getWeight()) == 0;
+    }
+
+
     public void update() {
     }
 
