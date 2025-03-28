@@ -25,27 +25,39 @@ public class PlayableGroupView extends Group {
     public void zoom(double factor) {
         System.out.println("FACTOR:" + factor);
 
-        // Modifier directement l'échelle de la root
-        double newScaleX = HelloApplication.root.getScaleX() - factor * 0.05;
-        double newScaleY = HelloApplication.root.getScaleY() - factor * 0.05;
+        cameraScale[0] = HelloApplication.root.getScaleX();
+        cameraScale[1] = HelloApplication.root.getScaleY();
+
+
+        cameraScale[0] = HelloApplication.root.getScaleX() - factor / 150;
+        cameraScale[1] = HelloApplication.root.getScaleY() - factor / 150;
 
         // Empêcher un zoom trop petit ou trop grand
         //if (newScaleX < 0.5) newScaleX = 0.5;  // Limite de dézoom
         //if (newScaleX > 3) newScaleX = 3;      // Limite de zoom
 
-        HelloApplication.root.setScaleX(newScaleX);
-        HelloApplication.root.setScaleY(newScaleY);
+
+        HelloApplication.root.setScaleX(cameraScale[0]);
+        HelloApplication.root.setScaleY(cameraScale[1]);
 
 
-        System.out.println("Zoom Level: " + newScaleX);
+
+        System.out.println("Zoom Level: " + cameraScale[0]);
     }
 
 
     public void updateCameraPosition(double x, double y) {
-        HelloApplication.root.setTranslateX(-x + HelloApplication.getScreenWidth() / 2);
-        HelloApplication.root.setTranslateY(-y + HelloApplication.getScreenHeight() / 2);
-        camera.setX(x);
-        camera.setY(y);
+
+        double scaleRatioX = HelloApplication.root.getScaleX() ;
+        double scaleRatioY = HelloApplication.root.getScaleY() ;
+
+        HelloApplication.root.setTranslateX((-x + HelloApplication.getScreenWidth() / 2) * scaleRatioX);
+        HelloApplication.root.setTranslateY((-y + HelloApplication.getScreenHeight() / 2) * scaleRatioY);
+
+        //HelloApplication.root.setLayoutX((player.getX())- HelloApplication.getScreenWidth() / 2 * HelloApplication.root.getScaleX());
+        //HelloApplication.root.setLayoutY((player.getY())  - HelloApplication.getScreenHeight() / 2 * HelloApplication.root.getScaleY());
+        //camera.setX(x);
+        //camera.setY(y);
         //System.out.println("X:" + camera.getX() +"Y:" + camera.getY());
     }
 

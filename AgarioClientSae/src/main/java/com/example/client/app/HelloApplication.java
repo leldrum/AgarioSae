@@ -49,10 +49,10 @@ public class HelloApplication extends Application {
     }
 
     public static double getScreenWidth() {
-        return scene.getWindow().getWidth();
+        return scene.getWidth();
     }
     public static double getScreenHeight() {
-        return scene.getWindow().getHeight();
+        return scene.getHeight();
     }
 
     public static void startGame(Stage stage) {
@@ -96,6 +96,7 @@ public class HelloApplication extends Application {
 
         // Initialisation de la scène
         scene = new Scene(root, ScreenWidth, ScreenHeight);
+
         stage.setScene(scene);
         stage.show();
 
