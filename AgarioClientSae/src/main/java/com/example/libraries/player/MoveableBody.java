@@ -2,7 +2,7 @@ package com.example.libraries.player;
 
 import com.example.libraries.worldElements.Entity;
 import com.example.client.app.HelloApplication;
-import com.example.libraries.worldElements.SpecialFood;
+import com.example.libraries.options.SpecialFood;
 import com.example.libraries.worldElements.World;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -96,26 +96,27 @@ public class MoveableBody extends Entity {
 
     public void moveToward(double[] velocity) {
 
-        //initalize velocity, which is the mouse position - player position
+        // Initialiser la vélocité, qui est la position de la souris - position du joueur
         velocity = new double[]{velocity[0] - entity.getCenterX(), velocity[1] - entity.getCenterY()};
 
-        //used for the smooth movement depending on how far away the mouse is.
-        //further away from the circle, the faster the movement is etc.
+        // Utilisé pour le mouvement fluide en fonction de la distance entre la souris et le joueur.
+        // Plus la souris est éloignée du cercle, plus le mouvement est rapide, etc.
         double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / getWeight();
 
-        //limit speed of smoothing
+        // Limiter la vitesse du lissage
         if (magnitudeSmoothing > 4){
             magnitudeSmoothing = 4 * Speed;
         }
-        //normalize the position the player is going towards to get the direction
+
+        // Normaliser la position vers laquelle le joueur se dirige pour obtenir la direction
         velocity = normalizeDouble(velocity);
 
-        //multiply direction by Speed to get the final velocity value, multiply smoothing for smoother movement
+        // Multiplier la direction par la vitesse pour obtenir la valeur finale de la vélocité, multiplier par le lissage pour un mouvement plus fluide
         velocity[0] *= Speed * magnitudeSmoothing;
         velocity[1] *= Speed * magnitudeSmoothing;
 
-        //change Sprite position based on velocity
-        //also check if the player is at the world limit, if it is then it doesnt move
+        // Changer la position de entity en fonction de la vélocité
+        // Vérifier également si le joueur est aux limites du monde, dans ce cas il ne se déplace pas
         if (entity.getCenterX() + velocity[0] < World.getInstance().getMapLimitWidth()){
             if (entity.getCenterX() + velocity[0] > -World.getInstance().getMapLimitWidth()){
                 entity.setCenterX(entity.getCenterX() + velocity[0] );
@@ -128,6 +129,7 @@ public class MoveableBody extends Entity {
         }
 
     }
+
 
 
     public double distanceTo(double[] position){

@@ -9,7 +9,7 @@ import com.example.libraries.factories.FactoryEnemy;
 import com.example.libraries.factories.FactoryFood;
 import com.example.libraries.player.MoveableBody;
 import com.example.libraries.player.Player;
-import com.example.libraries.worldElements.SpecialFood;
+import com.example.libraries.options.SpecialFood;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -96,17 +96,15 @@ public class World implements Serializable {
     private void initializeUIElements() {
         if (minimap == null) {
             minimap = new Minimap(root);
-            System.out.println("✅ Minimap initialisée !");
         }
         if (leaderboard == null) {
             leaderboard = new Leaderboard(root);
-            System.out.println("✅ Leaderboard initialisé !");
         }
     }
 
     // Correction de la désérialisation pour éviter que minimap et leaderboard soient null
     private Object readResolve() {
-        System.out.println("♻️ readResolve() : Réinitialisation après désérialisation...");
+        System.out.println("Réinitialisation après désérialisation");
         root = new Group();
         initializeUIElements();
         return this;
@@ -116,7 +114,7 @@ public class World implements Serializable {
         if (minimap != null && player != null) {
             minimap.updateMinimap(player);
         } else {
-            System.out.println("⚠️ Erreur : minimap ou player est null.");
+            System.out.println("inimap ou player est null.");
         }
     }
 
@@ -124,7 +122,7 @@ public class World implements Serializable {
         if (leaderboard != null) {
             leaderboard.updateLeaderboard(player, entities);
         } else {
-            System.out.println("⚠️ Erreur : leaderboard est null.");
+            System.out.println("leaderboard est null.");
         }
     }
 
@@ -172,14 +170,14 @@ public class World implements Serializable {
         Food food = factoryFood.create(root, 10);
         Random rand = new Random();
 
-        if (rand.nextInt(6) == 0) {
+        if (rand.nextInt(10) == 0) {
             SpecialFood specialFood = new SpecialFood(root, 10, true, 1.5, 3000);
             specialFood.setName("Speed Power");
             addEntity(specialFood);
         }
 
-        if (rand.nextInt(10) == 0) {
-            SpecialFood specialFood = new SpecialFood(root, 15, false, 1.5, 3000);
+        if (rand.nextInt(17) == 0) {
+            SpecialFood specialFood = new SpecialFood(root, 10, false, 1.5, 3000);
             specialFood.setName("Division Power");
             addEntity(specialFood);
         }

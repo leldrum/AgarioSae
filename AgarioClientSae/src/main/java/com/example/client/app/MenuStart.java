@@ -86,31 +86,24 @@ public class MenuStart extends VBox {
 
     private void handleConnectButton() {
 
-        // Récupérer l'adresse IP et le port
         String serverIp = ipField.getText();
         String portText = portField.getText();
 
-        // Validation des champs
         if (serverIp.isEmpty() || portText.isEmpty()) {
             System.out.println("L'adresse IP ou le port est vide.");
-            // Vous pouvez afficher un message d'erreur ici si nécessaire.
         }
 
-        // Convertir le port en entier
         int port;
         try {
             port = Integer.parseInt(portText);
         } catch (NumberFormatException e) {
             System.out.println("Le port n'est pas valide.");
-            return; // Afficher un message d'erreur si le port n'est pas valide
+            return;
         }
 
-        // Créer une instance du ClientServer et se connecter
         System.out.println("Connexion au serveur " + serverIp + ":" + port);
         try {
             ClientServer clientServer = new ClientServer(serverIp, port); // Connexion au serveur
-
-            // Une fois la connexion établie, lancer la fenêtre du jeu
             startGameWithServer(stage, serverIp);
 
         } catch (Exception e) {

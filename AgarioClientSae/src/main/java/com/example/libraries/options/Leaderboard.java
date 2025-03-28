@@ -23,7 +23,7 @@ public class Leaderboard {
     }
 
     private void createLeaderboard() {
-        leaderboardCanvas = new Canvas(200, 150);
+        leaderboardCanvas = new Canvas(250, 150);
         leaderboardCanvas.setMouseTransparent(true);
         root.getChildren().add(leaderboardCanvas);
     }
@@ -36,18 +36,18 @@ public class Leaderboard {
         gc.fillRect(0, 0, leaderboardCanvas.getWidth(), leaderboardCanvas.getHeight()); // Remplir le fond en noir
 
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font(16));
-        gc.fillText("Top 5 Masses", 50, 20);
+        gc.setFont(new Font(Math.min(20, 10 + player.getWeight() / 5)));
+        gc.fillText("Top 10", 50, 20);
 
         // Liste des entités triées par masse (inclure le joueur dans le leaderboard)
         List<Entity> massiveEntities = new ArrayList<>(entities);
         massiveEntities.add(player.parts.get(0).part); // Ajouter le joueur AVANT le tri
 
-        // Trier la liste par masse (du plus grand au plus petit) et limiter à 5
+        // Trier la liste par masse (du plus grand au plus petit)
         massiveEntities = massiveEntities.stream()
                 .filter(e -> !(e instanceof Food)) // Exclure la nourriture
                 .sorted(Comparator.comparingDouble(Entity::getWeight).reversed()) // Tri décroissant
-                .limit(5)
+                .limit(10)
                 .toList();
 
         // Affichage du leaderboard
@@ -63,7 +63,7 @@ public class Leaderboard {
         // Calcul de la taille du Canvas en fonction de la masse du joueur
         double playerMass = player.getWeight(); // Masse du joueur (calculée via `getWeight()` de `PlayableGroup`)
         double canvasWidth = Math.max(200, 200 + playerMass / 2); // S'assurer que la largeur ne soit pas trop petite
-        double canvasHeight = Math.max(150, 150 + playerMass / 2); // Idem pour la hauteur
+        double canvasHeight = Math.max(200, 150 + playerMass / 2); // Idem hauteur
 
         leaderboardCanvas.setWidth(canvasWidth);
         leaderboardCanvas.setHeight(canvasHeight);
@@ -74,7 +74,7 @@ public class Leaderboard {
 
         // Ajuster la position du leaderboard à droite du joueur
         double offsetX = 400 + playerMass; // Ajuster l'espacement horizontal
-        double offsetY = 100 + playerMass / 2; // Ajuster l'espacement vertical
+        double offsetY = 200 + playerMass / 2; // Ajuster l'espacement vertical
 
         // S'assurer que le leaderboard ne se superpose pas au joueur
         double leaderboardX = playerX + offsetX;
@@ -83,6 +83,8 @@ public class Leaderboard {
         // Mise à jour de la position du canvas
         leaderboardCanvas.setTranslateX(leaderboardX);
         leaderboardCanvas.setTranslateY(leaderboardY);
+        leaderboardCanvas.toFront();
+
     }
 
     public Canvas getCanvas() {

@@ -1,6 +1,7 @@
-package com.example.libraries.worldElements;
+package com.example.libraries.options;
 
 import com.example.libraries.player.MoveableBody;
+import com.example.libraries.worldElements.Food;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
@@ -22,7 +23,9 @@ public class SpecialFood extends Food {
             player.applySpeedBoost(speedMultiplier, effectDuration);
         }
         else {
-            player.setWeight(player.getWeight() / 2);
+            if(player.getWeight() > 40) {
+                player.setWeight(player.getWeight() / 2);
+            }
         }
     }
 
