@@ -52,7 +52,7 @@ public class EntitiesView extends Group {
         ArrayList<Entity> toRemove = new ArrayList<>(); // Liste temporaire pour les entités à supprimer
 
         WorldModel.getInstance().getQueuedObjectsForDeletion().forEach(entityToDelete -> {
-            System.out.println("Entité introuvable dans la liste : " + entityToDelete);
+            //System.out.println("Entité introuvable dans la liste : " + entityToDelete);
 
             int indexToRemove = list.indexOf(entityToDelete); // Trouve l'index de l'entité à supprimer
             if (indexToRemove != -1) { // Si elle existe dans la liste
@@ -70,7 +70,11 @@ public class EntitiesView extends Group {
 
                 // Supprimer l'entité de la liste logique
                 list.remove(indexToRemove);
-                System.out.println("Entité supprimée graphiquement et logiquement.");
+                //System.out.println("Entité supprimée graphiquement et logiquement.");
+            }
+
+            else {
+
             }
             // Ajoute l'entité à la liste temporaire de nettoyage
             toRemove.add(entityToDelete);
@@ -78,7 +82,7 @@ public class EntitiesView extends Group {
 
         // Nettoyer les objets de "queuedObjectsForDeletion"
         freeQueuedObjects();
-        System.out.println("Liste queuedObjectsForDeletion nettoyée.");
+        //System.out.println("Liste queuedObjectsForDeletion nettoyée.");
     }
 
     public void freeQueuedObjects() {

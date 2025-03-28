@@ -13,7 +13,7 @@ public class MoveableBodyController {
     public double checkCollision() {
 
         for (Entity entity : WorldModel.getInstance().getEntities()) {
-            System.out.println("Total entities: " + entity.getClass().getSimpleName());
+            //System.out.println("Total entities: " + entity.getClass().getSimpleName());
             if(!(entity.equals(model))) {
                 Entity collider = entity;
 
@@ -36,6 +36,7 @@ public class MoveableBodyController {
                         increaseSize(foodValue);
                         return foodValue;
                     }
+                    WorldModel.getInstance().queueFree(model);
                     System.out.println("Dead");
                     return 1;
                 }
@@ -53,7 +54,6 @@ public class MoveableBodyController {
     private boolean isSmaller(double weightOne, double weightTwo) {
         return weightOne <= weightTwo + 2;
     }
-    // Augmente la taille du joueur
     public void increaseSize(double foodValue) {
         double initialWeight = this.model.getWeight();
         this.model.setWeight(initialWeight + foodValue);
