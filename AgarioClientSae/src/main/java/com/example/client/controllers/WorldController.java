@@ -35,7 +35,7 @@ public class WorldController {
     public void update() {
         world.updateWorld();
         view.updateMinimap(world);
-        view.updateLeaderboard(world);
+        view.updateLeaderboard();
         pc.update();
         entityView.updateView();
         pc.getView().zoom(mbc.checkCollision());
