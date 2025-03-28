@@ -26,7 +26,7 @@ public class WorldModel implements Serializable {
     private int enemies = 0;
 
     private int maxFood = 200; // Nombre max de pastilles sur la map
-    private int foodSpawnRate = 10; // Combien de ticks entre chaque spawn
+    private int foodSpawnRate = 100; // Combien de ticks entre chaque spawn
     private int foodSpawnTimer = foodSpawnRate;
 
     private ArrayList<Entity> queuedObjectsForDeletion = new ArrayList<>();
@@ -101,7 +101,7 @@ public class WorldModel implements Serializable {
 
         if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
             System.out.println("apagnan");
-            spawnFood(40);
+            spawnFood(10);
             foodSpawnTimer = foodSpawnRate;
         }
         foodSpawnTimer--;

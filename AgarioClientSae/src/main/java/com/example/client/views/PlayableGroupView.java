@@ -13,7 +13,7 @@ public class PlayableGroupView extends Group {
     private CameraPlayer camera;
     private double[] cameraScale;
 
-    private PlayerModel player;
+    public static PlayerModel player;
 
 
     public PlayableGroupView(PlayerModel player) {
@@ -23,6 +23,7 @@ public class PlayableGroupView extends Group {
     }
 
     public void zoom(double factor) {
+        System.out.println();
         ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
         cameraScale[0] += factor*100;
         cameraScale[1] += factor*100;

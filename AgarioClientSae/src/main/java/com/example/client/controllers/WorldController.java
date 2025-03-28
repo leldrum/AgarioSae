@@ -1,6 +1,7 @@
 package com.example.client.controllers;
 
 import com.example.client.views.PlayableGroupView;
+import com.example.libraries.models.player.MoveableBodyModel;
 import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.worldElements.EnemyModel;
 import com.example.libraries.models.worldElements.Entity;
@@ -12,6 +13,7 @@ import com.example.client.views.WorldView;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.client.app.HelloApplication.player;
 import static com.example.client.app.HelloApplication.root;
 
 public class WorldController {
@@ -38,7 +40,7 @@ public class WorldController {
         view.updateLeaderboard();
         pc.update();
         entityView.updateView();
-        pc.getView().zoom(mbc.checkCollision());
+        pc.getView().zoom(mbc.checkCollision(player));
 
         //freeQueuedObjects();
 
@@ -48,6 +50,9 @@ public class WorldController {
 
         //System.out.println(world.getEntities().get(0).getX() + " " + world.getEntities().get(0).getY());
         for (Entity entity : world.getEntities()) {
+            if(entity instanceof MoveableBodyModel && !(entity.equals(player))) {
+                mbc.checkCollision((MoveableBodyModel) entity);
+            }
             if (entity instanceof EnemyModel) {
                 EnemyModel enemy = (EnemyModel) entity;
                 System.out.println(enemy.getStrategy());

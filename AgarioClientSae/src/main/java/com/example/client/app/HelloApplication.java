@@ -64,7 +64,7 @@ public class HelloApplication extends Application {
         Random rand = new Random();
         double x = rand.nextDouble() * world.getMapWidth();
         double y = rand.nextDouble() * world.getMapHeight();
-        player = factoryPlayer.create(650, 350, 100);
+        player = factoryPlayer.create(650, 350, 20);
         world.addEntity(player);
 
 
@@ -85,8 +85,9 @@ public class HelloApplication extends Application {
         entityView.updateView();
 
 
-            MoveableBodyController mbc = new MoveableBodyController(player);
-            root.getChildren().add(Objects.requireNonNull(entityView.getSprite(player)));
+
+            MoveableBodyController mbc = new MoveableBodyController(world.getEntities());
+            //root.getChildren().add(Objects.requireNonNull(entityView.getSprite(player)));
 
             worldView = new WorldView(root);
             controller = new WorldController(world, worldView,pc,entityView,mbc);

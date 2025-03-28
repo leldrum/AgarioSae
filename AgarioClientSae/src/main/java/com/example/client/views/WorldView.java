@@ -132,7 +132,7 @@ public class WorldView {
         double playerY = player.getCenterY();
         System.out.println("Player X: " + playerX + ", Player Y: " + playerY);
 
-        double canvasOffset = 400 + playerMass;
+        double canvasOffset = 300 + playerMass;
         double leaderboardX = playerX + canvasOffset;
         double leaderboardY = playerY - canvasOffset;
 

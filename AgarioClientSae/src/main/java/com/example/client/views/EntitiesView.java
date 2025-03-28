@@ -47,6 +47,9 @@ public class EntitiesView extends Group {
      */
     public void updateView() {
         System.out.println("Nombre d'éléments à supprimer : " + WorldModel.getInstance().getQueuedObjectsForDeletion().size());
+        if(WorldModel.getInstance().getQueuedObjectsForDeletion().size() > 0) {
+            System.out.println(WorldModel.getInstance().getQueuedObjectsForDeletion().get(0));
+        }
 
         // Supprimer graphiquement les entités marquées pour la suppression
         WorldModel.getInstance().getQueuedObjectsForDeletion().forEach(entityToDelete -> {

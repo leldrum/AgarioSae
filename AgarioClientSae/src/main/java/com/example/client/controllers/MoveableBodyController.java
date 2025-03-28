@@ -1,53 +1,63 @@
 package com.example.client.controllers;
 
 import com.example.client.views.EntitiesView;
+import com.example.client.views.PlayableGroupView;
 import com.example.libraries.models.player.MoveableBodyModel;
 import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.WorldModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MoveableBodyController {
     //faire une liste aussi
-    private MoveableBodyModel model;
+    private ArrayList<MoveableBodyModel> models = new ArrayList<>();
 
-    public double checkCollision() {
+    public double checkCollision(MoveableBodyModel entity) {
 
-        for (Entity entity : WorldModel.getInstance().getEntities()) {
-            //System.out.println("Total entities: " + entity.getClass().getSimpleName());
-            if(!(entity.equals(model))) {
-                Entity collider = entity;
-
+            for (Entity other : WorldModel.getInstance().getEntities()) {
+                if(!(entity.equals(other))) {
+                    Entity collider = entity;
 
 
-                double dx = collider.getX() - model.getX();
-                double dy = collider.getY() - model.getY();
-                double distance = Math.sqrt(dx * dx + dy * dy);
-                double sumRadii = collider.getWeight() + model.getWeight(); // Somme des rayons
 
-                if (distance <= sumRadii) { // Vérifie si les cercles se touchent ou se chevauchent
-                    double foodValue = 0.5;
-                    System.out.println("NANANANANAN");
+                    double dx = collider.getX() - other.getX();
+                    double dy = collider.getY() - other.getY();
+                    double distance = Math.sqrt(dx * dx + dy * dy);
+                    double sumRadii = collider.getWeight() + other.getWeight(); // Somme des rayons
 
-                    if (isSmaller(collider.getWeight(), model.getWeight())) {
-                        WorldModel.getInstance().queueFree(collider);
-                        foodValue += collider.getWeight() / 20;
-                        System.out.println("okkkkkk");
-                        System.out.println("Entity: " + collider.getClass().getSimpleName());
-                        increaseSize(foodValue);
-                        return foodValue;
+                    if (distance <= sumRadii) { // Vérifie si les cercles se touchent ou se chevauchent
+                        double foodValue = 0.5;
+                        System.out.println("NANANANANAN");
+
+                        if (isSmaller(other.getWeight(), collider.getWeight())) {
+                            WorldModel.getInstance().queueFree(other);
+                            foodValue += other.getWeight() / 20;
+                            System.out.println("okkkkkk");
+                            System.out.println("Entity: " + collider.getClass().getSimpleName());
+                            increaseSize((MoveableBodyModel) collider,foodValue);
+                            return foodValue;
+                        }
+                        else {
+                            WorldModel.getInstance().queueFree(collider);
+                            //changer le instance of player par LE PLAYER DU PC LOCAL SINON BUG
+                            if(entity.equals(PlayableGroupView.player)) {
+                                ((PlayerModel) entity).GameOver = true;
+                            }
+                            System.out.println("Dead");
+                            return 1;
+                        }
+
                     }
-                    WorldModel.getInstance().queueFree(model);
-                    //changer le instance of player par LE PLAYER DU PC LOCAL SINON BUG
-                    if(entity instanceof PlayerModel) {
-                        ((PlayerModel) entity).GameOver = true;
-                    }
-                    System.out.println("Dead");
-                    return 1;
+
                 }
             }
-            }
+
+
+
+
         return 0;
     }
 
@@ -55,18 +65,23 @@ public class MoveableBodyController {
     private boolean isSmaller(double weightOne, double weightTwo) {
         return weightOne <= weightTwo + 2;
     }
-    public void increaseSize(double foodValue) {
-        double initialWeight = this.model.getWeight();
-        this.model.setWeight(initialWeight + foodValue);
-        Objects.requireNonNull(EntitiesView.getSprite(model)).setRadius(this.model.getWeight());
+    public void increaseSize(MoveableBodyModel model,double foodValue) {
+        double initialWeight = model.getWeight();
+        model.setWeight(initialWeight + foodValue);
+        Objects.requireNonNull(EntitiesView.getSprite(model)).setRadius(model.getWeight());
     }
 
 
-    public MoveableBodyController(MoveableBodyModel model) {
-        this.model = model;
+    public MoveableBodyController(List<Entity> list) {
+        for (Entity entity: list
+             ) {
+            if(entity instanceof MoveableBodyModel) {
+                models.add((MoveableBodyModel) entity);
+            }
+        };
     }
 
-    public void update(double[] direction) {
+    public void update(MoveableBodyModel model,double[] direction) {
         model.moveToward(direction);
     }
 
