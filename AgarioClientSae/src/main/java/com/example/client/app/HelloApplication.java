@@ -61,7 +61,7 @@ public class HelloApplication extends Application {
         world = WorldModel.getInstance();
         root = new Group();
         worldView = new WorldView(root);
-        controller = new WorldController(world, worldView);
+
 
         // Création du joueur
 
