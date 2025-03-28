@@ -23,12 +23,25 @@ public class ClientServer {
             String initData = input.readLine();
             processInitData(initData);
 
+
             output.println("READY");
 
             new Thread(new NetworkListener(input)).start();
+            String msg;
+            while((msg = input.readLine()) != null) {
+                System.out.println("Message du serveur: " + msg);
+            }
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                socket.close();
+                input.close();
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -62,4 +75,6 @@ public class ClientServer {
         double[] data = HelloApplication.getMousePosition();
         output.println("MOVE:" + data[0] + "," + data[1]);
     }
+
+
 }
