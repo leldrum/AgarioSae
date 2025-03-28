@@ -1,18 +1,21 @@
 package com.example.client.app;
 
+import com.example.client.controllers.MoveableBodyController;
+import com.example.client.controllers.PlayableGroupController;
 import com.example.client.controllers.WorldController;
 import com.example.client.views.*;
 import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.factories.FactoryPlayer;
 import com.example.libraries.models.worldElements.*;
 import com.example.libraries.models.worldElements.WorldModel;
-import com.example.libraries.views.WorldView;
+import com.example.client.views.WorldView;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HelloApplication extends Application {
@@ -54,6 +57,7 @@ public class HelloApplication extends Application {
     public static void startGame(Stage stage) {
         System.out.println("Démarrage du jeu");
 
+
         world = WorldModel.getInstance();
         root = new Group();
         worldView = new WorldView(root);
@@ -61,29 +65,37 @@ public class HelloApplication extends Application {
 
         // Création du joueur
 
+        FactoryPlayer factoryPlayer = new FactoryPlayer();
+        Random rand = new Random();
+        double x = rand.nextDouble() * world.getMapWidth();
+        double y = rand.nextDouble() * world.getMapHeight();
+        player = factoryPlayer.create(650, 350, 50);
+        world.addEntity(player);
+
+        MoveableBodyView mbv = new MoveableBodyView(player);
+        mbv.updateView();
+        MoveableBodyController mbc = new MoveableBodyController(player,mbv);
+        root.getChildren().add(mbv.getSprite());
+
+        PlayableGroupView pv = new PlayableGroupView(player);
+        PlayableGroupController pc = new PlayableGroupController(player, pv);
+
+
+
+
 
         world = WorldModel.getInstance();
         world.spawnFood(100); // Générer 100 pastilles de nourriture
 
+        System.out.println(world.getEntities().size());
 
-        // Ajout des entités visuelles
-        for (Entity entity : world.getEntities()) {
-            /*if(entity instanceof Food) {
-                FoodView foodView = new FoodView((Food) entity);
-                root.getChildren().add(foodView);
-            }
-            if(entity instanceof PlayerModel) {
-                PlayableGroupView playerView = new PlayableGroupView((PlayerModel) entity);
-                root.getChildren().add(playerView);
-            }*/
+            EntitiesView entityView = new EntitiesView((ArrayList<Entity>) world.getEntities());
 
-            if(entity instanceof EnemyModel) {
-                EnemyView enemyView = new EnemyView((EnemyModel) entity);
-                root.getChildren().add(enemyView.getSprite());
-            }
-            EntityView entityView = new EntityView(entity);
-            root.getChildren().add(entityView);
-        }
+            entityView.updateView();
+
+            worldView = new WorldView(root);
+            controller = new WorldController(world, worldView,pc,entityView,mbc);
+
 
 
         // Initialisation de la scène
@@ -92,10 +104,10 @@ public class HelloApplication extends Application {
         stage.show();
 
         // Boucle de jeu
-        timer = new GameTimer(controller);
+        timer = new GameTimer(controller,pc);
         timer.start();
 
-        System.out.println(world.getEntities());
+        //System.out.println(world.getEntities());
     }
 
     public static void startGameClient(Stage stage) {

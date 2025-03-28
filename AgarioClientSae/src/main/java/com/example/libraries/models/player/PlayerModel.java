@@ -2,16 +2,13 @@ package com.example.libraries.models.player;
 
 import java.util.Random;
 import com.example.libraries.models.player.MoveableBodyModel;
+import com.example.libraries.models.worldElements.WorldModel;
 
 
 public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
 
     public PlayerModel(double x, double y,double initialSize) {
         super(x, y, initialSize);
-    }
-
-    public double[] getPosition() {
-        return super.getPosition();
     }
 
     public void increaseSize(double foodValue) {
@@ -28,11 +25,6 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
 
     public double getCenterY() {
         return super.getPosition()[1];
-    }
-
-    @Override
-    public void moveToward(double[] velocity) {
-
     }
 
     /*public double checkCollision() {
@@ -54,4 +46,11 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
         return 0;
     }
 
+
+    public void checkCollision() {
+    }
+
+    public boolean isGameOver() {
+        return false;
+    }
 }

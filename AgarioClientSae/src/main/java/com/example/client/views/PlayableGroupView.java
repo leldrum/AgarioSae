@@ -1,16 +1,25 @@
 package com.example.client.views;
 
+import com.example.client.app.HelloApplication;
+import com.example.libraries.models.player.PlayerModel;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import com.example.libraries.models.player.CameraPlayer;
 
-public class PlayableGroupView {
+public class PlayableGroupView extends Group {
     private CameraPlayer camera;
     private double[] cameraScale;
 
-    public PlayableGroupView() {
+    private PlayerModel player;
+
+
+    public PlayableGroupView(PlayerModel player) {
         this.camera = new CameraPlayer();
         this.cameraScale = new double[]{camera.getScaleX(), camera.getScaleY()};
+        this.player = player;
     }
 
     public void zoom(double factor) {
@@ -23,11 +32,18 @@ public class PlayableGroupView {
     }
 
     public void updateCameraPosition(double x, double y) {
-        camera.setLayoutX(x);
-        camera.setLayoutY(y);
+        HelloApplication.root.setTranslateX(-x + HelloApplication.getScreenWidth() / 2);
+        HelloApplication.root.setTranslateY(-y + HelloApplication.getScreenHeight() / 2);
+        camera.setX(x);
+        camera.setY(y);
+        //System.out.println("X:" + camera.getX() +"Y:" + camera.getY());
     }
 
     public CameraPlayer getCamera() {
         return camera;
+    }
+
+    public PlayerModel getPlayer() {
+        return player;
     }
 }

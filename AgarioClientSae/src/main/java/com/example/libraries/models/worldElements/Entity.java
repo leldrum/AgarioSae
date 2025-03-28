@@ -10,7 +10,7 @@ public class Entity implements Serializable {
 
     private double x;
     private double y;
-    private double weight;
+    protected double weight;
     private int r, g, b;
 
     public Entity(double x, double y, double weight) {
@@ -38,11 +38,31 @@ public class Entity implements Serializable {
     public int getG() { return g; }
     public int getB() { return b; }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Entity entity = (Entity) o;
+
+        // Compare des propriétés significatives, comme les coordonnées X et Y, ou l'identifiant unique
+        return Double.compare(entity.getX(), getX()) == 0 &&
+                Double.compare(entity.getY(), getY()) == 0 &&
+                Double.compare(entity.getWeight(), getWeight()) == 0;
+    }
+
+
     public void update() {
-        // Logique de mise à jour (déplacement, actions, etc.)
     }
 
     public void onDeletion() {
-        // Logique de suppression
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.libraries.models.worldElements;
 
+import com.example.client.app.HelloApplication;
 import com.example.libraries.models.factories.FactoryEnemy;
 import com.example.libraries.models.player.PlayableGroupModel;
 import com.example.libraries.models.player.PlayerModel;
@@ -26,6 +27,7 @@ public class WorldModel implements Serializable {
     private int foodSpawnRate = 10; // Combien de ticks entre chaque spawn
     private int foodSpawnTimer = foodSpawnRate;
 
+    private ArrayList<Entity> queuedObjectsForDeletion = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
 
@@ -57,10 +59,11 @@ public class WorldModel implements Serializable {
         for (int i = 0; i < count; i++) {
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
-            double size = 0.5;
+            double size = 10;
 
             Food food = new Food(x, y, size);
             entities.add(food);
+            //System.out.println("x:" + x +";" + y);
         }
     }
 
@@ -70,12 +73,6 @@ public class WorldModel implements Serializable {
     }
 
     public void updateWorld() {
-        for (Entity entity : entities) {
-            if (entity instanceof EnemyModel) {
-                ((EnemyModel) entity).update(entities); // Met à jour la position de chaque ennemi
-            }
-        }
-
         if (enemies < 5 && enemySpawnTimer <= 0) {
             FactoryEnemy factoryEnemy = new FactoryEnemy();
 
@@ -89,11 +86,27 @@ public class WorldModel implements Serializable {
         }
         enemySpawnTimer--;
 
-        if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
-            spawnFood(5);
-            foodSpawnTimer = foodSpawnRate;
-        }
+        // Ajout dynamique de la nourriture
+        /*if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
+            spawnFood(5); // Ajoute 5 nouvelles pastilles à la fois
+            foodSpawnTimer = foodSpawnRate; // Reset du timer
+        }*/
         foodSpawnTimer--;
+    }
+
+    public void queueFree(Entity entity) {
+        queuedObjectsForDeletion.add(entity);
+        entity.onDeletion();
+        enemies--;
+    }
+
+    public ArrayList<Entity> getQueuedObjectsForDeletion() {
+        return queuedObjectsForDeletion;
+    }
+
+    public void clearQueudObjects() {
+        entities.removeAll(queuedObjectsForDeletion);
+        queuedObjectsForDeletion.clear();
     }
 
     public List<Entity> getTopEntities() {
