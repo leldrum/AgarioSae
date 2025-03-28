@@ -1,4 +1,4 @@
-module com.example.agarioclientsae {
+module com.example.client.app {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
