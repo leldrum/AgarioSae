@@ -72,6 +72,12 @@ public class WorldModel implements Serializable {
     }
 
     public void updateWorld() {
+        for (Entity entity : entities) {
+            if (entity instanceof EnemyModel) {
+                ((EnemyModel) entity).update(entities); // Met à jour la position de chaque ennemi
+            }
+        }
+
         if (enemies < 5 && enemySpawnTimer <= 0) {
             FactoryEnemy factoryEnemy = new FactoryEnemy();
 
@@ -85,11 +91,10 @@ public class WorldModel implements Serializable {
         }
         enemySpawnTimer--;
 
-        // Ajout dynamique de la nourriture
-        /*if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
-            spawnFood(5); // Ajoute 5 nouvelles pastilles à la fois
-            foodSpawnTimer = foodSpawnRate; // Reset du timer
-        }*/
+        if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
+            spawnFood(5);
+            foodSpawnTimer = foodSpawnRate;
+        }
         foodSpawnTimer--;
     }
 

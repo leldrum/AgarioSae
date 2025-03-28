@@ -22,4 +22,8 @@ public class EnemyView {
     public Circle getSprite() {
         return sprite;
     }
+
+    public EnemyModel getModel() {
+        return model;
+    }
 }

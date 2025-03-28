@@ -57,7 +57,6 @@ public class HelloApplication extends Application {
     public static void startGame(Stage stage) {
         System.out.println("Démarrage du jeu");
 
-
         world = WorldModel.getInstance();
         root = new Group();
         FactoryPlayer factoryPlayer = new FactoryPlayer();
@@ -102,7 +101,7 @@ public class HelloApplication extends Application {
         timer = new GameTimer(controller,pc);
         timer.start();
 
-        //System.out.println(world.getEntities());
+        System.out.println(world.getEntities());
     }
 
     public static void startGameClient(Stage stage) {

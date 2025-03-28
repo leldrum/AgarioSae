@@ -12,12 +12,11 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
     }
 
     public void increaseSize(double foodValue) {
-        this.weight += foodValue;
-        super.setWeight(weight);
+        setWeight(getWeight() + foodValue);
     }
 
     public double getWeight() {
-        return weight;
+        return super.getWeight();
     }
 
     public double getCenterX() {
