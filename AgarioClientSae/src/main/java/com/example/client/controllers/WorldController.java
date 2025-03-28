@@ -50,7 +50,7 @@ public class WorldController {
         for (Entity entity : world.getEntities()) {
             if (entity instanceof EnemyModel) {
                 EnemyModel enemy = (EnemyModel) entity;
-                System.out.println(enemy.getStrategy());
+                //System.out.println(enemy.getStrategy());
 
                 // Vérifie si l'ennemi a déjà une vue associée dans la map
                 if (!entityView.getEntityGraphicsMap().containsKey(enemy)) {

@@ -46,7 +46,7 @@ public class EntitiesView extends Group {
      * Mets à jour l'affichage des entités et supprime celles qui ont été marquées pour suppression.
      */
     public void updateView() {
-        System.out.println("Nombre d'éléments à supprimer : " + WorldModel.getInstance().getQueuedObjectsForDeletion().size());
+        //System.out.println("Nombre d'éléments à supprimer : " + WorldModel.getInstance().getQueuedObjectsForDeletion().size());
 
         // Supprimer graphiquement les entités marquées pour la suppression
         WorldModel.getInstance().getQueuedObjectsForDeletion().forEach(entityToDelete -> {

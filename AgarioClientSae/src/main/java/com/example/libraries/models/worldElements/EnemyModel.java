@@ -13,10 +13,9 @@ public class EnemyModel extends MoveableBodyModel {
 
     public EnemyModel(double startX, double startY, double weight, IStrategyAI strategy) {
         super(startX, startY, weight);
-        this.strategy = strategy;
+        this.strategy = new EatPastilleAI();
         this.closestEntityDistance = Double.MAX_VALUE;
         this.closestEntity = null;
-        System.out.println("EnemyModel instancié à : " + getX() + ", " + getY());
     }
 
     public void update(List<Entity> entities) {
@@ -32,17 +31,11 @@ public class EnemyModel extends MoveableBodyModel {
                 }
             }
         }
+        System.out.println("closest entity : " + closestEntity + " distance : " + closestEntityDistance);
 
         if (closestEntity != null) {
             double[] targetPosition = strategy.move(this); // Position cible retournée par l'IA
-            double dx = targetPosition[0] - getX();
-            double dy = targetPosition[1] - getY();
-
-            // Convertir en un vecteur direction normalisé
-            double magnitude = Math.sqrt(dx * dx + dy * dy);
-            double[] direction = (magnitude > 0) ? new double[]{dx / magnitude, dy / magnitude} : new double[]{0, 0};
-
-            moveToward(direction); // Déplacement vers la cible
+            moveToward(targetPosition); // Déplacement vers la cible
         }
     }
 
@@ -59,4 +52,6 @@ public class EnemyModel extends MoveableBodyModel {
     public IStrategyAI getStrategy() {
         return strategy;
     }
+
+    public double getSpeed() { return speed; }
 }

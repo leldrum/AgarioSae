@@ -28,13 +28,13 @@ public class MoveableBodyController {
 
                 if (distance <= sumRadii) { // Vérifie si les cercles se touchent ou se chevauchent
                     double foodValue = 0.5;
-                    System.out.println("NANANANANAN");
+                    //System.out.println("NANANANANAN");
 
                     if (isSmaller(collider.getWeight(), model.getWeight())) {
                         WorldModel.getInstance().queueFree(collider);
                         foodValue += collider.getWeight() / 20;
-                        System.out.println("okkkkkk");
-                        System.out.println("Entity: " + collider.getClass().getSimpleName());
+                        //System.out.println("okkkkkk");
+                        //System.out.println("Entity: " + collider.getClass().getSimpleName());
                         increaseSize(foodValue);
                         return foodValue;
                     }
@@ -43,7 +43,7 @@ public class MoveableBodyController {
                     if(entity instanceof PlayerModel) {
                         ((PlayerModel) entity).GameOver = true;
                     }
-                    System.out.println("Dead");
+                    //System.out.println("Dead");
                     return 1;
                 }
             }

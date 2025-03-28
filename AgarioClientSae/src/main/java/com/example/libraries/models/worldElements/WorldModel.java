@@ -85,7 +85,7 @@ public class WorldModel implements Serializable {
             Random rand = new Random();
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
-            EnemyModel enemy = factoryEnemy.create(x,y, 50);
+            EnemyModel enemy = factoryEnemy.create(600,600, 50);
             entities.add(enemy);
             enemies++;
             enemySpawnTimer = enemySpawnRate;

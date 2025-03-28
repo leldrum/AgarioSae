@@ -33,7 +33,13 @@ public class EatPastilleAI implements IStrategyAI {
         // Si une pastille de nourriture a été trouvée, calculer le vecteur de déplacement vers elle
         if (closestFood != null) {
             double[] foodPosition = closestFood.getPosition();
-            return new double[]{foodPosition[0], foodPosition[1]};
+            double[] direction = new double[]{
+                    foodPosition[0] - enemy.getX(),
+                    foodPosition[1] - enemy.getY()
+            };
+
+            return direction;
+
         }
 
         // Si aucune nourriture n'est trouvée, rester immobile
