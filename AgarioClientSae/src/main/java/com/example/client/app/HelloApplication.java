@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class HelloApplication extends Application {
@@ -63,13 +64,9 @@ public class HelloApplication extends Application {
         Random rand = new Random();
         double x = rand.nextDouble() * world.getMapWidth();
         double y = rand.nextDouble() * world.getMapHeight();
-        player = factoryPlayer.create(650, 350, 50);
+        player = factoryPlayer.create(650, 350, 100);
         world.addEntity(player);
 
-        MoveableBodyView mbv = new MoveableBodyView(player);
-        mbv.updateView();
-        MoveableBodyController mbc = new MoveableBodyController(player,mbv);
-        root.getChildren().add(mbv.getSprite());
 
         PlayableGroupView pv = new PlayableGroupView(player);
         PlayableGroupController pc = new PlayableGroupController(player, pv);
@@ -81,11 +78,15 @@ public class HelloApplication extends Application {
         world = WorldModel.getInstance();
         world.spawnFood(100); // Générer 100 pastilles de nourriture
 
-        System.out.println(world.getEntities().size());
+        EntitiesView entityView = new EntitiesView((ArrayList<Entity>) world.getEntities());
+        entityView.addEntityGraphics(player);
 
-            EntitiesView entityView = new EntitiesView((ArrayList<Entity>) world.getEntities());
 
-            entityView.updateView();
+        entityView.updateView();
+
+
+            MoveableBodyController mbc = new MoveableBodyController(player);
+            root.getChildren().add(Objects.requireNonNull(entityView.getSprite(player)));
 
             worldView = new WorldView(root);
             controller = new WorldController(world, worldView,pc,entityView,mbc);

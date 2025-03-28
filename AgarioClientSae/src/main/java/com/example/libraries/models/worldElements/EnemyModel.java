@@ -55,4 +55,8 @@ public class EnemyModel extends MoveableBodyModel {
     public Entity getClosestEntity() {
         return closestEntity;
     }
+
+    public IStrategyAI getStrategy() {
+        return strategy;
+    }
 }

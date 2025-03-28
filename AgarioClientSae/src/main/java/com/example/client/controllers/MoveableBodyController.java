@@ -1,14 +1,16 @@
 package com.example.client.controllers;
 
-import com.example.client.views.MoveableBodyView;
+import com.example.client.views.EntitiesView;
 import com.example.libraries.models.player.MoveableBodyModel;
 import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.WorldModel;
 
+import java.util.Objects;
+
 public class MoveableBodyController {
+    //faire une liste aussi
     private MoveableBodyModel model;
-    private MoveableBodyView view;
 
     public double checkCollision() {
 
@@ -37,17 +39,16 @@ public class MoveableBodyController {
                         return foodValue;
                     }
                     WorldModel.getInstance().queueFree(model);
+                    //changer le instance of player par LE PLAYER DU PC LOCAL SINON BUG
+                    if(entity instanceof PlayerModel) {
+                        ((PlayerModel) entity).GameOver = true;
+                    }
                     System.out.println("Dead");
                     return 1;
                 }
             }
             }
         return 0;
-    }
-
-
-    public MoveableBodyView getView() {
-        return view;
     }
 
     // Détermine si une entité est plus petite qu'une autre
@@ -57,17 +58,16 @@ public class MoveableBodyController {
     public void increaseSize(double foodValue) {
         double initialWeight = this.model.getWeight();
         this.model.setWeight(initialWeight + foodValue);
-        this.view.getSprite().setRadius(this.model.getWeight()); // Mise à jour de la taille du joueur
+        Objects.requireNonNull(EntitiesView.getSprite(model)).setRadius(this.model.getWeight());
     }
 
 
-    public MoveableBodyController(MoveableBodyModel model, MoveableBodyView view) {
+    public MoveableBodyController(MoveableBodyModel model) {
         this.model = model;
-        this.view = view;
     }
 
-    public void update(double[] velocity) {
-        model.moveToward(velocity);
-        view.updateView();
+    public void update(double[] direction) {
+        model.moveToward(direction);
     }
+
 }

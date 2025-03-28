@@ -27,6 +27,8 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
         return super.getPosition()[1];
     }
 
+    public boolean GameOver = false;
+
     /*public double checkCollision() {
         double result = super.checkCollision();
         if (result != 0) {
@@ -35,6 +37,8 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
         }
         return 0;
     }*/
+
+    public boolean isGameOver() {return GameOver;}
 
     @Override
     public void update() {
@@ -50,7 +54,4 @@ public class PlayerModel extends MoveableBodyModel implements IPlayerModel {
     public void checkCollision() {
     }
 
-    public boolean isGameOver() {
-        return false;
-    }
 }

@@ -45,6 +45,11 @@ public class PlayableGroupController {
         model.union();
     }
 */
+
+    public PlayableGroupView getView() {
+        return view;
+    }
+
     public void gameOver() {
         HelloApplication.timer.stop();
     }

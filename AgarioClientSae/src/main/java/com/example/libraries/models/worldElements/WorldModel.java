@@ -1,6 +1,7 @@
 package com.example.libraries.models.worldElements;
 
 import com.example.client.app.HelloApplication;
+import com.example.client.views.EntitiesView;
 import com.example.libraries.models.factories.FactoryEnemy;
 import com.example.libraries.models.player.PlayableGroupModel;
 

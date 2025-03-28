@@ -24,8 +24,8 @@ public class PlayableGroupView extends Group {
 
     public void zoom(double factor) {
         ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
-        cameraScale[0] += factor;
-        cameraScale[1] += factor;
+        cameraScale[0] += factor*100;
+        cameraScale[1] += factor*100;
         cameraZoom.setToX(cameraScale[0]);
         cameraZoom.setToY(cameraScale[1]);
         cameraZoom.play();
