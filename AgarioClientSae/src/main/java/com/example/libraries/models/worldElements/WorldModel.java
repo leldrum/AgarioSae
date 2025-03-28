@@ -62,7 +62,7 @@ public class WorldModel implements Serializable {
             double x = (rand.nextDouble() * 2 - 1) * mapWidth;
             double y = (rand.nextDouble() * 2 - 1) * mapHeight;
 
-            double size = 10;
+            double size = 5;
 
             /*FactoryFood factoryFood = new FactoryFood();
             Food food = factoryFood.create(x, y, size);*/
@@ -101,7 +101,7 @@ public class WorldModel implements Serializable {
 
         if (entities.stream().filter(e -> e instanceof Food).count() < maxFood && foodSpawnTimer <= 0) {
             System.out.println("apagnan");
-            spawnFood(10);
+            spawnFood(40);
             foodSpawnTimer = foodSpawnRate;
         }
         foodSpawnTimer--;

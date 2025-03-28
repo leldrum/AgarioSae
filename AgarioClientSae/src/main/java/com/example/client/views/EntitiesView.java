@@ -2,6 +2,7 @@ package com.example.client.views;
 
 import com.example.client.app.HelloApplication;
 import com.example.libraries.models.worldElements.Entity;
+import com.example.libraries.models.worldElements.Food;
 import com.example.libraries.models.worldElements.WorldModel;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -30,10 +31,17 @@ public class EntitiesView extends Group {
         circle.setCenterX(entity.getX());
         circle.setCenterY(entity.getY());
 
-        Label label = new Label(String.valueOf(entity.getWeight()));
-        label.setTextFill(Color.WHITE);
-        label.layoutXProperty().bind(circle.centerXProperty().subtract(label.widthProperty().divide(2)));
-        label.layoutYProperty().bind(circle.centerYProperty().subtract(label.heightProperty().divide(2)));
+
+        Label label = new Label("");
+
+        if(!(entity instanceof Food)) {
+            label = new Label(String.valueOf(entity.getWeight()));
+            label.setTextFill(Color.WHITE);
+            label.layoutXProperty().bind(circle.centerXProperty().subtract(label.widthProperty().divide(2)));
+            label.layoutYProperty().bind(circle.centerYProperty().subtract(label.heightProperty().divide(2)));
+        }
+
+
 
         // Ajouter le Circle et le Label au HashMap pour cette entité
         entityGraphicsMap.put(entity, new Pair<>(circle, label));
@@ -68,6 +76,12 @@ public class EntitiesView extends Group {
             Circle circle = graphics.getKey();
             circle.setCenterX(entity.getX());
             circle.setCenterY(entity.getY());
+
+            Label label = graphics.getValue();
+            label.setText(String.valueOf(entity.getWeight()));
+
+
+
         });
     }
 
@@ -85,6 +99,8 @@ public class EntitiesView extends Group {
         Pair<Circle, Label> graphics = entityGraphicsMap.get(entity);
         return (graphics != null) ? graphics.getKey() : null;
     }
+
+
 
     public HashMap<Entity, Pair<Circle, Label>> getEntityGraphicsMap() {
         return entityGraphicsMap;

@@ -34,7 +34,7 @@ public class MoveableBodyController {
 
                         if (isSmaller(other.getWeight(), collider.getWeight())) {
                             WorldModel.getInstance().queueFree(other);
-                            foodValue += other.getWeight() / 20;
+                            foodValue += other.getWeight() / 5;
                             System.out.println("okkkkkk");
                             System.out.println("Entity: " + collider.getClass().getSimpleName());
                             increaseSize((MoveableBodyModel) collider,foodValue);
@@ -68,7 +68,7 @@ public class MoveableBodyController {
     public void increaseSize(MoveableBodyModel model,double foodValue) {
         double initialWeight = model.getWeight();
         model.setWeight(initialWeight + foodValue);
-        Objects.requireNonNull(EntitiesView.getSprite(model)).setRadius(model.getWeight());
+        Objects.requireNonNull(EntitiesView.getSprite(model)).setRadius(10 * Math.sqrt(model.getWeight()));
     }
 
 

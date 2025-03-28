@@ -23,6 +23,9 @@ public class MoveableBodyModel extends Entity {
         double magnitudeSmoothing = Math.sqrt( (velocity[0] * velocity[0]) + (velocity[1] * velocity[1])) / getWeight();
 
         //limit speed of smoothing
+
+        if (magnitudeSmoothing < 0.1) magnitudeSmoothing = 0.1;
+
         if (magnitudeSmoothing > 4){
             magnitudeSmoothing = 4 * speed;
         }

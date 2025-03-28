@@ -23,14 +23,23 @@ public class PlayableGroupView extends Group {
     }
 
     public void zoom(double factor) {
-        System.out.println();
-        ScaleTransition cameraZoom = new ScaleTransition(Duration.millis(200), camera);
-        cameraScale[0] += factor*100;
-        cameraScale[1] += factor*100;
-        cameraZoom.setToX(cameraScale[0]);
-        cameraZoom.setToY(cameraScale[1]);
-        cameraZoom.play();
+        System.out.println("FACTOR:" + factor);
+
+        // Modifier directement l'échelle de la root
+        double newScaleX = HelloApplication.root.getScaleX() - factor * 0.05;
+        double newScaleY = HelloApplication.root.getScaleY() - factor * 0.05;
+
+        // Empêcher un zoom trop petit ou trop grand
+        //if (newScaleX < 0.5) newScaleX = 0.5;  // Limite de dézoom
+        //if (newScaleX > 3) newScaleX = 3;      // Limite de zoom
+
+        HelloApplication.root.setScaleX(newScaleX);
+        HelloApplication.root.setScaleY(newScaleY);
+
+
+        System.out.println("Zoom Level: " + newScaleX);
     }
+
 
     public void updateCameraPosition(double x, double y) {
         HelloApplication.root.setTranslateX(-x + HelloApplication.getScreenWidth() / 2);
