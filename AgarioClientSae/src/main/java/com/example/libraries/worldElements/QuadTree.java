@@ -1,110 +1,116 @@
 package com.example.libraries.worldElements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuadTree {
-    final int MAX_CAPACITY = 4;
-    int level = 0;
-    QuadTree northWest = null;
-    QuadTree northEast = null;
-    QuadTree southWest = null;
-    QuadTree southEast = null;
-    Boundary boundary;
-    ArrayList<Entity> nodes;  // Change to store entities
+    private static final int MAX_CAPACITY = 4;
+    private static final int MAX_LEVELS = 5;
 
-    QuadTree(int level, Boundary boundary) {
+    private final int level;
+    private final Boundary boundary;
+    private final List<Entity> entities;
+    private QuadTree[] subTrees;
+
+    public QuadTree(int level, Boundary boundary) {
         this.level = level;
-        this.nodes = new ArrayList<>();
         this.boundary = boundary;
+        this.entities = new ArrayList<>();
+        this.subTrees = null;
     }
 
-    /* Traveling the Graph using Depth First Search */
-    static void dfs(QuadTree tree) {
-        if (tree == null)
-            return;
-
-        /*System.out.printf("\nLevel = %d [X1=%d Y1=%d] \t[X2=%d Y2=%d] ",
-                tree.level, tree.boundary.getxMin(), tree.boundary.getyMin(),
-                tree.boundary.getxMax(), tree.boundary.getyMax());*/
-
-        for (Entity node : tree.nodes) {
-            /*System.out.printf(" \n\t  x=%d y=%d", (int) node.entity.getCenterX(), (int) node.entity.getCenterY());*/
+    public void clear() {
+        entities.clear();
+        if (subTrees != null) {
+            for (QuadTree tree : subTrees) {
+                tree.clear();
+            }
+            subTrees = null;
         }
-        if (tree.nodes.size() == 0) {
-            System.out.printf(" \n\t  Leaf Node.");
-        }
-        dfs(tree.northWest);
-        dfs(tree.northEast);
-        dfs(tree.southWest);
-        dfs(tree.southEast);
     }
 
-    void split() {
-        int xOffset = this.boundary.getxMin() + (this.boundary.getxMax() - this.boundary.getxMin()) / 2;
-        int yOffset = this.boundary.getyMin() + (this.boundary.getyMax() - this.boundary.getyMin()) / 2;
+    public boolean insert(double x, double y, Entity entity) {
+        if (!boundary.contains(x, y)) {
+            return false;
+        }
 
-        // Création des 4 sous-quadrants
-        northWest = new QuadTree(this.level + 1, new Boundary(this.boundary.getxMin(), this.boundary.getyMin(), xOffset, yOffset));
-        northEast = new QuadTree(this.level + 1, new Boundary(xOffset, this.boundary.getyMin(), this.boundary.getxMax(), yOffset));
-        southWest = new QuadTree(this.level + 1, new Boundary(this.boundary.getxMin(), yOffset, xOffset, this.boundary.getyMax()));
-        southEast = new QuadTree(this.level + 1, new Boundary(xOffset, yOffset, this.boundary.getxMax(), this.boundary.getyMax()));
+        if (subTrees == null && entities.size() < MAX_CAPACITY || level >= MAX_LEVELS) {
+            entities.add(entity);
+            return true;
+        }
 
+        if (subTrees == null) {
+            split();
+        }
 
-        ArrayList<Entity> tempNodes = new ArrayList<>(nodes);
-        nodes.clear();
+        return insertIntoSubTree(x, y, entity);
+    }
 
+    private boolean insertIntoSubTree(double x, double y, Entity entity) {
+        for (QuadTree tree : subTrees) {
+            if (tree.insert(x, y, entity)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        for (Entity entity : tempNodes) {
-            /*System.out.println("Redistributing entity (" + (int) entity.entity.getCenterX() + "," +
-                    (int) entity.entity.getCenterY() + ") after split...");*/
+    private void split() {
+        double xMid = (boundary.xMin + boundary.xMax) / 2.0;
+        double yMid = (boundary.yMin + boundary.yMax) / 2.0;
 
-            // Insert dans le quadrant approprié
-            if (this.northWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.northWest.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.northEast.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.northEast.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.southWest.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.southWest.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
-            } else if (this.southEast.boundary.inRange((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY())) {
-                this.southEast.insert((int) entity.entity.getCenterX(), (int) entity.entity.getCenterY(), entity);
+        subTrees = new QuadTree[4];
+        subTrees[0] = new QuadTree(level + 1, new Boundary(boundary.xMin, boundary.yMin, xMid, yMid));
+        subTrees[1] = new QuadTree(level + 1, new Boundary(xMid, boundary.yMin, boundary.xMax, yMid));
+        subTrees[2] = new QuadTree(level + 1, new Boundary(boundary.xMin, yMid, xMid, boundary.yMax));
+        subTrees[3] = new QuadTree(level + 1, new Boundary(xMid, yMid, boundary.xMax, boundary.yMax));
+
+        // Redistribuer les entités existantes
+        List<Entity> toRedistribute = new ArrayList<>(entities);
+        entities.clear();
+
+        for (Entity entity : toRedistribute) {
+            double x = entity.entity.getCenterX();
+            double y = entity.entity.getCenterY();
+            if (!insertIntoSubTree(x, y, entity)) {
+                entities.add(entity); // Garder si ne rentre dans aucun sous-arbre
             }
         }
     }
 
+    public List<Entity> queryRange(Boundary range) {
+        List<Entity> found = new ArrayList<>();
+        queryRange(range, found);
+        return found;
+    }
 
-
-    // Modified to insert Entity objects
-    void insert(int x, int y, Entity entity) {
-        if (!this.boundary.inRange(x, y)) {
-            /*System.out.println("Entity (" + x + "," + y + ") is out of bounds");*/
+    private void queryRange(Boundary range, List<Entity> found) {
+        if (!boundary.intersects(range)) {
             return;
         }
 
-        if (nodes.size() < MAX_CAPACITY) {
-            nodes.add(entity);
-            //System.out.println("Added entity at (" + x + "," + y + ") to level " + this.level);
-            return;
+        for (Entity entity : entities) {
+            if (range.contains(entity.entity.getCenterX(), entity.entity.getCenterY())) {
+                found.add(entity);
+            }
         }
 
-        if (northWest == null) {
-            //System.out.println("Splitting at level " + this.level);
-            split();
-        }
-
-        if (this.northWest.boundary.inRange(x, y)) {
-            this.northWest.insert(x, y, entity);
-        } else if (this.northEast.boundary.inRange(x, y)) {
-            this.northEast.insert(x, y, entity);
-        } else if (this.southWest.boundary.inRange(x, y)) {
-            this.southWest.insert(x, y, entity);
-        } else if (this.southEast.boundary.inRange(x, y)) {
-            this.southEast.insert(x, y, entity);
-        } else {
-            //System.out.printf("ERROR: Unhandled partition for (%d, %d)\n", x, y);
+        if (subTrees != null) {
+            for (QuadTree tree : subTrees) {
+                tree.queryRange(range, found);
+            }
         }
     }
 
+    // Méthode utilitaire pour le débogage
+    public void printTree() {
+        System.out.printf("Level %d - Boundary [%.1f,%.1f] to [%.1f,%.1f] - Entities: %d%n",
+                level, boundary.xMin, boundary.yMin, boundary.xMax, boundary.yMax, entities.size());
 
-
-
+        if (subTrees != null) {
+            for (QuadTree tree : subTrees) {
+                tree.printTree();
+            }
+        }
+    }
 }

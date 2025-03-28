@@ -112,10 +112,13 @@ public class HelloApplication extends Application {
         // Connexion au serveur
         try {
             clientServer = new ClientServer(serverIp, 1234); // Utilise l'IP et le port corrects
+            if (clientServer == null) {
+                System.err.println("Erreur : Impossible de se connecter au serveur.");
+                return;
+            }
 
-            // Initialiser le monde et le joueur
             world = World.getInstance();
-            root = World.getRoot(); // On s'assure que root est bien initialisé
+            root = World.getRoot();
 
             if (root == null) {
                 System.err.println("ERREUR : Le Group 'root' est nul");

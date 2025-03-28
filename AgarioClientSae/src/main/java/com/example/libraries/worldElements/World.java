@@ -66,10 +66,16 @@ public class World implements Serializable {
 
     public void setMapLimitHeight(double mapHeight) {
         this.mapLimitHeight = mapHeight;
+        if (quadTree != null) {
+            this.quadTree = new QuadTree(0, new Boundary(0, 0, mapLimitWidth, mapLimitHeight));
+        }
     }
 
     public void setMapLimitWidth(double mapWidth) {
         this.mapLimitWidth = mapWidth;
+        if (quadTree != null) {
+            this.quadTree = new QuadTree(0, new Boundary(0, 0, mapLimitWidth, mapLimitHeight));
+        }
     }
 
     public void setEnemiesMax(int enemies) {
@@ -92,7 +98,7 @@ public class World implements Serializable {
         return mapLimitHeight;
     }
 
-    // Initialisation des éléments UI minimap et leaderboard
+
     private void initializeUIElements() {
         if (minimap == null) {
             minimap = new Minimap(root);
@@ -202,20 +208,46 @@ public class World implements Serializable {
     }
 
     private void updateEnemy() {
-        for (Node entity : root.getChildren()) {
-            if (entity instanceof Enemy enemy) {
-                enemy.checkCollision();
+        for (Node node : root.getChildren()) {
+            if (node instanceof Enemy enemy) {
+                List<Entity> nearbyEntities = getNearbyEntities(enemy, enemy.entity.getRadius() * 2);
+
+                for (Entity other : nearbyEntities) {
+                    if (other != enemy) {
+                        enemy.checkCollision();
+                    }
+                }
                 enemy.Update();
             }
         }
     }
 
     private void updateQuadTreeEntities() {
-        quadTree = new QuadTree(0, new Boundary(0, 0, (int) mapLimitWidth, (int) mapLimitHeight));
+        if (quadTree == null) {
+            quadTree = new QuadTree(0, new Boundary(0, 0, mapLimitWidth, mapLimitHeight));
+        } else {
+            quadTree.clear();
+        }
+
         for (Entity entity : entities) {
-            int x = (int) entity.entity.getCenterX();
-            int y = (int) entity.entity.getCenterY();
-            quadTree.insert(x, y, entity);
+            if (entity != null && entity.entity != null) {
+                quadTree.insert(entity.entity.getCenterX(), entity.entity.getCenterY(), entity);
+            }
         }
     }
+
+    public List<Entity> getNearbyEntities(Entity entity, double radius) {
+        if (quadTree == null || entity == null || entity.entity == null) {
+            return new ArrayList<>();
+        }
+        return quadTree.queryRange(
+                new Boundary(
+                        entity.entity.getCenterX() - radius,
+                        entity.entity.getCenterY() - radius,
+                        entity.entity.getCenterX() + radius,
+                        entity.entity.getCenterY() + radius
+                )
+        );
+    }
+
 }

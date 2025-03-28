@@ -12,34 +12,40 @@ public class ClientServer {
     private int playerId;
 
     public ClientServer(String serverIp, int port) {
-        try {
-            socket = new Socket(serverIp, port);
-            System.out.println("Connexion au serveur " + serverIp + ":" + port);
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
+        boolean connected = false;
+        while (!connected) {
+            try {
+                socket = new Socket(serverIp, port);
+                System.out.println("Connexion au serveur " + serverIp + ":" + port);
+                input = new ObjectInputStream(socket.getInputStream());
+                output = new ObjectOutputStream(socket.getOutputStream());
+                Object initData = input.readObject();
+                if (initData instanceof String) {
+                    processInitData((String) initData);
+                } else if (initData instanceof World) {
+                    System.out.println("Données de monde reçues");
+                    World world = (World) initData;
+                    World.setInstance(world);
+                } else {
+                    System.err.println("Données d'initialisation non reconnues.");
+                }
 
-            // Lire l'objet envoyé par le serveur (cela pourrait être un String ou un autre type)
-            Object initData = input.readObject();
+                // Confirmer que le client est prêt
+                output.writeObject("READY");
+                output.flush();
 
-            // Vérifier le type de l'objet reçu
-            if (initData instanceof String) {
-                processInitData((String) initData);
-            } else if (initData instanceof World) {
-                System.out.println("ca rentre ici");
-                World world = (World) initData;
-                World.setInstance(world); // Mettre à jour l'instance de World
-            } else {
-                System.err.println("Données d'initialisation non reconnues.");
+                // Démarrer un thread pour écouter les messages réseau
+                new Thread(new NetworkListener(input)).start();
+
+                connected = true; // Connexion réussie
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Échec de la connexion. Tentative de reconnexion...");
+                try {
+                    Thread.sleep(2000); // Attendre 2 secondes avant de réessayer
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
             }
-
-            output.writeObject("READY");
-            output.flush();
-
-            // Lancer un thread pour écouter les messages réseau
-            new Thread(new NetworkListener(input)).start();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -76,18 +82,6 @@ public class ClientServer {
         System.out.println("Client connecté avec ID: " + playerId);
     }
 
-
-
-    // Méthode pour envoyer la direction du joueur au serveur
-    public void sendPlayerDirection(double x, double y) {
-        try {
-            String message = "MOVE:" + x + "," + y;
-            output.writeObject(message);
-            output.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     // Méthode pour fermer la connexion proprement
     public void closeConnection() {

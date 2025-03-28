@@ -50,7 +50,6 @@ public class Leaderboard {
                 .limit(10)
                 .toList();
 
-        // Affichage du leaderboard
         int yOffset = 40;
         for (int i = 0; i < massiveEntities.size(); i++) {
             Entity e = massiveEntities.get(i);
@@ -60,27 +59,27 @@ public class Leaderboard {
             yOffset += 20;
         }
 
-        // Calcul de la taille du Canvas en fonction de la masse du joueur
-        double playerMass = player.getWeight(); // Masse du joueur (calculée via `getWeight()` de `PlayableGroup`)
-        double canvasWidth = Math.max(200, 200 + playerMass / 2); // S'assurer que la largeur ne soit pas trop petite
-        double canvasHeight = Math.max(200, 150 + playerMass / 2); // Idem hauteur
+
+        double playerMass = player.getWeight();
+        double canvasWidth = Math.max(200, 200 + playerMass / 2);
+        double canvasHeight = Math.max(200, 150 + playerMass / 2);
 
         leaderboardCanvas.setWidth(canvasWidth);
         leaderboardCanvas.setHeight(canvasHeight);
 
         // Calcul des coordonnées pour afficher le leaderboard en fonction de la position du joueur
-        double playerX = player.getCenterX();  // Position du joueur
-        double playerY = player.getCenterY();  // Position du joueur
+        double playerX = player.getCenterX();
+        double playerY = player.getCenterY();
 
         // Ajuster la position du leaderboard à droite du joueur
-        double offsetX = 400 + playerMass; // Ajuster l'espacement horizontal
-        double offsetY = 200 + playerMass / 2; // Ajuster l'espacement vertical
+        double offsetX = 400 + playerMass;
+        double offsetY = 350 + playerMass / 2;
 
-        // S'assurer que le leaderboard ne se superpose pas au joueur
+
         double leaderboardX = playerX + offsetX;
         double leaderboardY = playerY - offsetY;
 
-        // Mise à jour de la position du canvas
+
         leaderboardCanvas.setTranslateX(leaderboardX);
         leaderboardCanvas.setTranslateY(leaderboardY);
         leaderboardCanvas.toFront();
