@@ -4,25 +4,24 @@ import com.example.libraries.models.worldElements.EnemyModel;
 import com.example.libraries.models.worldElements.Entity;
 import com.example.libraries.models.worldElements.Food;
 import com.example.libraries.models.worldElements.WorldModel;
-import javafx.scene.Node;
 
 public class EatPastilleAI implements IStrategyAI {
 
     @Override
     public double[] move(EnemyModel enemy) {
-
         WorldModel world = WorldModel.getInstance();
-        // Initialiser la distance minimale à une valeur élevée
         double minDistance = Double.MAX_VALUE;
         Food closestFood = null;
 
-        // Parcourir tous les nœuds de la scène pour trouver les pastilles de nourriture
-        for (Entity entity : WorldModel.getInstance().getEntities()) {
+        System.out.println("L'ennemi " + enemy.getClass().getSimpleName() + " cherche une pastille...");
+        // Recherche de la pastille la plus proche
+        for (Entity entity : world.getEntities()) {
             if (entity instanceof Food) {
                 Food food = (Food) entity;
                 double distance = enemy.distanceTo(food.getPosition());
 
-                // Vérifier si cette pastille est plus proche que la précédente
+                System.out.println("Pastille détectée à (" + food.getPosition()[0] + ", " + food.getPosition()[1] + ") - Distance : " + distance);
+
                 if (distance < minDistance) {
                     minDistance = distance;
                     closestFood = food;
@@ -30,18 +29,14 @@ public class EatPastilleAI implements IStrategyAI {
             }
         }
 
-        // Si une pastille de nourriture a été trouvée, calculer le vecteur de déplacement vers elle
+        // Se déplacer vers la pastille trouvée
         if (closestFood != null) {
-            double[] foodPosition = closestFood.getPosition();
-            return new double[]{foodPosition[0], foodPosition[1]};
+            System.out.println("Cible sélectionnée : pastille à (" + closestFood.getPosition()[0] + ", " + closestFood.getPosition()[1] + ")");
+            return closestFood.getPosition();
         }
 
         // Si aucune nourriture n'est trouvée, rester immobile
-        return new double[]{enemy.getPosition()[0], enemy.getPosition()[1]};
+        return enemy.getPosition();
     }
 
-
-    public void move(){
-
-    }
 }
