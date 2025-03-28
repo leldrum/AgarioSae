@@ -6,6 +6,7 @@ import com.example.libraries.models.factories.FactoryEnemy;
 import com.example.libraries.models.factories.FactoryFood;
 import com.example.libraries.models.factories.FactoryPlayer;
 import com.example.libraries.models.player.PlayableGroupModel;
+import com.example.libraries.models.player.PlayerModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class WorldModel implements Serializable {
     private static WorldModel instance = new WorldModel();
 
     private List<Entity> entities = new ArrayList<>();
-    private PlayableGroupModel player;
+    private PlayerModel player;
 
     private double mapWidth = 2000;
     private double mapHeight = 2000;
@@ -40,7 +41,7 @@ public class WorldModel implements Serializable {
     }
 
 
-    public PlayableGroupModel getPlayer() {
+    public PlayerModel getPlayer() {
         return this.player;
     }
 
@@ -54,6 +55,11 @@ public class WorldModel implements Serializable {
 
     public void addEntity(Entity entity) {
         entities.add(entity);
+    }
+
+    public void setPlayer(PlayerModel player) {
+        this.player = player;
+        entities.add(player);
     }
 
     public void spawnFood(int count) {
