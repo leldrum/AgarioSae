@@ -1,8 +1,8 @@
 package com.example.libraries.models.worldElements;
 
+import com.example.client.app.HelloApplication;
 import com.example.libraries.models.factories.FactoryEnemy;
 import com.example.libraries.models.player.PlayableGroupModel;
-import com.example.libraries.models.player.PlayerModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class WorldModel implements Serializable {
     private int foodSpawnRate = 10; // Combien de ticks entre chaque spawn
     private int foodSpawnTimer = foodSpawnRate;
 
-    private ArrayList<Object> queuedObjectsForDeletion = new ArrayList<>();
+    private ArrayList<Entity> queuedObjectsForDeletion = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
 
@@ -62,7 +62,7 @@ public class WorldModel implements Serializable {
 
             Food food = new Food(x, y, size);
             entities.add(food);
-            System.out.println("x:" + x +";" + y);
+            //System.out.println("x:" + x +";" + y);
         }
     }
 
@@ -93,18 +93,18 @@ public class WorldModel implements Serializable {
         foodSpawnTimer--;
     }
 
-    public void queueFree(Object object) {
-        queuedObjectsForDeletion.add(object);
-        Entity entity = (Entity) object;
+    public void queueFree(Entity entity) {
+        queuedObjectsForDeletion.add(entity);
         entity.onDeletion();
         enemies--;
     }
 
-    public ArrayList<Object> getQueuedObjectsForDeletion() {
+    public ArrayList<Entity> getQueuedObjectsForDeletion() {
         return queuedObjectsForDeletion;
     }
 
     public void clearQueudObjects() {
+        entities.removeAll(queuedObjectsForDeletion);
         queuedObjectsForDeletion.clear();
     }
 

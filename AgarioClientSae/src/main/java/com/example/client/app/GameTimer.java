@@ -28,7 +28,7 @@ public class GameTimer extends AnimationTimer {
         if (now - last > interval) {
             last = now;
 
-            WorldModel.getInstance().
+            //WorldModel.getInstance().clearQueudObjects();
 
             worldController.update(); // Met à jour le monde et libère les objets supprimés
             pc.update();

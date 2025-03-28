@@ -12,7 +12,7 @@ public class MoveableBodyController {
     private MoveableBodyView view;
 
     public double checkCollision() {
-        System.out.println("Total entities: " + WorldModel.getInstance().getEntities().size());
+        //System.out.println("Total entities: " + WorldModel.getInstance().getEntities().size());
 
         for (Entity entity : WorldModel.getInstance().getEntities()) {
             if(!(entity.equals(model))) {

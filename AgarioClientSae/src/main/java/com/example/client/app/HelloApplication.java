@@ -8,13 +8,14 @@ import com.example.libraries.models.player.PlayerModel;
 import com.example.libraries.models.factories.FactoryPlayer;
 import com.example.libraries.models.worldElements.*;
 import com.example.libraries.models.worldElements.WorldModel;
-import com.example.libraries.views.WorldView;
+import com.example.client.views.WorldView;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HelloApplication extends Application {
@@ -82,32 +83,15 @@ public class HelloApplication extends Application {
         world = WorldModel.getInstance();
         world.spawnFood(100); // Générer 100 pastilles de nourriture
 
+        System.out.println(world.getEntities().size());
 
-        // Ajout des entités visuelles
-        for (Entity entity : world.getEntities()) {
-            /*if(entity instanceof Food) {
-                FoodView foodView = new FoodView((Food) entity);
-                root.getChildren().add(foodView);
-            }
-            if(entity instanceof PlayerModel) {
-                PlayableGroupView playerView = new PlayableGroupView((PlayerModel) entity);
-                root.getChildren().add(playerView);
-            }*/
-
-            if(entity instanceof EnemyModel) {
-                EnemyView enemyView = new EnemyView((EnemyModel) entity);
-                root.getChildren().add(enemyView.getSprite());
-            }
-            EntityView entityView = new EntityView(entity);
-            root.getChildren().add(entityView);
+            EntitiesView entityView = new EntitiesView((ArrayList<Entity>) world.getEntities());
 
             entityView.updateView();
 
             worldView = new WorldView(root);
             controller = new WorldController(world, worldView,pc,entityView,mbc);
 
-
-        }
 
 
         // Initialisation de la scène
